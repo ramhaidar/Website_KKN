@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\NavigationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,51 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get (
+    '/',
+    function ()
+    {
+        return view ( 'login' );
+    }
+)
+    ->name ( 'login' )
+    ->middleware ( 'SudahLogin' );
+
+Route::post (
+    '/',
+    [ 
+        UserController::class,
+        'login'
+    ]
+)
+    ->name ( 'login' );
+
+Route::get (
+    '/beranda_admin',
+    [ 
+        NavigationController::class,
+        'beranda_admin'
+    ]
+)
+    ->name ( 'beranda_admin' )
+    ->middleware ( 'BelumLogin' );
+
+Route::get (
+    '/beranda_mahasiswa',
+    [ 
+        NavigationController::class,
+        'beranda_mahasiswa'
+    ]
+)
+    ->name ( 'beranda_mahasiswa' )
+    ->middleware ( 'BelumLogin' );
+
+Route::get (
+    '/beranda_dpl',
+    [ 
+        NavigationController::class,
+        'beranda_dpl'
+    ]
+)
+    ->name ( 'beranda_dpl' )
+    ->middleware ( 'BelumLogin' );

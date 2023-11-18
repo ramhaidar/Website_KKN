@@ -1,45 +1,72 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User
+ * 
+ * @property int $id
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int|null $admin_id
+ * @property int|null $mahasiswa_id
+ * @property int|null $dpl_id
+ * 
+ * @property Admin|null $admin
+ * @property Dpl|null $dpl
+ * @property Mahasiswa|null $mahasiswa
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+	protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+	protected $casts = [ 
+		'email_verified_at' => 'datetime',
+		'admin_id'          => 'int',
+		'mahasiswa_id'      => 'int',
+		'dpl_id'            => 'int'
+	];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	protected $hidden = [ 
+		'password',
+		'remember_token'
+	];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+	protected $fillable = [ 
+		'email',
+		'email_verified_at',
+		'password',
+		'remember_token',
+		'admin_id',
+		'mahasiswa_id',
+		'dpl_id'
+	];
+
+	public function admin ()
+	{
+		return $this->belongsTo ( Admin::class);
+	}
+
+	public function dpl ()
+	{
+		return $this->belongsTo ( Dpl::class);
+	}
+
+	public function mahasiswa ()
+	{
+		return $this->belongsTo ( Mahasiswa::class);
+	}
 }
