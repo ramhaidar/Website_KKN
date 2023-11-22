@@ -8,6 +8,28 @@
 @endsection
 
 @section('content')
+
+    <div class="modal fade" id="ModalKonfirmasiSignOut" aria-labelledby="ModalKonfirmasiSignOutLabel" aria-hidden="true"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalKonfirmasiSignOutLabel">Sign Out</h5>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Anda yakin ingin Sign Out?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
+                            class="bi bi-x-lg me-2"></i>Batal</button>
+                    <a class="btn btn-danger" href="{{ route('signout') }}"><i class="bi bi-door-closed me-2"></i>Sign
+                        Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main class="h-100 w-100 p-0 m-0" style="min-height: 100vh; background-color: transparent">
 
         <div class="container" style="background-color: transparent; min-height: 100vh; min-width: 100vw">
@@ -22,74 +44,144 @@
                             <span class="py-0 fw-bold text-uppercase" style="font-size: 20px">Dashboard<br>Admin</span>
                         </a>
                         <hr>
-                        <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2">
+                        <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2 pb-4">
+
                             <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'beranda' ? 'active' : '' }}"
+                                    href="{{ route('beranda_admin') }}">
                                     <i class="bi bi-house-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Beranda</span>
                                 </a>
                             </li>
-                            <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+
+                            <li class="nav-item dropdown py-1">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'data_kelompok_mahasiswa' || $navActiveItem == 'data_dpl' ? 'active' : '' }}"
+                                    data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                     <i class="bi bi-table me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Data</span>
+                                    <i class="bi bi-caret-down-fill ms-3"></i>
                                 </a>
+                                <ul class="dropdown-menu w-100">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin_data_kelompok_mahasiswa') }}">
+                                            <i class="bi bi-people-fill me-2"></i>
+                                            Kelompok Mahasiswa
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin_data_dpl') }}">
+                                            <i class="bi bi-person-lines-fill me-2"></i>
+                                            Dosen Pembimbing Lapangan
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+
+                            <li class="nav-item dropdown py-1">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'laporan_harian' || $navActiveItem == 'laporan_akhir' ? 'active' : '' }}"
+                                    data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                     <i class="bi bi-file-earmark-text me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Laporan</span>
+                                    <i class="bi bi-caret-down-fill ms-3"></i>
                                 </a>
+                                <ul class="dropdown-menu w-100">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin_laporan_harian') }}">
+                                            <i class="bi bi-people-fill me-2"></i>
+                                            Harian
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin_laporan_akhir') }}">
+                                            <i class="bi bi-person-lines-fill me-2"></i>
+                                            Akhir
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+
                             <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'sertifikat' ? 'active' : '' }}"
+                                    href="{{ route('admin_sertifikat') }}">
                                     <i class="bi bi-award-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Sertifikat</span>
                                 </a>
                             </li>
+
                         </ul>
                         <hr class="mt-0 align-items-start">
-                        <ul class="nav nav-pills align-items-start flex-column mb-auto mt-0 mx-2">
-                            <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+                        <ul class="nav nav-pills align-items-start flex-column mt-0 pb-3 mx-2">
+                            <li class="nav-item py-1 w-100">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'akun' ? 'active' : '' }}"
+                                    href="{{ route('admin_akun') }}">
                                     <i class="bi bi-person-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Akun</span>
                                 </a>
                             </li>
                         </ul>
+                        <hr class="mt-0 align-items-start">
+                        <ul class="nav nav-pills align-items-start flex-column mt-0 mx-2">
+                            <li class="nav-item py-1 w-100">
+                                <button
+                                    class="nav-link d-flex align-items-center rounded-3 py-3 bg-light-subtle shadow w-100"
+                                    data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiSignOut" type="button">
+                                    <i class="bi bi-door-closed me-3"
+                                        style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
+                                    <span class="fw-semibold" style="color: white">Sign Out</span>
+                                </button>
+                            </li>
+                        </ul>
                         <ul class="nav nav-pills flex-column mx-2 mt-auto">
-                            <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center justify-content-center rounded-3 py-3"
+                            <li class="nav-item py-1 ">
+                                <div class="nav-link d-flex align-items-center justify-content-center rounded-3 py-3"
                                     href="#">
                                     <span class="" style="color: white">
                                         <p class="mt-5 mb-3 text-body-secondary">© 2023</p>
                                     </span>
-                                </a>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="col"
-                    style="background-color: transparent; overflow-x: hidden; overflow-y: auto; min-height: 100vh">
+                <div class="col p-0 m-0"
+                    style="background-color: transparent; overflow: auto; height: 100vh; width: 100vw;">
 
                     @if (session('success'))
-                        <div class="container-fluid alert alert-success">
+                        <div class="d-flex alert alert-success mx-4 mt-5">
                             {{ session('success') }}
                         </div>
                     @endif
 
                     @if (session('error'))
-                        <div class="container-fluid alert alert-danger">
+                        <div class="d-flex alert alert-danger mx-4 mt-5">
                             {{ session('error') }}
                         </div>
                     @endif
 
-                    @yield('dashboard_content')
+                    @if ($errors->any())
+                        <div class="d-flex alert alert-danger mx-4 mt-5">
+                            @if (count($errors) > 1)
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                {{ $errors->first() }}
+                            @endif
+                        </div>
+                    @endif
+
+                    <div class="container-fluid w-100 h-100 p-0 m-0" style="background-color: transparent">
+                        <div class="container-fluid p-3">
+                            @yield('dashboard_content')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

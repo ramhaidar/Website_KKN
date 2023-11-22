@@ -21,15 +21,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $fakultas
  * @property int|null $dpl_id
  * @property int|null $user_id
- * @property int|null $laporan_akhir_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Dpl $dpl
- * @property LaporanAkhir|null $laporan_akhir
+ * @property Dpl|null $dpl
  * @property User $user
- * @property Collection|LaporanAkhir[] $laporan_akhirs
- * @property Collection|LaporanHarian[] $laporan_harians
+ * @property Collection|Dpl[] $dpls
+ * @property Collection|Laporan[] $laporans
  *
  * @package App\Models
  */
@@ -37,45 +35,38 @@ class Mahasiswa extends Model
 {
 	protected $table = 'mahasiswas';
 
-	protected $casts = [
-		'dpl_id' => 'int',
-		'user_id' => 'int',
-		'laporan_akhir_id' => 'int'
+	protected $casts = [ 
+		'dpl_id'  => 'int',
+		'user_id' => 'int'
 	];
 
-	protected $fillable = [
+	protected $fillable = [ 
 		'nama_ketua',
 		'anggota_kelompok',
 		'nim',
 		'prodi',
 		'fakultas',
 		'dpl_id',
-		'user_id',
-		'laporan_akhir_id'
+		'user_id'
 	];
 
-	public function dpl()
+	public function dpl ()
 	{
-		return $this->hasOne(Dpl::class);
+		return $this->belongsTo ( Dpl::class);
 	}
 
-	public function laporan_akhir()
+	public function user ()
 	{
-		return $this->belongsTo(LaporanAkhir::class);
+		return $this->hasOne ( User::class);
 	}
 
-	public function user()
+	public function dpls ()
 	{
-		return $this->hasOne(User::class);
+		return $this->hasMany ( Dpl::class);
 	}
 
-	public function laporan_akhirs()
+	public function laporans ()
 	{
-		return $this->hasMany(LaporanAkhir::class);
-	}
-
-	public function laporan_harians()
-	{
-		return $this->hasMany(LaporanHarian::class);
+		return $this->hasMany ( Laporan::class);
 	}
 }

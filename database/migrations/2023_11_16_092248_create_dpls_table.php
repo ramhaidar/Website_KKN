@@ -11,18 +11,21 @@ return new class extends Migration
         Schema::create ( 'dpls', function (Blueprint $table)
         {
             $table->id ();
-            // Add additional columns as needed
             $table->string ( 'nama_dosen' );
             $table->string ( 'nip' );
             $table->string ( 'prodi' );
             $table->string ( 'fakultas' );
+
+            $table->unsignedBigInteger ( 'user_id' )->nullable ()->unique ();
+            $table->foreign ( 'user_id' )->references ( 'id' )->on ( 'users' )->onDelete ( 'cascade' );
+
             $table->timestamps ();
         } );
 
         Schema::table ( 'users', function (Blueprint $table)
         {
-            $table->unsignedBigInteger ( 'dpl_id' )->nullable ();
-            $table->foreign ( 'dpl_id' )->references ( 'id' )->on ( 'dpls' );
+            $table->unsignedBigInteger ( 'dpl_id' )->nullable ()->unique ();
+            $table->foreign ( 'dpl_id' )->references ( 'id' )->on ( 'dpls' )->onDelete ( 'cascade' );
         } );
     }
 

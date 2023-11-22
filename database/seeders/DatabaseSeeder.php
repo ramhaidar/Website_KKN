@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call ( [ 
             AdminSeeder::class,
-            MahasiswaSeeder::class,
-            DPLSeeder::class,
+                // MahasiswaSeeder::class,
+                // DPLSeeder::class,
+            MahasiswaAndDPLSeeder::class,
         ] );
     }
 }

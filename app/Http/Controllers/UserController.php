@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function login ( Request $request )
+    public function signin ( Request $request )
     {
         // Validate the form data
         $request->validate ( [ 
@@ -40,4 +40,14 @@ class UserController extends Controller
         return redirect ()->back ()->withInput ( $request->only ( 'email' ) )->with ( 'error', 'Detail login tidak valid!' );
     }
 
+    public function signout ( Request $request )
+    {
+        Auth::logout ();
+
+        $request->session ()->invalidate ();
+
+        $request->session ()->regenerateToken ();
+
+        return redirect ()->route ( 'signin' )->with ( 'success', 'Berhasil Logout!' );
+    }
 }

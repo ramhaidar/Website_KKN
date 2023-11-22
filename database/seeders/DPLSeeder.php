@@ -13,7 +13,7 @@ class DPLSeeder extends Seeder
     {
         $dpl = DPL::create ( [ 
             'nama_dosen' => 'dpl',
-            'nip'        => '987654321',
+            'nip'        => '2023110304054',
             'prodi'      => 'Teknik Informatika',
             'fakultas'   => 'Fakultas Teknik',
             // Add other admin fields here

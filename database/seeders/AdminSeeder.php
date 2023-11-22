@@ -11,16 +11,17 @@ class AdminSeeder extends Seeder
 {
     public function run ()
     {
-        $admin = Admin::create ( [ 
-            'nama' => 'admin',
-            // Add other admin fields here
-        ] );
-
-        User::create ( [ 
+        $user = User::create ( [ 
             'email'    => 'admin@gmail.com',
             'password' => Hash::make ( '123456' ),
-            'admin_id' => $admin->id,
             // Add other user fields here
         ] );
+
+        $admin = Admin::create ( [ 
+            'nama'    => 'admin',
+            'user_id' => $user->id,
+        ] );
+
+        $user->update ( [ 'admin_id' => $admin->id ] );
     }
 }

@@ -20,18 +20,47 @@
 
     <!-- Bootstrap 5.3.2 CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+
+    @yield('Head_JS')
+
+    @yield('Head_CSS')
+
+    <style>
+        #Loader {
+            background-color: rgba(125, 125, 125, 0.5);
+            position: fixed;
+            z-index: 9999;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
 {{-- <body class="container-fluid d-flex py-4 w-100 justify-content-center align-items-center"> --}}
+
+<div class="container-fluid" id="Loader">
+    <div class="center-content">
+        <img src="{{ asset('Loading.gif') }}" />
+    </div>
+</div>
 
 <body class="container-fluid w-100 h-100 p-0 m-0">
     @yield('content')
 
     <!-- Bootstrap JS 5.3.2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
     <!-- JQuery JS 3.7.1 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    @yield('Body_JS')
 </body>
 
 </html>

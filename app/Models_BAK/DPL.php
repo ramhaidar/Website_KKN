@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,8 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Mahasiswa $mahasiswa
+ * @property Mahasiswa|null $mahasiswa
  * @property User $user
+ * @property Collection|Mahasiswa[] $mahasiswas
  *
  * @package App\Models
  */
@@ -31,12 +33,12 @@ class Dpl extends Model
 {
 	protected $table = 'dpls';
 
-	protected $casts = [
+	protected $casts = [ 
 		'mahasiswa_id' => 'int',
-		'user_id' => 'int'
+		'user_id'      => 'int'
 	];
 
-	protected $fillable = [
+	protected $fillable = [ 
 		'nama_dosen',
 		'nip',
 		'prodi',
@@ -45,13 +47,18 @@ class Dpl extends Model
 		'user_id'
 	];
 
-	public function mahasiswa()
+	public function mahasiswa ()
 	{
-		return $this->hasOne(Mahasiswa::class);
+		return $this->belongsTo ( Mahasiswa::class);
 	}
 
-	public function user()
+	public function user ()
 	{
-		return $this->hasOne(User::class);
+		return $this->hasOne ( User::class);
+	}
+
+	public function mahasiswas ()
+	{
+		return $this->hasMany ( Mahasiswa::class);
 	}
 }

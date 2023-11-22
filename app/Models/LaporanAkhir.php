@@ -10,48 +10,33 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Dpl
+ * Class LaporanAkhir
  * 
  * @property int $id
- * @property string $nama_dosen
- * @property string $nip
- * @property string $prodi
- * @property string $fakultas
- * @property int|null $mahasiswa_id
- * @property int|null $user_id
+ * @property int $mahasiswa_id
+ * @property string $file_path
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
  * @property Mahasiswa $mahasiswa
- * @property User $user
  *
  * @package App\Models
  */
-class Dpl extends Model
+class LaporanAkhir extends Model
 {
-	protected $table = 'dpls';
+	protected $table = 'laporan_akhirs';
 
 	protected $casts = [
-		'mahasiswa_id' => 'int',
-		'user_id' => 'int'
+		'mahasiswa_id' => 'int'
 	];
 
 	protected $fillable = [
-		'nama_dosen',
-		'nip',
-		'prodi',
-		'fakultas',
 		'mahasiswa_id',
-		'user_id'
+		'file_path'
 	];
 
 	public function mahasiswa()
 	{
 		return $this->hasOne(Mahasiswa::class);
-	}
-
-	public function user()
-	{
-		return $this->hasOne(User::class);
 	}
 }

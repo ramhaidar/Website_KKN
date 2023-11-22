@@ -11,14 +11,17 @@ return new class extends Migration
         Schema::create ( 'admins', function (Blueprint $table)
         {
             $table->id ();
-            // Add additional columns as needed
             $table->string ( column: 'nama' );
+
+            $table->unsignedBigInteger ( 'user_id' )->nullable ()->unique ();
+            $table->foreign ( 'user_id' )->references ( 'id' )->on ( 'users' );
+
             $table->timestamps ();
         } );
 
         Schema::table ( 'users', function (Blueprint $table)
         {
-            $table->unsignedBigInteger ( 'admin_id' )->nullable ();
+            $table->unsignedBigInteger ( 'admin_id' )->nullable ()->unique ();
             $table->foreign ( 'admin_id' )->references ( 'id' )->on ( 'admins' );
         } );
     }

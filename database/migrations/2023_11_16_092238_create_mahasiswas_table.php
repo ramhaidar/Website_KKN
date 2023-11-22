@@ -11,18 +11,21 @@ return new class extends Migration
         Schema::create ( 'mahasiswas', function (Blueprint $table)
         {
             $table->id ();
-            // Add additional columns as needed
             $table->string ( 'nama_ketua' );
             $table->string ( 'nim' );
             $table->string ( 'prodi' );
             $table->string ( 'fakultas' );
+
+            $table->unsignedBigInteger ( 'user_id' )->nullable ()->unique ();
+            $table->foreign ( 'user_id' )->references ( 'id' )->on ( 'users' )->onDelete ( 'cascade' );
+
             $table->timestamps ();
         } );
 
         Schema::table ( 'users', function (Blueprint $table)
         {
-            $table->unsignedBigInteger ( 'mahasiswa_id' )->nullable ();
-            $table->foreign ( 'mahasiswa_id' )->references ( 'id' )->on ( 'mahasiswas' );
+            $table->unsignedBigInteger ( 'mahasiswa_id' )->nullable ()->unique ();
+            $table->foreign ( 'mahasiswa_id' )->references ( 'id' )->on ( 'mahasiswas' )->onDelete ( 'cascade' );
         } );
     }
 

@@ -26,17 +26,17 @@ class Admin extends Model
 {
 	protected $table = 'admins';
 
-	protected $casts = [
+	protected $casts = [ 
 		'user_id' => 'int'
 	];
 
-	protected $fillable = [
+	protected $fillable = [ 
 		'nama',
 		'user_id'
 	];
 
-	public function user()
+	public function user ()
 	{
-		return $this->hasOne(User::class);
+		return $this->hasOne ( User::class);
 	}
 }

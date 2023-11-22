@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('title', 'Login')
+@section('title', 'Sign In')
 
 @section('content')
     <main class="container-fluid" style="background-color: transparent; min-height: 100vh">
@@ -53,4 +53,14 @@
             </div>
         </div>
     </main>
+@endsection
+
+@section('Body_JS')
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('#Loader').style.display = 'none';
+            }, 1000);
+        });
+    </script>
 @endsection

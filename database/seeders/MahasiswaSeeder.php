@@ -13,7 +13,7 @@ class MahasiswaSeeder extends Seeder
     {
         $mahasiswa = Mahasiswa::create ( [ 
             'nama_ketua' => 'mahasiswa',
-            'nim'        => '123456789',
+            'nim'        => '5701054',
             'prodi'      => 'Teknik Informatika',
             'fakultas'   => 'Fakultas Teknik',
             // Add other admin fields here

@@ -1,0 +1,293 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\LaporanAkhir;
+use Illuminate\Http\Request;
+use App\Models\LaporanHarian;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
+class MahasiswaNavigationController extends Controller
+{
+    public function beranda_mahasiswa ( Request $request )
+    {
+        $id   = Auth::user ()->id;
+        $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+        return view ( "mahasiswa.beranda", [ 
+            'navActiveItem' => 'beranda',
+
+            'user'          => $user,
+        ] );
+    }
+
+    public function mahasiswa_laporan_harian ( Request $request )
+    {
+        if ( ! isset( $request->mode_halaman ) )
+        {
+            $id   = Auth::user ()->id;
+            $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+
+            return view ( "mahasiswa.laporan.harian", [ 
+                'navActiveItem' => 'laporan_harian',
+
+                'user'          => $user,
+            ] );
+        }
+        elseif ( $request->mode_halaman == 'tambah' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
+                'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
+                'tanggal'        => [ 'required', 'date_format:Y-m-d' ],
+                'jenis_kegiatan' => [ 'required', 'string' ],
+                'tujuan'         => [ 'required', 'string' ],
+                'sasaran'        => [ 'required', 'string' ],
+                'hambatan'       => [ 'required', 'string' ],
+                'solusi'         => [ 'required', 'string' ],
+                'dokumentasi'    => [ 'required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048' ],
+            ] );
+
+            // Handle file upload
+            $file            = $request->file ( 'dokumentasi' );
+            $originalName    = pathinfo ( $file->getClientOriginalName (), PATHINFO_FILENAME );
+            $extension       = $file->getClientOriginalExtension ();
+            $ymd             = date ( 'Y-m-d', strtotime ( $request->tanggal ) );
+            $newFileName     = $originalName . '_' . $ymd . '.' . $extension;
+            $dokumentasiPath = $file->storeAs ( 'dokumentasi/' . $request->mahasiswa_id, $newFileName, 'public' );
+
+            // Create or update a Laporan instance
+            $laporan                   = new LaporanHarian ();
+            $laporan->mahasiswa_id     = $request->mahasiswa_id;
+            $laporan->hari             = $request->hari;
+            $laporan->tanggal          = $request->tanggal;
+            $laporan->jenis_kegiatan   = $request->jenis_kegiatan;
+            $laporan->tujuan           = $request->tujuan;
+            $laporan->sasaran          = $request->sasaran;
+            $laporan->hambatan         = $request->hambatan;
+            $laporan->solusi           = $request->solusi;
+            $laporan->dokumentasi_path = $dokumentasiPath;
+            $laporan->save ();
+
+            // Save the laporan to the database
+            $laporan->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Harian Berhasil Ditambahkan!' );
+        }
+        elseif ( $request->mode_halaman == 'ubah' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'id'             => [ 'required', 'exists:laporan_harians,id' ],
+                'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
+                'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
+                'tanggal'        => [ 'required', 'date_format:Y-m-d' ],
+                'jenis_kegiatan' => [ 'required', 'string' ],
+                'tujuan'         => [ 'required', 'string' ],
+                'sasaran'        => [ 'required', 'string' ],
+                'hambatan'       => [ 'required', 'string' ],
+                'solusi'         => [ 'required', 'string' ],
+                'dokumentasi'    => [ 'nullable', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048000' ],
+            ] );
+
+            // Find the Laporan instance
+            $laporan = LaporanHarian::find ( $request->id );
+
+            // Handle file upload
+            if ( $request->hasFile ( 'dokumentasi' ) )
+            {
+                // Delete old file
+                if ( $laporan->dokumentasi_path )
+                {
+                    Storage::delete ( 'public/' . $laporan->dokumentasi_path );
+                }
+
+                $file                      = $request->file ( 'dokumentasi' );
+                $originalName              = pathinfo ( $file->getClientOriginalName (), PATHINFO_FILENAME );
+                $extension                 = $file->getClientOriginalExtension ();
+                $ymd                       = date ( 'Y-m-d', strtotime ( $request->tanggal ) );
+                $newFileName               = $originalName . '_' . $ymd . '.' . $extension;
+                $dokumentasiPath           = $file->storeAs ( 'dokumentasi/' . $request->mahasiswa_id, $newFileName, 'public' );
+                $laporan->dokumentasi_path = $dokumentasiPath;
+            }
+
+
+            // Update the Laporan instance
+            $laporan->mahasiswa_id   = $request->mahasiswa_id;
+            $laporan->hari           = $request->hari;
+            $laporan->tanggal        = $request->tanggal;
+            $laporan->jenis_kegiatan = $request->jenis_kegiatan;
+            $laporan->tujuan         = $request->tujuan;
+            $laporan->sasaran        = $request->sasaran;
+            $laporan->hambatan       = $request->hambatan;
+            $laporan->solusi         = $request->solusi;
+            $laporan->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Harian Berhasil Diubah!' );
+        }
+        elseif ( $request->mode_halaman == 'hapus' )
+        {
+            // Find the Laporan instance
+            $laporan = LaporanHarian::find ( $request->id );
+
+            // Delete the Laporan instance
+            $laporan->delete ();
+
+            // Delete the file
+            if ( $laporan->dokumentasi_path )
+            {
+                Storage::delete ( 'public/' . $laporan->dokumentasi_path );
+            }
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Harian Berhasil Dihapus!' );
+        }
+    }
+
+    public function mahasiswa_laporan_akhir ( Request $request )
+    {
+        if ( ! isset( $request->mode_halaman ) )
+        {
+            $user = Auth::user ();
+            $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $user->id );
+
+            // Check if a laporan_akhir exists for the currently logged in user
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
+
+            return view ( "mahasiswa.laporan.akhir", [ 
+                'navActiveItem' => 'laporan_akhir',
+
+                'user'          => $user,
+                'laporan_akhir' => $laporan_akhir,
+            ] );
+        }
+        elseif ( $request->mode_halaman == 'tambah' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
+                'laporan_akhir' => [ 'file', 'mimes:pdf', 'max:10240' ],
+            ] );
+
+            // Create new Laporan
+            $laporan_akhir               = new LaporanAkhir ();
+            $laporan_akhir->mahasiswa_id = $request->mahasiswa_id;
+
+            // Handle file upload
+            if ( $request->hasFile ( 'laporan_akhir' ) )
+            {
+                $file                     = $request->file ( 'laporan_akhir' );
+                $originalName             = pathinfo ( $file->getClientOriginalName (), PATHINFO_FILENAME );
+                $extension                = $file->getClientOriginalExtension ();
+                $now                      = now (); // Menggunakan fungsi now() dari Carbon
+                $ymd                      = $now->format ( 'Y-m-d' );
+                $newFileName              = $originalName . '_' . $ymd . '.' . $extension;
+                $laporan_akhirPath        = $file->storeAs ( 'laporan_akhir/' . $request->mahasiswa_id, $newFileName, 'public' );
+                $laporan_akhir->file_path = $laporan_akhirPath;
+            }
+
+            // Save the Laporan
+            $laporan_akhir->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Akhir Berhasil Ditambahkan!' );
+        }
+        elseif ( $request->mode_halaman == 'ubah' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
+                'laporan_akhir' => [ 'file', 'mimes:pdf', 'max:10240' ],
+            ] );
+
+            // Find the Laporan instance
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $request->mahasiswa_id )->first ();
+
+            // Delete the old Laporan from Storage
+            if ( $laporan_akhir->file_path )
+            {
+                Storage::delete ( 'public/' . $laporan_akhir->file_path );
+            }
+
+            // Update the Laporan instance
+            if ( $request->hasFile ( 'laporan_akhir' ) )
+            {
+                $file                     = $request->file ( 'laporan_akhir' );
+                $originalName             = pathinfo ( $file->getClientOriginalName (), PATHINFO_FILENAME );
+                $extension                = $file->getClientOriginalExtension ();
+                $now                      = now (); // Menggunakan fungsi now() dari Carbon
+                $ymd                      = $now->format ( 'Y-m-d' );
+                $newFileName              = $originalName . '_' . $ymd . '.' . $extension;
+                $laporan_akhirPath        = $file->storeAs ( 'laporan_akhir/' . $request->mahasiswa_id, $newFileName, 'public' );
+                $laporan_akhir->file_path = $laporan_akhirPath;
+            }
+
+            // Save the Laporan
+            $laporan_akhir->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Akhir Berhasil Diubah!' );
+        }
+        elseif ( $request->mode_halaman == 'hapus' )
+        {
+            // Validate the form Data
+            $request->validate ( [ 
+                'mahasiswa_id' => [ 'required', 'exists:mahasiswas,id' ],
+            ] );
+
+            // Find the Laporan instance
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $request->mahasiswa_id )->first ();
+
+            // Delete the Laporan instance
+            $laporan_akhir->delete ();
+
+            // Delete the file
+            if ( $laporan_akhir->file_path )
+            {
+                Storage::delete ( 'public/' . $laporan_akhir->file_path );
+            }
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Akhir Berhasil Dihapus!' );
+        }
+    }
+
+    public function mahasiswa_sertifikat ( Request $request )
+    {
+        $id            = Auth::user ()->id;
+        $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
+
+        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
+
+        return view ( "mahasiswa.sertifikat", [ 
+            'navActiveItem'         => 'sertifikat',
+
+            'user'                  => $user,
+            'laporan_akhir'         => $laporan_akhir,
+            'jumlah_laporan_harian' => $jumlah_laporan_harian,
+        ] );
+    }
+
+    public function DapatkanBulan ( Request $request )
+    {
+        $date        = new \DateTime ( $request->date );
+        $month       = $date->format ( 'm' );
+        $year        = $date->format ( 'Y' );
+        $daysInMonth = cal_days_in_month ( CAL_GREGORIAN, $month, $year );
+        $firstDay    = date ( 'N', strtotime ( "{$year}-{$month}-01" ) );
+
+        return response ()->json ( [ 
+            'month'       => $month,
+            'year'        => $year,
+            'daysInMonth' => $daysInMonth,
+            'firstDay'    => $firstDay,
+        ] );
+    }
+
+
+}
