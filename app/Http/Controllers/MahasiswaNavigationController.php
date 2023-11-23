@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Mahasiswa;
 use App\Models\LaporanAkhir;
 use Illuminate\Http\Request;
 use App\Models\LaporanHarian;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class MahasiswaNavigationController extends Controller
@@ -287,6 +290,70 @@ class MahasiswaNavigationController extends Controller
             'daysInMonth' => $daysInMonth,
             'firstDay'    => $firstDay,
         ] );
+    }
+
+    public function mahasiswa_akun ( Request $request )
+    {
+        if ( ! isset( $request->mode_halaman ) )
+        {
+            $user = User::find ( Auth::user ()->id );
+            $user->load ( 'mahasiswa', 'dpl' );
+
+            return view ( "mahasiswa.akun", [ 
+                'navActiveItem' => 'akun',
+
+                'user'          => $user,
+            ] );
+        }
+        else if ( $request->mode_halaman == 'ubah' )
+        {
+            $request->validate ( [ 
+                'id'                        => [ 'required' ],
+                'NamaKetuaKelompok___'      => [ 'required' ],
+                'Email___'                  => [ 'required', 'email' ],
+                'NIM___'                    => [ 'required' ],
+                'AnggotaKelompok___'        => [ 'required' ],
+                'Prodi___'                  => [ 'required' ],
+                'Fakultas___'               => [ 'required' ],
+                'PasswordLama___'           => [ 'min:6', 'nullable' ],
+                'PasswordBaru___'           => [ 'min:6', 'nullable' ],
+                'PasswordBaruKonfirmasi___' => [ 'min:6', 'same:PasswordBaru___', 'nullable' ],
+            ] );
+
+            $user      = User::find ( $request->id );
+            $mahasiswa = Mahasiswa::find ( $user->mahasiswa_id );
+
+            $user->update ( [ 
+                'email' => $request->Email___,
+            ] );
+
+            $mahasiswa->update ( [ 
+                'nama_ketua'       => $request->NamaKetuaKelompok___,
+                'nim'              => $request->NIM___,
+                'anggota_kelompok' => $request->AnggotaKelompok___,
+                'prodi'            => $request->Prodi___,
+                'fakultas'         => $request->Fakultas___,
+            ] );
+
+            if ( $request->PasswordLama___ != null )
+            {
+                if ( ! Auth::attempt ( [ 'email' => $request->Email___, 'password' => $request->PasswordLama___ ] ) )
+                {
+                    return redirect ()->back ()->with ( 'error', 'Password Lama Tidak Sesuai!' );
+                }
+                else
+                {
+                    $user->update ( [ 
+                        'password' => Hash::make ( $request->PasswordBaru___ ),
+                    ] );
+                }
+            }
+
+            $user->save ();
+            $mahasiswa->save ();
+
+            return redirect ()->back ()->with ( 'success', 'Detail Akun Berhasil Diubah!' );
+        }
     }
 
 

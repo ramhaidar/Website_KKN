@@ -247,7 +247,8 @@ Route::get (
     ]
 )
     ->name ( 'beranda_mahasiswa' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
     '/mahasiswa_laporan_harian',
@@ -257,7 +258,8 @@ Route::get (
     ]
 )
     ->name ( 'mahasiswa_laporan_harian' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::post (
     '/mahasiswa_laporan_harian',
@@ -267,7 +269,8 @@ Route::post (
     ]
 )
     ->name ( 'mahasiswa_laporan_harian' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
     '/mahasiswa_laporan_akhir',
@@ -277,7 +280,8 @@ Route::get (
     ]
 )
     ->name ( 'mahasiswa_laporan_akhir' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::post (
     '/mahasiswa_laporan_akhir',
@@ -287,7 +291,8 @@ Route::post (
     ]
 )
     ->name ( 'mahasiswa_laporan_akhir' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
     '/mahasiswa_sertifikat',
@@ -297,7 +302,8 @@ Route::get (
     ]
 )
     ->name ( 'mahasiswa_sertifikat' )
-    ->middleware ( 'BelumLogin' );
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
     '/DapatkanBulan',
@@ -318,6 +324,28 @@ Route::get (
 )
     ->name ( 'AmbilDataLaporan' )
     ->middleware ( 'BelumLogin' );
+
+Route::get (
+    '/mahasiswa_akun',
+    [ 
+        MahasiswaNavigationController::class,
+        'mahasiswa_akun'
+    ]
+)
+    ->name ( 'mahasiswa_akun' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
+
+Route::post (
+    '/mahasiswa_akun',
+    [ 
+        MahasiswaNavigationController::class,
+        'mahasiswa_akun'
+    ]
+)
+    ->name ( 'mahasiswa_akun' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
 
 /* ====== [END] Mahasiswa Route [END] ====== */
 

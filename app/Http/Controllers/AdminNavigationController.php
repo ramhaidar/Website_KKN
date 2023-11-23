@@ -377,7 +377,10 @@ class AdminNavigationController extends Controller
     {
         if ( ! isset( $request->mode_halaman ) )
         {
-            $user = Auth::user ()->with ( 'admin' )->with ( 'mahasiswa' )->with ( 'dpl' )->first ();
+            // $user = Auth::user ()->with ( 'admin' )->with ( 'mahasiswa' )->with ( 'dpl' )->first ();
+
+            $user = User::find ( Auth::user ()->id );
+            $user->load ( 'mahasiswa', 'dpl' );
 
             return view ( "admin.akun", [ 
                 'navActiveItem' => 'akun',
@@ -422,6 +425,7 @@ class AdminNavigationController extends Controller
             }
 
             $user->save ();
+            $admin->save ();
 
             return redirect ()->back ()->with ( 'success', 'Detail Akun Berhasil Diubah!' );
         }

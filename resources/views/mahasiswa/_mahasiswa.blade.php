@@ -92,7 +92,7 @@
                         <ul class="nav nav-pills align-items-start flex-column mt-0 pb-3 mx-2">
                             <li class="nav-item py-1 w-100">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'akun' ? 'active' : '' }}"
-                                    href="#">
+                                    href="{{ route('mahasiswa_akun') }}">
                                     <i class="bi bi-person-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Akun</span>
