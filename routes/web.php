@@ -347,6 +347,17 @@ Route::post (
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckMahasiswa' );
 
+Route::get (
+    '/DownloadSertifikat',
+    [ 
+        MahasiswaNavigationController::class,
+        'DownloadSertifikat'
+    ]
+)
+    ->name ( 'DownloadSertifikat' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
+
 /* ====== [END] Mahasiswa Route [END] ====== */
 
 /* ====== [START] DPL Route [START] ====== */

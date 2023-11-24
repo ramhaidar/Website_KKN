@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Admin;
 use App\Models\Mahasiswa;
 use App\Models\LaporanAkhir;
 use Illuminate\Http\Request;
@@ -27,15 +26,23 @@ class MahasiswaNavigationController extends Controller
 
     public function mahasiswa_laporan_harian ( Request $request )
     {
+        $id   = Auth::user ()->id;
+        $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+
+        $sudah_punya_dpl = false;
+
+        if ( $user->mahasiswa->dpl_id != null )
+        {
+            $sudah_punya_dpl = true;
+        }
+
         if ( ! isset( $request->mode_halaman ) )
         {
-            $id   = Auth::user ()->id;
-            $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
-
             return view ( "mahasiswa.laporan.harian", [ 
-                'navActiveItem' => 'laporan_harian',
+                'navActiveItem'   => 'laporan_harian',
 
-                'user'          => $user,
+                'user'            => $user,
+                'sudah_punya_dpl' => $sudah_punya_dpl,
             ] );
         }
         elseif ( $request->mode_halaman == 'tambah' )
@@ -153,19 +160,27 @@ class MahasiswaNavigationController extends Controller
 
     public function mahasiswa_laporan_akhir ( Request $request )
     {
+        $user = Auth::user ();
+        $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $user->id );
+
+        $sudah_punya_dpl = false;
+
+        if ( $user->mahasiswa->dpl_id != null )
+        {
+            $sudah_punya_dpl = true;
+        }
+
         if ( ! isset( $request->mode_halaman ) )
         {
-            $user = Auth::user ();
-            $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $user->id );
-
             // Check if a laporan_akhir exists for the currently logged in user
             $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
 
             return view ( "mahasiswa.laporan.akhir", [ 
-                'navActiveItem' => 'laporan_akhir',
+                'navActiveItem'   => 'laporan_akhir',
 
-                'user'          => $user,
-                'laporan_akhir' => $laporan_akhir,
+                'user'            => $user,
+                'laporan_akhir'   => $laporan_akhir,
+                'sudah_punya_dpl' => $sudah_punya_dpl
             ] );
         }
         elseif ( $request->mode_halaman == 'tambah' )
@@ -173,12 +188,13 @@ class MahasiswaNavigationController extends Controller
             // Validate the form data
             $request->validate ( [ 
                 'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
-                'laporan_akhir' => [ 'file', 'mimes:pdf', 'max:10240' ],
+                'laporan_akhir' => [ 'required', 'file', 'mimes:pdf', 'max:10240' ],
             ] );
 
             // Create new Laporan
             $laporan_akhir               = new LaporanAkhir ();
             $laporan_akhir->mahasiswa_id = $request->mahasiswa_id;
+            $laporan_akhir->dpl_id       = $request->dpl_id;
 
             // Handle file upload
             if ( $request->hasFile ( 'laporan_akhir' ) )
@@ -265,6 +281,13 @@ class MahasiswaNavigationController extends Controller
         $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
         $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
 
+        $sudah_punya_dpl = false;
+
+        if ( $user->mahasiswa->dpl_id != null )
+        {
+            $sudah_punya_dpl = true;
+        }
+
         $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
 
         return view ( "mahasiswa.sertifikat", [ 
@@ -273,6 +296,7 @@ class MahasiswaNavigationController extends Controller
             'user'                  => $user,
             'laporan_akhir'         => $laporan_akhir,
             'jumlah_laporan_harian' => $jumlah_laporan_harian,
+            'sudah_punya_dpl'       => $sudah_punya_dpl,
         ] );
     }
 
@@ -355,6 +379,45 @@ class MahasiswaNavigationController extends Controller
             return redirect ()->back ()->with ( 'success', 'Detail Akun Berhasil Diubah!' );
         }
     }
+
+    public function DownloadSertifikat ()
+    {
+        $id            = Auth::user ()->id;
+        $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
+
+        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
+
+        $imagePath = public_path ( 'favicon.ico' );
+        $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
+        // dd ( $test );
+        // return view ( "mahasiswa.sertifikat", [ 
+        //     'navActiveItem'         => 'sertifikat',
+
+        //     'user'                  => $user,
+        //     'laporan_akhir'         => $laporan_akhir,
+        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
+        // ] );
+
+        return view ( "mahasiswa.download_sertifikat", [ 
+            'user'                  => $user,
+            'laporan_akhir'         => $laporan_akhir,
+            'jumlah_laporan_harian' => $jumlah_laporan_harian,
+            'imagePath'             => $test,
+        ] );
+
+        // $mpdf = new \Mpdf\Mpdf ();
+        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [ 
+        //     'user'                  => $user,
+        //     'laporan_akhir'         => $laporan_akhir,
+        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
+        //     'imagePath'             => $test,
+        // ] ) );
+        // $mpdf->Output ();
+    }
+
+
+
 
 
 }

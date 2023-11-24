@@ -12,11 +12,15 @@ return new class extends Migration
         Schema::create ( 'laporan_akhirs', function (Blueprint $table)
         {
             $table->id ();
-            $table->unsignedBigInteger ( 'mahasiswa_id' );
+            $table->unsignedBigInteger ( 'mahasiswa_id' )->unique ();
+            $table->unsignedBigInteger ( 'dpl_id' )->unique ();
+            $table->string ( 'revisi' )->nullable ();
+            $table->boolean ( 'approved' )->default ( false );
             $table->string ( 'file_path' );
             $table->timestamps ();
 
             $table->foreign ( 'mahasiswa_id' )->references ( 'id' )->on ( 'mahasiswas' )->onDelete ( 'cascade' );
+            $table->foreign ( 'dpl_id' )->references ( 'id' )->on ( 'dpls' )->onDelete ( 'cascade' );
         } );
 
         // Add laporan_akhir_id column to mahasiswas table

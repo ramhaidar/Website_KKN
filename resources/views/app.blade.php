@@ -54,11 +54,31 @@
     @yield('content')
 
     <!-- Bootstrap JS 5.3.2 -->
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
     <!-- JQuery JS 3.7.1 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Auto Height Textarea JS -->
+    <script>
+        $(document).ready(function() {
+            $('textarea').on('input', function() {
+                this.style.height = 'auto';
+                this.style.height = ((this.scrollHeight) + 5) + 'px';
+            }).each(function() {
+                $(this).trigger('input');
+            });
+        });
+
+        function AutoHeightTextArea() {
+            $('textarea').on('input', function() {
+                this.style.height = 'auto';
+                this.style.height = ((this.scrollHeight) + 5) + 'px';
+            }).each(function() {
+                $(this).trigger('input');
+            });
+        }
+    </script>
 
     @yield('Body_JS')
 </body>

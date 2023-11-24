@@ -456,7 +456,7 @@
 
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" id="AnggotaKelompok___" name="AnggotaKelompok___" type="text"
-                                            value="{{ old('AnggotaKelompok___') }}" style="height: 17vh" required placeholder="Leave a comment here"></textarea>
+                                            value="{{ old('AnggotaKelompok___') }}" required placeholder="Leave a comment here"></textarea>
                                         <label for="AnggotaKelompok___">Anggota Kelompok</label>
                                     </div>
 
@@ -569,8 +569,8 @@
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="AnggotaKelompok___" name="AnggotaKelompok___" type="text"
-                                            style="height: 17vh" required placeholder="Leave a comment here">{{ $mahasiswa->anggota_kelompok }}</textarea>
+                                        <textarea class="form-control" id="AnggotaKelompok___" name="AnggotaKelompok___" type="text" required
+                                            placeholder="Leave a comment here">{{ $mahasiswa->anggota_kelompok }}</textarea>
                                         <label for="AnggotaKelompok___">Anggota Kelompok</label>
                                     </div>
 
