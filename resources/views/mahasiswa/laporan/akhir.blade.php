@@ -80,14 +80,15 @@
 
                                     <!-- Tombol Hapus dan Simpan -->
                                     <div class="d-flex justify-content-center pt-2">
-                                        <button class="btn btn-danger text-center w-25 mx-2 shadow-sm" id="TombolHapus"
-                                            data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" type="button"
-                                            {{ $laporan_akhir == null ? 'disabled' : '' }}>
+                                        <button
+                                            class="btn btn-danger text-center w-25 mx-2 shadow-sm {{ ($laporan_akhir == null ? '' : $laporan_akhir->approved) ? 'disabled' : '' }}"
+                                            id="TombolHapus" data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus"
+                                            type="button" {{ $laporan_akhir == null ? 'disabled' : '' }}>
                                             <i class="bi bi-trash-fill me-2"></i>Hapus Laporan
                                         </button>
 
                                         <button
-                                            class="btn {{ $laporan_akhir == null ? 'btn-primary' : 'btn-success' }} text-center w-25 mx-2 shadow-sm"
+                                            class="btn {{ $laporan_akhir == null ? 'btn-primary' : 'btn-success' }} {{ ($laporan_akhir == null ? '' : $laporan_akhir->approved) ? 'disabled' : '' }} text-center w-25 mx-2 shadow-sm"
                                             id="TombolAksi" data-bs-toggle="{{ $laporan_akhir == null ? '' : 'modal' }}"
                                             data-bs-target="#ModalKonfirmasiUbah"
                                             type="{{ $laporan_akhir == null ? 'submit' : 'button' }}"
@@ -99,11 +100,21 @@
 
                                 </form>
 
+                                <!-- Status Laporan Akhir -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="status_laporan">Status Laporan Akhir</label>
+                                    <input
+                                        class="form-control {{ $laporan_akhir == null ? 'bg-danger text-white' : ($laporan_akhir->approved ? 'bg-success text-white' : 'bg-warning text-dark') }}"
+                                        id="status_laporan" name="status_laporan" type="text"
+                                        value="{{ $laporan_akhir == null ? 'Belum melakukan unggah Laporan Akhir.' : ($laporan_akhir->approved ? 'Laporan Akhir sudah disetujui Dosen Pembimbing Lapangan.' : 'Sudah unggah Laporan Akhir menunggu persetujuan Dosen Pembimbing Lapangan.') }}"
+                                        readonly disabled>
+                                </div>
+
                                 @if (isset($laporan_akhir))
                                     <!-- Textarea for supervisor's revision -->
                                     <div class="container-fluid p-0 m-0 mb-3 mt-4">
                                         <label class="form-label" for="revisi_pembimbing">Revisi Dosen Pembimbing</label>
-                                        <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ $laporan_akhir->revisi == null ? 'Silakan Tunggu Dosen Pembimbing Lapangan Melakukan Approve atau Revisi.' : $laporan_akhir->revisi }}</textarea>
+                                        <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ $laporan_akhir->revisi == null ? 'Silakan tunggu Dosen Pembimbing Lapangan melakukan Approve atau memberikan Revisi...' : $laporan_akhir->revisi }}</textarea>
                                     </div>
 
                                     <div class="container-fluid p-0 m-0 mt-4">
