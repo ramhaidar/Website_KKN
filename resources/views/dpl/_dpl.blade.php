@@ -44,34 +44,55 @@
                         </a>
                         <hr>
                         <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2">
+
                             <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3"
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'beranda' ? 'active' : '' }}"
                                     href="{{ route('beranda_dpl') }}">
                                     <i class="bi bi-house-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Beranda</span>
                                 </a>
                             </li>
-                            <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
+
+                            <li class="nav-item dropdown py-1">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'laporan_harian' || $navActiveItem == 'laporan_akhir' ? 'active' : '' }}"
+                                    data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                     <i class="bi bi-file-earmark-text me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Laporan</span>
+                                    <i class="bi bi-caret-down-fill ms-3"></i>
                                 </a>
+                                <ul class="dropdown-menu w-100">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('dpl_laporan_harian') }}">
+                                            <i class="bi bi-people-fill me-2"></i>
+                                            Harian
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('dpl_laporan_akhir') }}">
+                                            <i class="bi bi-person-lines-fill me-2"></i>
+                                            Akhir
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+
                             <li class="nav-item py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3" href="#">
-                                    <i class="bi bi-book-fill me-3"
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'sertifikat' ? 'active' : '' }}"
+                                    href="{{ route('dpl_sertifikat') }}">
+                                    <i class="bi bi-award-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
-                                    <span class="fw-semibold" style="color: white">Bimbingan</span>
+                                    <span class="fw-semibold" style="color: white">Sertifikat</span>
                                 </a>
                             </li>
+
                         </ul>
                         <hr class="mt-0 align-items-start">
                         <ul class="nav nav-pills align-items-start flex-column mt-0 pb-3 mx-2">
                             <li class="nav-item py-1 w-100">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'akun' ? 'active' : '' }}"
-                                    href="{{ route('admin_akun') }}">
+                                    href="{{ route('dpl_akun') }}">
                                     <i class="bi bi-person-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Akun</span>

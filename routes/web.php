@@ -374,4 +374,82 @@ Route::get (
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDPL' );
 
+Route::get (
+    '/dpl_akun',
+    [ 
+        DPLNavigationController::class,
+        'dpl_akun'
+    ]
+)
+    ->name ( 'dpl_akun' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::post (
+    '/dpl_akun',
+    [ 
+        DPLNavigationController::class,
+        'dpl_akun'
+    ]
+)
+    ->name ( 'dpl_akun' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+
+Route::get (
+    '/dpl_laporan_harian',
+    [ 
+        DPLNavigationController::class,
+        'dpl_laporan_harian'
+    ]
+)
+    ->name ( 'dpl_laporan_harian' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::post (
+    '/dpl_laporan_harian',
+    [ 
+        DPLNavigationController::class,
+        'dpl_laporan_harian'
+    ]
+)
+    ->name ( 'dpl_laporan_harian' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::get (
+    '/dpl_laporan_akhir',
+    [ 
+        DPLNavigationController::class,
+        'dpl_laporan_akhir'
+    ]
+)
+    ->name ( 'dpl_laporan_akhir' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::post (
+    '/dpl_laporan_akhir',
+    [ 
+        DPLNavigationController::class,
+        'dpl_laporan_akhir'
+    ]
+)
+    ->name ( 'dpl_laporan_akhir' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::get (
+    '/dpl_sertifikat',
+    [ 
+        DPLNavigationController::class,
+        'dpl_sertifikat'
+    ]
+)
+    ->name ( 'dpl_sertifikat' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
 /* ====== [END] DPL Route [END] ====== */
