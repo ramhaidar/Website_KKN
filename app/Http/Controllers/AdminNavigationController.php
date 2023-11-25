@@ -29,11 +29,6 @@ class AdminNavigationController extends Controller
         ] );
     }
 
-    public function beranda_dpl ( Request $request )
-    {
-        return view ( "dpl.beranda" );
-    }
-
     public function admin_data_kelompok_mahasiswa ( Request $request )
     {
         if ( ! isset( $request->mode_halaman ) )

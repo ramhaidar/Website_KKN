@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminDataController;
+use App\Http\Controllers\DPLNavigationController;
 use App\Http\Controllers\MahasiswaDataController;
 use App\Http\Controllers\AdminNavigationController;
 use App\Http\Controllers\MahasiswaNavigationController;
@@ -365,7 +366,7 @@ Route::get (
 Route::get (
     '/beranda_dpl',
     [ 
-        AdminNavigationController::class,
+        DPLNavigationController::class,
         'beranda_dpl'
     ]
 )
