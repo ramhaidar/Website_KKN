@@ -153,7 +153,8 @@
                 $('#tanggal').val(formattedDate);
 
                 // Update the value of #hari input
-                $('#hari').val(getDayName(selectedDate.getDay()));
+                var dayName = getDayName(selectedDate.getDay());
+                $('#hari').val(dayName);
 
                 $('#mode_halaman').val('tambah');
 
@@ -168,6 +169,8 @@
             function fetchData(tanggal) {
                 // Get the current user's ID
                 var user_id = "{{ $user->id }}";
+                console.log("{{ $user->id }}");
+
 
                 // AJAX request to fetch data
                 $.ajax({
@@ -227,7 +230,9 @@
             var hari_aktif = date.getDate();
 
             // Update the value of #tanggal input
-            var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
+            var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+            // Convert to GMT+7 (WIB)
+            selectedDate.setHours(selectedDate.getHours() + 7);
             var formattedDate = selectedDate.toISOString().split('T')[0];
             $('#tanggal').val(formattedDate);
             $('#hari').val(getDayName(selectedDate.getDay()));
@@ -391,18 +396,22 @@
                 $("#PlaceholderDokumentasi").attr("hidden", true);
                 $("#PlaceholderDokumentasi").attr("src", '');
 
+
                 // Update the active date and day based on the clicked button's value
-                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
+                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+                // Convert to GMT+7 (WIB)
+                selectedDate.setHours(selectedDate.getHours() + 7);
                 updateDateAndDay(selectedDate);
             });
 
             function getDayName(dayIndex) {
                 var days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 // Adjust the day index to start from Monday (0 for Monday, 1 for Tuesday, and so on)
-                return days[(dayIndex - 1) % 7];
+                return days[(dayIndex) % 7];
             }
 
             $(document).ready(function() {
+                // Continue with the rest of your code...
                 renderCalendar();
             });
         </script>
@@ -413,8 +422,10 @@
                 date = new Date();
                 hari_aktif = date.getDate();
 
-                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
-                updateDateAndDay(selectedDate);
+                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+                // Convert to GMT+7 (WIB)
+                selectedDate.setHours(selectedDate.getHours() + 7);
+                // updateDateAndDay(selectedDate);
 
                 // Render the calendar with today's date
                 renderCalendar();

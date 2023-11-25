@@ -2,7 +2,7 @@
 
 @extends('dpl._dpl')
 
-@if ($sudah_punya_dpl == true)
+@if ($sudah_punya_mahasiswa == true)
 
     @section('dashboard_content')
         <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
@@ -59,7 +59,7 @@
                                     enctype="multipart/form-data" method="POST" action="">
                                     @csrf
                                     <!-- Mahasiswa ID (Hidden Input) -->
-                                    <input name="mahasiswa_id" type="hidden" value="{{ $user->mahasiswa->id }}">
+                                    <input name="mahasiswa_id" type="hidden" value="{{ $user->dpl->mahasiswa_id }}">
                                     <input id="mode_halaman" name="mode_halaman" type="hidden" value="tambah">
                                     <input id="id" name="id" type="hidden" value="">
 
@@ -67,45 +67,45 @@
                                     <div class="mb-3">
                                         <label class="form-label" for="hari">Hari</label>
                                         <input class="form-control" id="hari" name="hari" type="text" readonly
-                                            required>
+                                            readonly required>
                                     </div>
 
                                     <!-- Tanggal -->
                                     <div class="mb-3">
                                         <label class="form-label" for="tanggal">Tanggal</label>
                                         <input class="form-control" id="tanggal" name="tanggal" value="" readonly
-                                            required>
+                                            readonly required>
                                     </div>
 
                                     <!-- Jenis Kegiatan -->
                                     <div class="mb-3">
                                         <label class="form-label" for="jenis_kegiatan">Jenis Kegiatan</label>
                                         <input class="form-control" id="jenis_kegiatan" name="jenis_kegiatan" type="text"
-                                            required>
+                                            readonly required>
                                     </div>
 
                                     <!-- Tujuan -->
                                     <div class="mb-3">
                                         <label class="form-label" for="tujuan">Tujuan</label>
-                                        <textarea class="form-control" id="tujuan" name="tujuan" required></textarea>
+                                        <textarea class="form-control" id="tujuan" name="tujuan" readonly required></textarea>
                                     </div>
 
                                     <!-- Sasaran -->
                                     <div class="mb-3">
                                         <label class="form-label" for="sasaran">Sasaran</label>
-                                        <textarea class="form-control" id="sasaran" name="sasaran" required></textarea>
+                                        <textarea class="form-control" id="sasaran" name="sasaran" readonly required></textarea>
                                     </div>
 
                                     <!-- Hambatan -->
                                     <div class="mb-3">
                                         <label class="form-label" for="hambatan">Hambatan</label>
-                                        <textarea class="form-control" id="hambatan" name="hambatan" required></textarea>
+                                        <textarea class="form-control" id="hambatan" name="hambatan" readonly required></textarea>
                                     </div>
 
                                     <!-- Solusi -->
                                     <div class="mb-3">
                                         <label class="form-label" for="solusi">Solusi</label>
-                                        <textarea class="form-control" id="solusi" name="solusi" required></textarea>
+                                        <textarea class="form-control" id="solusi" name="solusi" readonly required></textarea>
                                     </div>
 
                                     <!-- Dokumentasi -->
@@ -113,26 +113,6 @@
                                         <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi"
                                             src="" alt="Responsive image" style="width: 80%; height: 75%;"
                                             hidden>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label" for="dokumentasi">Dokumentasi (JPG/PNG) <sup>*Maksimal
-                                                2MB</sup></label>
-                                        <input class="form-control" id="dokumentasi" name="dokumentasi" type="file"
-                                            required accept="image/jpeg, image/png, image/jpg">
-                                    </div>
-
-                                    <!-- Tombol Hapus dan Simpan -->
-                                    <div class="d-flex justify-content-center pt-2">
-                                        <button class="btn btn-danger text-center w-25 mx-2 shadow-sm" id="TombolHapus"
-                                            data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" type="button"
-                                            disabled>
-                                            <i class="bi bi-trash-fill me-2"></i>Hapus Laporan
-                                        </button>
-
-                                        <button class="btn btn-primary text-center w-25 mx-2 shadow-sm" id="TombolAksi"
-                                            type="submit">
-                                            <i class="bi bi-save-fill me-2"></i>Tambah Laporan
-                                        </button>
                                     </div>
 
                                 </form>
@@ -153,7 +133,8 @@
                 $('#tanggal').val(formattedDate);
 
                 // Update the value of #hari input
-                $('#hari').val(getDayName(selectedDate.getDay()));
+                var dayName = getDayName(selectedDate.getDay());
+                $('#hari').val(dayName);
 
                 $('#mode_halaman').val('tambah');
 
@@ -167,7 +148,9 @@
             // Function to fetch data and fill the form
             function fetchData(tanggal) {
                 // Get the current user's ID
-                var user_id = "{{ $user->id }}";
+                var user_id = "{{ $user->dpl->mahasiswa->user->id }}";
+                console.log("{{ $user->dpl->mahasiswa->user->id }}");
+
 
                 // AJAX request to fetch data
                 $.ajax({
@@ -227,7 +210,9 @@
             var hari_aktif = date.getDate();
 
             // Update the value of #tanggal input
-            var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
+            var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+            // Convert to GMT+7 (WIB)
+            selectedDate.setHours(selectedDate.getHours() + 7);
             var formattedDate = selectedDate.toISOString().split('T')[0];
             $('#tanggal').val(formattedDate);
             $('#hari').val(getDayName(selectedDate.getDay()));
@@ -391,18 +376,22 @@
                 $("#PlaceholderDokumentasi").attr("hidden", true);
                 $("#PlaceholderDokumentasi").attr("src", '');
 
+
                 // Update the active date and day based on the clicked button's value
-                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
+                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+                // Convert to GMT+7 (WIB)
+                selectedDate.setHours(selectedDate.getHours() + 7);
                 updateDateAndDay(selectedDate);
             });
 
             function getDayName(dayIndex) {
                 var days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
                 // Adjust the day index to start from Monday (0 for Monday, 1 for Tuesday, and so on)
-                return days[(dayIndex - 1) % 7];
+                return days[(dayIndex) % 7];
             }
 
             $(document).ready(function() {
+                // Continue with the rest of your code...
                 renderCalendar();
             });
         </script>
@@ -413,8 +402,10 @@
                 date = new Date();
                 hari_aktif = date.getDate();
 
-                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif + 1);
-                updateDateAndDay(selectedDate);
+                var selectedDate = new Date(date.getFullYear(), date.getMonth(), hari_aktif);
+                // Convert to GMT+7 (WIB)
+                selectedDate.setHours(selectedDate.getHours() + 7);
+                // updateDateAndDay(selectedDate);
 
                 // Render the calendar with today's date
                 renderCalendar();
