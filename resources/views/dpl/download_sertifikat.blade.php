@@ -78,37 +78,37 @@
                 <h4 class="text-dark mb-4 fw-bold fs-3" style="font-family: 'Arial', sans-serif;">Kelompok
                     Mahasiswa</h4>
                 <p class="ps-3"><strong class="fw-bold">Ketua Kelompok:</strong>
-                    {{ $user->mahasiswa->nama_ketua }}
+                    {{ $user->dpl->mahasiswa->nama_ketua }}
                 </p>
                 <p class="ps-3"><strong class="fw-bold">NIM Ketua Kelompok:</strong>
-                    {{ $user->mahasiswa->nim }}</p>
+                    {{ $user->dpl->mahasiswa->nim }}</p>
                 <p class="ps-3"><strong class="fw-bold">E-Mail Ketua Kelompok:</strong>
-                    {{ $user->email }}</p>
+                    {{ $user->dpl->mahasiswa->user->email }}</p>
             </div>
 
             <div class="mb-4 text-start fs-5">
                 <p class="ps-3"><strong class="fw-bold">Anggota Kelompok:</strong></p>
-                <p class="ps-5">{!! nl2br(e($user->mahasiswa->anggota_kelompok)) !!}</p>
+                <p class="ps-5">{!! nl2br(e($user->dpl->mahasiswa->anggota_kelompok)) !!}</p>
             </div>
 
             <p class="text-start ps-3 fs-5"><strong class="fw-bold">Prodi Kelompok:</strong>
-                {{ $user->mahasiswa->prodi }}</p>
+                {{ $user->dpl->mahasiswa->prodi }}</p>
             <p class="text-start ps-3 fs-5"><strong class="fw-bold">Fakultas Kelompok:</strong>
-                {{ $user->mahasiswa->fakultas }}</p>
+                {{ $user->dpl->mahasiswa->fakultas }}</p>
 
             <div class="pt-4 mb-4 text-start fs-5">
                 <h4 class="text-dark mb-4 fw-bold fs-3" style="font-family: 'Arial', sans-serif;">Dosen
                     Pembimbing Lapangan</h4>
                 <p class="ps-3"><strong class="fw-bold">Nama:</strong>
-                    {{ $user->mahasiswa->dpl->nama_dosen }}</p>
+                    {{ $user->dpl->nama_dosen }}</p>
                 <p class="ps-3"><strong class="fw-bold">E-Mail:</strong>
-                    {{ $user->mahasiswa->dpl->user->email }}</p>
+                    {{ $user->dpl->user->email }}</p>
                 <p class="ps-3"><strong class="fw-bold">NIP:</strong>
-                    {{ $user->mahasiswa->dpl->nip }}</p>
+                    {{ $user->dpl->nip }}</p>
                 <p class="ps-3"><strong class="fw-bold">Prodi:</strong>
-                    {{ $user->mahasiswa->dpl->prodi }}</p>
+                    {{ $user->dpl->prodi }}</p>
                 <p class="ps-3"><strong class="fw-bold">Fakultas:</strong>
-                    {{ $user->mahasiswa->dpl->fakultas }}</p>
+                    {{ $user->dpl->fakultas }}</p>
             </div>
 
             <div class="container-fluid pt-2">

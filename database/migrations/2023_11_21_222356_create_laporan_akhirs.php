@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger ( 'dpl_id' )->unique ();
             $table->string ( 'revisi' )->nullable ();
             $table->boolean ( 'approved' )->default ( false );
-            $table->string ( 'file_path' );
+            $table->string ( 'file_path' )->nullable ();
             $table->timestamps ();
 
             $table->foreign ( 'mahasiswa_id' )->references ( 'id' )->on ( 'mahasiswas' )->onDelete ( 'cascade' );

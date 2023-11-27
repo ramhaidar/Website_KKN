@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DPLDataController;
 use App\Http\Controllers\AdminDataController;
 use App\Http\Controllers\DPLNavigationController;
 use App\Http\Controllers\MahasiswaDataController;
@@ -307,26 +308,6 @@ Route::get (
     ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
-    '/DapatkanBulan',
-    [ 
-        MahasiswaNavigationController::class,
-        'DapatkanBulan'
-    ]
-)
-    ->name ( 'DapatkanBulan' )
-    ->middleware ( 'BelumLogin' );
-
-Route::get (
-    '/AmbilDataLaporan',
-    [ 
-        MahasiswaDataController::class,
-        'AmbilDataLaporan'
-    ]
-)
-    ->name ( 'AmbilDataLaporan' )
-    ->middleware ( 'BelumLogin' );
-
-Route::get (
     '/mahasiswa_akun',
     [ 
         MahasiswaNavigationController::class,
@@ -349,13 +330,35 @@ Route::post (
     ->middleware ( 'CheckMahasiswa' );
 
 Route::get (
-    '/DownloadSertifikat',
+    '/DownloadSertifikatMahasiswa',
     [ 
-        MahasiswaNavigationController::class,
-        'DownloadSertifikat'
+        MahasiswaDataController::class,
+        'DownloadSertifikatMahasiswa'
     ]
 )
-    ->name ( 'DownloadSertifikat' )
+    ->name ( 'DownloadSertifikatMahasiswa' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
+
+Route::get (
+    '/DapatkanBulanLaporanHarianMahasiswa',
+    [ 
+        MahasiswaDataController::class,
+        'DapatkanBulanLaporanHarianMahasiswa'
+    ]
+)
+    ->name ( 'DapatkanBulanLaporanHarianMahasiswa' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckMahasiswa' );
+
+Route::get (
+    '/AmbilDataLaporanHarianMahasiswa',
+    [ 
+        MahasiswaDataController::class,
+        'AmbilDataLaporanHarianMahasiswa'
+    ]
+)
+    ->name ( 'AmbilDataLaporanHarianMahasiswa' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckMahasiswa' );
 
@@ -452,4 +455,37 @@ Route::get (
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDPL' );
 
+
+Route::get (
+    '/DownloadSertifikatDPL',
+    [ 
+        DPLDataController::class,
+        'DownloadSertifikatDPL'
+    ]
+)
+    ->name ( 'DownloadSertifikatDPL' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::get (
+    '/DapatkanBulanLaporanHarianDPL',
+    [ 
+        DPLDataController::class,
+        'DapatkanBulanLaporanHarianDPL'
+    ]
+)
+    ->name ( 'DapatkanBulanLaporanHarianDPL' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
+
+Route::get (
+    '/AmbilDataLaporanHarianDPL',
+    [ 
+        DPLDataController::class,
+        'AmbilDataLaporanHarianDPL'
+    ]
+)
+    ->name ( 'AmbilDataLaporanHarianDPL' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckDPL' );
 /* ====== [END] DPL Route [END] ====== */

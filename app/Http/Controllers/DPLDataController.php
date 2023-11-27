@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\LaporanHarian;
 use Illuminate\Support\Facades\Auth;
 
-class MahasiswaDataController extends Controller
+class DPLDataController extends Controller
 {
-    public function AmbilDataLaporanHarianMahasiswa ( Request $request )
+    public function AmbilDataLaporanHarianDPL ( Request $request )
     {
         $user    = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $request->id );
         $laporan = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->where ( 'tanggal', $request->tanggal )->get ();
@@ -18,7 +18,7 @@ class MahasiswaDataController extends Controller
         return response ()->json ( $laporan );
     }
 
-    public function DapatkanBulanLaporanHarianMahasiswa ( Request $request )
+    public function DapatkanBulanLaporanHarianDPL ( Request $request )
     {
         $date        = new \DateTime ( $request->date );
         $month       = $date->format ( 'm' );
@@ -34,13 +34,13 @@ class MahasiswaDataController extends Controller
         ] );
     }
 
-    public function DownloadSertifikatMahasiswa ()
+    public function DownloadSertifikatDPL ()
     {
         $id            = Auth::user ()->id;
         $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
-        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
+        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->dpl->mahasiswa_id )->first ();
 
-        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
+        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->dpl->mahasiswa_id )->count ();
 
         $imagePath = public_path ( 'favicon.ico' );
         $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
@@ -53,7 +53,7 @@ class MahasiswaDataController extends Controller
         //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
         // ] );
 
-        return view ( "mahasiswa.download_sertifikat", [ 
+        return view ( "dpl.download_sertifikat", [ 
             'user'                  => $user,
             'laporan_akhir'         => $laporan_akhir,
             'jumlah_laporan_harian' => $jumlah_laporan_harian,

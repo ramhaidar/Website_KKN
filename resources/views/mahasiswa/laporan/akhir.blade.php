@@ -75,26 +75,28 @@
                                         <label class="form-label" for="laporan_akhir">Laporan Akhir (PDF) <sup>*Maksimal
                                                 10MB</sup></label>
                                         <input class="form-control" id="laporan_akhir" name="laporan_akhir" type="file"
-                                            required accept="application/pdf">
+                                            required accept="application/pdf"
+                                            {{ ($laporan_akhir == null ? '' : $laporan_akhir->approved == true) ? 'disabled' : '' }}>
                                     </div>
 
                                     <!-- Tombol Hapus dan Simpan -->
                                     <div class="d-flex justify-content-center pt-2">
-                                        <button
-                                            class="btn btn-danger text-center w-25 mx-2 shadow-sm {{ ($laporan_akhir == null ? '' : $laporan_akhir->approved) ? 'disabled' : '' }}"
-                                            id="TombolHapus" data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus"
-                                            type="button" {{ $laporan_akhir == null ? 'disabled' : '' }}>
+                                        <button class="btn btn-danger text-center w-25 mx-2 shadow-sm" id="TombolHapus"
+                                            data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" type="button"
+                                            {{ ($laporan_akhir == null ? 'disabled' : ($laporan_akhir->file_path == null ? 'disabled' : $laporan_akhir->approved)) ? 'disabled' : '' }}>
                                             <i class="bi bi-trash-fill me-2"></i>Hapus Laporan
                                         </button>
 
                                         <button
-                                            class="btn {{ $laporan_akhir == null ? 'btn-primary' : 'btn-success' }} {{ ($laporan_akhir == null ? '' : $laporan_akhir->approved) ? 'disabled' : '' }} text-center w-25 mx-2 shadow-sm"
-                                            id="TombolAksi" data-bs-toggle="{{ $laporan_akhir == null ? '' : 'modal' }}"
-                                            data-bs-target="#ModalKonfirmasiUbah"
-                                            type="{{ $laporan_akhir == null ? 'submit' : 'button' }}"
-                                            {{ $laporan_akhir == null ? '' : 'disabled' }}>
+                                            class="btn {{ ($laporan_akhir == null ? 'btn-primary' : $laporan_akhir->file_path == null) ? 'btn-primary' : 'btn-success' }} text-center w-25 mx-2 shadow-sm"
+                                            id="TombolAksi"
+                                            data-bs-toggle="{{ ($laporan_akhir == null ? 'disabled' : $laporan_akhir->file_path == null) ? 'disabled' : 'modal' }}"
+                                            data-bs-target="{{ ($laporan_akhir == null ? '' : $laporan_akhir->file_path == null) ? '' : '#ModalKonfirmasiUbah' }}"
+                                            type="{{ ($laporan_akhir == null ? 'submit' : $laporan_akhir->file_path == null) ? 'submit' : 'button' }}"
+                                            {{-- data-bs-toggle="{{ ($laporan_akhir == null ? '' : $laporan_akhir->file_path == null) ? '' : 'modal' }}" --}}
+                                            {{ ($laporan_akhir == null ? 'disabled' : ($laporan_akhir->file_path == null ? '' : $laporan_akhir->approved)) ? 'disabled' : '' }}>
                                             <i
-                                                class="bi bi-save-fill me-2"></i>{{ $laporan_akhir == null ? 'Tambah Laporan' : 'Ubah Laporan' }}
+                                                class="bi bi-save-fill me-2"></i>{{ ($laporan_akhir == null ? 'Upload Laporan' : $laporan_akhir->file_path == null) ? 'Tambah Laporan' : 'Ubah Laporan' }}
                                         </button>
                                     </div>
 
@@ -104,19 +106,19 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="status_laporan">Status Laporan Akhir</label>
                                     <input
-                                        class="form-control {{ $laporan_akhir == null ? 'bg-danger text-white' : ($laporan_akhir->approved ? 'bg-success text-white' : 'bg-warning text-dark') }}"
+                                        class="form-control {{ ($laporan_akhir == null ? 'bg-primary text-white' : $laporan_akhir->file_path == null) ? 'bg-danger text-white' : ($laporan_akhir->approved ? 'bg-success text-white' : 'bg-warning text-dark') }}"
                                         id="status_laporan" name="status_laporan" type="text"
-                                        value="{{ $laporan_akhir == null ? 'Belum melakukan unggah Laporan Akhir.' : ($laporan_akhir->approved ? 'Laporan Akhir sudah disetujui Dosen Pembimbing Lapangan.' : 'Sudah unggah Laporan Akhir menunggu persetujuan Dosen Pembimbing Lapangan.') }}"
+                                        value="{{ ($laporan_akhir == null ? 'Belum mengunggah Laporan Akhir.' : $laporan_akhir->file_path == null) ? 'Belum melakukan pengunggahan Laporan Akhir.' : ($laporan_akhir->approved ? 'Laporan Akhir telah disetujui oleh Dosen Pembimbing Lapangan.' : 'Laporan Akhir telah diunggah dan saat ini sedang menunggu Approval atau Revisi dari Dosen Pembimbing Lapangan.') }}"
                                         readonly disabled>
                                 </div>
 
-                                @if (isset($laporan_akhir))
-                                    <!-- Textarea for supervisor's revision -->
-                                    <div class="container-fluid p-0 m-0 mb-3 mt-4">
-                                        <label class="form-label" for="revisi_pembimbing">Revisi Dosen Pembimbing</label>
-                                        <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ $laporan_akhir->revisi == null ? 'Silakan tunggu Dosen Pembimbing Lapangan melakukan Approve atau memberikan Revisi...' : $laporan_akhir->revisi }}</textarea>
-                                    </div>
+                                <!-- Textarea for supervisor's revision -->
+                                <div class="container-fluid p-0 m-0 mb-3 mt-4">
+                                    <label class="form-label" for="revisi_pembimbing">Revisi Dosen Pembimbing</label>
+                                    <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ ($laporan_akhir == null ? 'Belum ada Revisi.' : $laporan_akhir->revisi == null) ? 'Silakan tunggu Dosen Pembimbing Lapangan melakukan Approve atau memberikan Revisi...' : $laporan_akhir->revisi }}</textarea>
+                                </div>
 
+                                @if (isset($laporan_akhir->file_path))
                                     <div class="container-fluid p-0 m-0 mt-4">
                                         <embed src="{{ asset('storage/' . $laporan_akhir->file_path) }}#view=Fit"
                                             type="application/pdf" width="100%" height="600px" />

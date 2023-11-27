@@ -124,7 +124,6 @@ class MahasiswaNavigationController extends Controller
                 $laporan->dokumentasi_path = $dokumentasiPath;
             }
 
-
             // Update the Laporan instance
             $laporan->mahasiswa_id   = $request->mahasiswa_id;
             $laporan->hari           = $request->hari;
@@ -192,7 +191,13 @@ class MahasiswaNavigationController extends Controller
             ] );
 
             // Create new Laporan
-            $laporan_akhir               = new LaporanAkhir ();
+            // $laporan_akhir               = new LaporanAkhir ();
+
+            // search or new
+            $laporan_akhir               = LaporanAkhir::firstOrCreate ( [ 
+                'mahasiswa_id' => $request->mahasiswa_id,
+                'dpl_id'       => $request->dpl_id,
+            ] );
             $laporan_akhir->mahasiswa_id = $request->mahasiswa_id;
             $laporan_akhir->dpl_id       = $request->dpl_id;
 
@@ -262,13 +267,15 @@ class MahasiswaNavigationController extends Controller
             $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $request->mahasiswa_id )->first ();
 
             // Delete the Laporan instance
-            $laporan_akhir->delete ();
+            // $laporan_akhir->delete ();
 
             // Delete the file
             if ( $laporan_akhir->file_path )
             {
                 Storage::delete ( 'public/' . $laporan_akhir->file_path );
             }
+
+            $laporan_akhir->update ( [ 'file_path' => null ] );
 
             // Redirect or respond as needed
             return redirect ()->back ()->with ( 'success', 'Laporan Akhir Berhasil Dihapus!' );
@@ -297,22 +304,6 @@ class MahasiswaNavigationController extends Controller
             'laporan_akhir'         => $laporan_akhir,
             'jumlah_laporan_harian' => $jumlah_laporan_harian,
             'sudah_punya_dpl'       => $sudah_punya_dpl,
-        ] );
-    }
-
-    public function DapatkanBulan ( Request $request )
-    {
-        $date        = new \DateTime ( $request->date );
-        $month       = $date->format ( 'm' );
-        $year        = $date->format ( 'Y' );
-        $daysInMonth = cal_days_in_month ( CAL_GREGORIAN, $month, $year );
-        $firstDay    = date ( 'N', strtotime ( "{$year}-{$month}-01" ) );
-
-        return response ()->json ( [ 
-            'month'       => $month,
-            'year'        => $year,
-            'daysInMonth' => $daysInMonth,
-            'firstDay'    => $firstDay,
         ] );
     }
 
@@ -379,45 +370,4 @@ class MahasiswaNavigationController extends Controller
             return redirect ()->back ()->with ( 'success', 'Detail Akun Berhasil Diubah!' );
         }
     }
-
-    public function DownloadSertifikat ()
-    {
-        $id            = Auth::user ()->id;
-        $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
-        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
-
-        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
-
-        $imagePath = public_path ( 'favicon.ico' );
-        $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
-        // dd ( $test );
-        // return view ( "mahasiswa.sertifikat", [ 
-        //     'navActiveItem'         => 'sertifikat',
-
-        //     'user'                  => $user,
-        //     'laporan_akhir'         => $laporan_akhir,
-        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
-        // ] );
-
-        return view ( "mahasiswa.download_sertifikat", [ 
-            'user'                  => $user,
-            'laporan_akhir'         => $laporan_akhir,
-            'jumlah_laporan_harian' => $jumlah_laporan_harian,
-            'imagePath'             => $test,
-        ] );
-
-        // $mpdf = new \Mpdf\Mpdf ();
-        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [ 
-        //     'user'                  => $user,
-        //     'laporan_akhir'         => $laporan_akhir,
-        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
-        //     'imagePath'             => $test,
-        // ] ) );
-        // $mpdf->Output ();
-    }
-
-
-
-
-
 }

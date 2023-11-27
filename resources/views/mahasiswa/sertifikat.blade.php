@@ -3,8 +3,8 @@
 @extends('mahasiswa._mahasiswa')
 
 @if ($sudah_punya_dpl == true)
-    @if (isset($laporan_akhir))
-        {{-- @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30) --}}
+    @if (isset($laporan_akhir) and $laporan_akhir->approved == true)
+        {{-- @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30 and $laporan_akhir->approved == true) --}}
         @section('dashboard_content')
             <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
                 style="background-color: transparent">
@@ -90,8 +90,9 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center p-0 m-0">
-                                    <a class="btn btn-success text-center w-50" href="{{ route('DownloadSertifikat') }}"><i
-                                            class="bi bi-download me-2"></i>Download
+                                    <a class="btn btn-success text-center w-50"
+                                        href="{{ route('DownloadSertifikatMahasiswa') }}"><i
+                                            class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download
                                         Sertifikat</a>
                                 </div>
 

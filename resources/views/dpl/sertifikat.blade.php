@@ -2,9 +2,9 @@
 
 @extends('dpl._dpl')
 
-@if ($sudah_punya_dpl == true)
-    @if (isset($laporan_akhir))
-        {{-- @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30) --}}
+@if ($sudah_punya_mahasiswa == true)
+    @if (isset($laporan_akhir) and $laporan_akhir->approved == true)
+        {{-- @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30 and $laporan_akhir->approved == true) --}}
         @section('dashboard_content')
             <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
                 style="background-color: transparent">
@@ -37,38 +37,38 @@
                                             Kelompok
                                             Mahasiswa</h4>
                                         <p class="ps-3"><strong class="fw-bold">Ketua Kelompok:</strong>
-                                            {{ $user->mahasiswa->nama_ketua }}
+                                            {{ $user->dpl->mahasiswa->nama_ketua }}
                                         </p>
                                         <p class="ps-3"><strong class="fw-bold">NIM Ketua Kelompok:</strong>
-                                            {{ $user->mahasiswa->nim }}</p>
+                                            {{ $user->dpl->mahasiswa->nim }}</p>
                                         <p class="ps-3"><strong class="fw-bold">E-Mail Ketua Kelompok:</strong>
-                                            {{ $user->email }}</p>
+                                            {{ $user->dpl->mahasiswa->user->email }}</p>
                                     </div>
 
                                     <div class="mb-4 text-start fs-5">
                                         <p class="ps-3"><strong class="fw-bold">Anggota Kelompok:</strong></p>
-                                        <p class="ps-5">{!! nl2br(e($user->mahasiswa->anggota_kelompok)) !!}</p>
+                                        <p class="ps-5">{!! nl2br(e($user->dpl->mahasiswa->anggota_kelompok)) !!}</p>
                                     </div>
 
                                     <p class="text-start ps-3 fs-5"><strong class="fw-bold">Prodi Kelompok:</strong>
-                                        {{ $user->mahasiswa->prodi }}</p>
+                                        {{ $user->dpl->mahasiswa->prodi }}</p>
                                     <p class="text-start ps-3 fs-5"><strong class="fw-bold">Fakultas Kelompok:</strong>
-                                        {{ $user->mahasiswa->fakultas }}</p>
+                                        {{ $user->dpl->mahasiswa->fakultas }}</p>
 
                                     <div class="pt-4 mb-4 text-start fs-5">
                                         <h4 class="text-dark mb-4 fw-bold fs-3" style="font-family: 'Arial', sans-serif;">
                                             Dosen
                                             Pembimbing Lapangan</h4>
                                         <p class="ps-3"><strong class="fw-bold">Nama:</strong>
-                                            {{ $user->mahasiswa->dpl->nama_dosen }}</p>
+                                            {{ $user->dpl->nama_dosen }}</p>
                                         <p class="ps-3"><strong class="fw-bold">E-Mail:</strong>
-                                            {{ $user->mahasiswa->dpl->user->email }}</p>
+                                            {{ $user->dpl->user->email }}</p>
                                         <p class="ps-3"><strong class="fw-bold">NIP:</strong>
-                                            {{ $user->mahasiswa->dpl->nip }}</p>
+                                            {{ $user->dpl->nip }}</p>
                                         <p class="ps-3"><strong class="fw-bold">Prodi:</strong>
-                                            {{ $user->mahasiswa->dpl->prodi }}</p>
+                                            {{ $user->dpl->prodi }}</p>
                                         <p class="ps-3"><strong class="fw-bold">Fakultas:</strong>
-                                            {{ $user->mahasiswa->dpl->fakultas }}</p>
+                                            {{ $user->dpl->fakultas }}</p>
                                     </div>
 
                                     <div class="container-fluid pt-2">
@@ -90,8 +90,9 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center p-0 m-0">
-                                    <a class="btn btn-success text-center w-50" href="{{ route('DownloadSertifikat') }}"><i
-                                            class="bi bi-download me-2"></i>Download
+                                    <a class="btn btn-success text-center w-50"
+                                        href="{{ route('DownloadSertifikatDPL') }}"><i
+                                            class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download
                                         Sertifikat</a>
                                 </div>
 
@@ -169,8 +170,8 @@
                             <div class="container-fluid m-0 p-0 w-100 h-100">
 
                                 <div class="container-fluid p-0 m-0 pb-1">
-                                    <h2 class="text-danger fw-bolder text-center">Anda belum memiliki Dosen Pembimbing
-                                        Lapangan.</h2>
+                                    <h2 class="text-danger fw-bolder text-center">Anda belum memiliki Kelompok Mahasiswa
+                                        Bimbingan.</h2>
                                 </div>
 
                             </div>

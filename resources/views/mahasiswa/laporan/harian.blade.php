@@ -174,7 +174,7 @@
 
                 // AJAX request to fetch data
                 $.ajax({
-                    url: "/AmbilDataLaporan/", // Change this URL to your API endpoint
+                    url: "/AmbilDataLaporanHarianMahasiswa/", // Change this URL to your API endpoint
                     method: "GET",
                     data: {
                         id: user_id,
@@ -238,7 +238,7 @@
             $('#hari').val(getDayName(selectedDate.getDay()));
 
             function renderCalendar() {
-                $.get('/DapatkanBulan', {
+                $.get('/DapatkanBulanLaporanHarianMahasiswa', {
                     date: date.toISOString()
                 }, function(data) {
                     $('#TombolHapus').prop('disabled', true);

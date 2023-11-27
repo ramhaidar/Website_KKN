@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DPL;
 use App\Models\User;
+use App\Models\LaporanAkhir;
 use Illuminate\Http\Request;
 use App\Models\LaporanHarian;
 use Illuminate\Support\Facades\Auth;
@@ -217,5 +218,98 @@ class DPLNavigationController extends Controller
             // Redirect or respond as needed
             return redirect ()->back ()->with ( 'success', 'Laporan Harian Berhasil Dihapus!' );
         }
+    }
+
+    public function dpl_laporan_akhir ( Request $request )
+    {
+        $user = Auth::user ();
+        $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $user->id );
+
+        $sudah_punya_mahasiswa = false;
+
+        if ( $user->dpl->mahasiswa_id != null )
+        {
+            $sudah_punya_mahasiswa = true;
+        }
+
+        if ( ! isset( $request->mode_halaman ) )
+        {
+            // Check if a laporan_akhir exists for the currently logged in user
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->dpl->mahasiswa_id )->first ();
+
+            return view ( "dpl.laporan.akhir", [ 
+                'navActiveItem'   => 'laporan_akhir',
+
+                'user'            => $user,
+                'laporan_akhir'   => $laporan_akhir,
+                'sudah_punya_dpl' => $sudah_punya_mahasiswa
+            ] );
+        }
+        elseif ( $request->mode_halaman == 'revisi' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'revisi_pembimbing' => [ 'required', 'string', 'not in:Belum ada Revisi.' ],
+                'mahasiswa_id'      => [ 'required', 'exists:mahasiswas,id' ],
+            ] );
+
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $request->mahasiswa_id )->first ();
+
+            $laporan_akhir->update ( [ 
+                'revisi' => $request->revisi_pembimbing,
+            ] );
+
+            // Save the Laporan
+            $laporan_akhir->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Berhasil Memberikan Revisi pada Laporan Akhir!' );
+        }
+        elseif ( $request->mode_halaman == 'approve' )
+        {
+            // Validate the form data
+            $request->validate ( [ 
+                'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
+                'laporan_akhir' => [ 'file', 'mimes:pdf', 'max:10240' ],
+            ] );
+
+            // Find the Laporan instance
+            $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $request->mahasiswa_id )->first ();
+
+            $laporan_akhir->update ( [ 
+                'approved' => true,
+            ] );
+
+            // Save the Laporan
+            $laporan_akhir->save ();
+
+            // Redirect or respond as needed
+            return redirect ()->back ()->with ( 'success', 'Laporan Akhir Berhasil Diubah!' );
+        }
+    }
+
+    public function dpl_sertifikat ( Request $request )
+    {
+        $id            = Auth::user ()->id;
+        $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
+        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->dpl->mahasiswa_id )->first ();
+
+        $sudah_punya_mahasiswa = false;
+
+        if ( $user->dpl->mahasiswa_id != null )
+        {
+            $sudah_punya_mahasiswa = true;
+        }
+
+        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->dpl->mahasiswa_id )->count ();
+
+        return view ( "dpl.sertifikat", [ 
+            'navActiveItem'         => 'sertifikat',
+
+            'user'                  => $user,
+            'laporan_akhir'         => $laporan_akhir,
+            'jumlah_laporan_harian' => $jumlah_laporan_harian,
+            'sudah_punya_mahasiswa' => $sudah_punya_mahasiswa,
+        ] );
     }
 }
