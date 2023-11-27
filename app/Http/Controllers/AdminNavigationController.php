@@ -349,8 +349,12 @@ class AdminNavigationController extends Controller
 
     public function admin_laporan_harian ( Request $request )
     {
+        $jumlah_mahasiswa = Mahasiswa::count ();
+
         return view ( "admin.laporan.harian", [ 
-            'navActiveItem' => 'laporan_harian',
+            'navActiveItem'    => 'laporan_harian',
+
+            'jumlah_mahasiswa' => $jumlah_mahasiswa,
         ] );
     }
 

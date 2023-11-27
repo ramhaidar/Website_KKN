@@ -81,7 +81,7 @@
                                         </button>
 
                                         <button
-                                            class="btn btn-success border border-3 border-light-subtle text-center w-25 mx-2 shadow-sm"
+                                            class="btn btn-success text-center w-25 mx-2 shadow-sm border border-3 border-light-subtle"
                                             id="TombolAksi" data-bs-toggle="{{ $laporan_akhir == null ? '' : 'modal' }}"
                                             data-bs-target="#ModalKonfirmasiApprove" type="button"
                                             {{ ($laporan_akhir == null ? 'disabled' : ($laporan_akhir->file_path == null ? 'disabled' : $laporan_akhir->approved)) ? 'disabled' : '' }}>

@@ -201,6 +201,11 @@ class MahasiswaNavigationController extends Controller
             $laporan_akhir->mahasiswa_id = $request->mahasiswa_id;
             $laporan_akhir->dpl_id       = $request->dpl_id;
 
+            // update laporan_akhir_id in mahasiswa table
+            $mahasiswa                   = Mahasiswa::find ( $request->mahasiswa_id )->first ();
+            $mahasiswa->laporan_akhir_id = $laporan_akhir->id;
+            $mahasiswa->save ();
+
             // Handle file upload
             if ( $request->hasFile ( 'laporan_akhir' ) )
             {

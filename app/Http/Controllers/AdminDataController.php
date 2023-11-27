@@ -25,6 +25,8 @@ class AdminDataController extends Controller
         $DataMahasiswa = Mahasiswa::skip ( ( $page - 1 ) * $perPage )
             ->with ( 'user' )
             ->with ( 'dpl' )
+            ->with ( 'laporan_harians' )
+            ->with ( 'laporan_akhir' )
             ->take ( $perPage + 1 ) // Fetch one extra record to check if there are more records to fetch
             ->get ();
 
