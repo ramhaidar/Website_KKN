@@ -10,18 +10,19 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="ModalKonfirmasiRevisiLabel">Revisi Laporan Akhir</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                        <button class="btn-close shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                            type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Apakah Anda yakin ingin menyimpan Revisi untuk Laporan Akhir Ini?
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                            data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
                         <input id="id_hapus" name="id_hapus" type="hidden" value="">
 
-                        <button class="btn btn-warning" type="button" onclick="submitRevisiForm()"><i
-                                class="bi bi-pencil-square me-2"></i>Revisi</button>
+                        <button class="btn btn-warning shadow-sm border border-3 border-light-subtle" type="button"
+                            onclick="submitRevisiForm()"><i class="bi bi-pencil-square me-2"></i>Revisi</button>
                     </div>
                 </div>
             </div>
@@ -33,18 +34,19 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="ModalKonfirmasiApprove">Approve Laporan Akhir</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                        <button class="btn-close shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                            type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Apakah Anda yakin ingin melakukan Approve untuk Laporan Akhir Ini?
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                            data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
                         <input id="id_hapus" name="id_hapus" type="hidden" value="">
 
-                        <button class="btn btn-success" type="button" onclick="submitApproveForm()"><i
-                                class="bi bi-check-circle-fill me-2"></i>Approve</button>
+                        <button class="btn btn-success shadow-sm border border-3 border-light-subtle" type="button"
+                            onclick="submitApproveForm()"><i class="bi bi-check-circle-fill me-2"></i>Approve</button>
                     </div>
                 </div>
             </div>

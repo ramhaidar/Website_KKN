@@ -20,19 +20,20 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                        <button class="btn-close shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                            type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Apakah Anda yakin ingin menghapus Kelompok Mahasiswa ini?
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                            data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
                         <form method="POST" action="{{ route('admin_data_kelompok_mahasiswa') }}">
                             @csrf
                             <input name="mode_halaman" type="hidden" value="hapus">
                             <input id="delete-id" name="id" type="hidden">
-                            <button class="btn btn-danger" type="submit"><i
+                            <button class="btn btn-danger shadow-sm border border-3 border-light-subtle" type="submit"><i
                                     class="bi bi-trash3-fill me-2"></i>Hapus</button>
                         </form>
                     </div>
@@ -72,27 +73,36 @@
                             <div class="container-fluid w-100 text-center">
                                 <div class="row justify-content-center mb-2">
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="FirstButtonUpper" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="FirstButtonUpper" type="button">
                                             <i class="bi bi-chevron-double-left"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="BackButtonUpper" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="BackButtonUpper" type="button">
                                             <i class="bi bi-chevron-left"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <div class="container-fluid btn btn-outline-info" style="pointer-events: none;">
+                                        <div class="container-fluid btn btn-outline-info shadow-sm border border-3 border-light-subtle"
+                                            style="pointer-events: none;">
                                             <p class="p-0 m-0 fw-bold" id="PageIndicatorUpper">Page: 1</p>
                                         </div>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="NextButtonUpper" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="NextButtonUpper" type="button">
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="LastButtonUpper" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="LastButtonUpper" type="button">
                                             <i class="bi bi-chevron-double-right"></i>
                                         </button>
                                     </div>
@@ -120,27 +130,36 @@
                             <div class="container-fluid w-100 text-center">
                                 <div class="row justify-content-center mb-2">
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="FirstButtonLower" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="FirstButtonLower" type="button">
                                             <i class="bi bi-chevron-double-left"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="BackButtonLower" type="submit">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="BackButtonLower" type="submit">
                                             <i class="bi bi-chevron-left"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <div class="container-fluid btn btn-outline-info" style="pointer-events: none;">
+                                        <div class="container-fluid btn btn-outline-info shadow-sm border border-3 border-light-subtle"
+                                            style="pointer-events: none;">
                                             <p class="p-0 m-0 fw-bold" id="PageIndicatorLower">Page: 1</p>
                                         </div>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="NextButtonLower" type="submit">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="NextButtonLower" type="submit">
                                             <i class="bi bi-chevron-right"></i>
                                         </button>
                                     </div>
                                     <div class="col-1 p-0 m-0 mx-2">
-                                        <button class="container-fluid btn btn-info" id="LastButtonLower" type="button">
+                                        <button
+                                            class="container-fluid btn btn-info shadow-sm border border-3 border-light-subtle"
+                                            id="LastButtonLower" type="button">
                                             <i class="bi bi-chevron-double-right"></i>
                                         </button>
                                     </div>
@@ -204,11 +223,11 @@
                             var anggota_kelompok = item.anggota_kelompok.replace(/\n/g, '<br>');
                             var nama_dosen = item.dpl ? item.dpl.nama_dosen : "[ Belum Ada ]";
                             var harianButton = item.laporan_harians.length > 0 ?
-                                '<button class="btn btn-primary action_button my-1 fw-bold" type="submit"><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>' :
-                                '<button class="btn btn-primary action_button my-1 fw-bold" type="submit" disabled><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>';
+                                '<button class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>' :
+                                '<button class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit" disabled><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>';
                             var akhirButton = item.laporan_akhir ?
-                                '<button class="btn btn-success action_button my-1 fw-bold" type="submit"><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>' :
-                                '<button class="btn btn-success action_button my-1 fw-bold" type="submit" disabled><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>';
+                                '<button class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>' :
+                                '<button class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit" disabled><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>';
                             $('#IsiLewatJQuery').append('<tr>' +
                                 '<th scope="row">' + item.id + '</th>' +
                                 '<td>' + item.nama_ketua + '</td>' +
@@ -369,11 +388,11 @@
                                             '<input name="ID_Ubah" type="hidden" value="' +
                                             item.id + '">' +
                                             '<input name="mode_halaman" type="hidden" value="ubah">' +
-                                            '<button class="btn btn-primary action_button my-1 fw-bold" type="submit"><i class="bi bi-pencil-square me-2"></i>Ubah</button>' +
+                                            '<button class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-pencil-square me-2"></i>Ubah</button>' +
                                             '</form>' +
                                             '<input name="ID_Hapus" type="hidden" value="' +
                                             item.id + '">' +
-                                            '<button class="btn btn-danger action_button my-1 fw-bold" type="button" data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" data-id="' +
+                                            '<button class="btn btn-danger action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="button" data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" data-id="' +
                                             item.id +
                                             '"><i class="bi bi-trash me-2"></i>Hapus</button>' +
                                             '</td>' +
@@ -410,8 +429,8 @@
                                 <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center">
 
                                     <div class="d-flex justify-content-between align-items-center" style="width: 100%;">
-                                        <a class="btn btn-secondary col-1 text-decoration-none" type="button"
-                                            href="{{ url()->previous() }}">
+                                        <a class="btn btn-secondary col-1 text-decoration-none shadow-sm border border-3 border-light-subtle"
+                                            type="button" href="{{ url()->previous() }}">
                                             <i class="bi bi-caret-left-fill pe-2" style="font-style: normal;"></i>Kembali
                                         </a>
                                         <div class="text-center"
@@ -489,8 +508,9 @@
                                     </div>
 
                                     <div class="d-flex justify-content-center pt-2">
-                                        <button class="btn btn-primary text-center w-25" type="submit"><i
-                                                class="bi bi-person-plus-fill me-2"></i>Tambah Data</button>
+                                        <button
+                                            class="btn btn-primary text-center w-25 shadow-sm border border-3 border-light-subtle"
+                                            type="submit"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data</button>
                                     </div>
                                 </div>
                             </form>
@@ -523,7 +543,8 @@
                                     <div class="d-flex justify-content-between align-items-center" style="width: 100%;">
                                         <a class="btn btn-secondary col-1 text-decoration-none" type="button"
                                             href="{{ url()->previous() }}">
-                                            <i class="bi bi-caret-left-fill pe-2" style="font-style: normal;"></i>Kembali
+                                            <i class="bi bi-caret-left-fill pe-2 shadow-sm border border-3 border-light-subtle"
+                                                style="font-style: normal;"></i>Kembali
                                         </a>
                                         <div class="text-center"
                                             style="position: absolute; left: 50%; transform: translateX(-50%);">Ubah
@@ -618,8 +639,9 @@
                                     </div>
 
                                     <div class="d-flex justify-content-center pt-2">
-                                        <button class="btn btn-primary text-center w-25" type="submit"><i
-                                                class="bi bi-pencil-square me-2"></i>Ubah Data</button>
+                                        <button
+                                            class="btn btn-primary text-center w-25 shadow-sm border border-3 border-light-subtle"
+                                            type="submit"><i class="bi bi-pencil-square me-2"></i>Ubah Data</button>
                                     </div>
                                 </div>
                             </form>

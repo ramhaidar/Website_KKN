@@ -15,15 +15,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalKonfirmasiSignOutLabel">Sign Out</h5>
-                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                    <button class="btn-close shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                        type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Anda yakin ingin Sign Out?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                            class="bi bi-x-lg me-2"></i>Batal</button>
-                    <a class="btn btn-danger" href="{{ route('signout') }}"><i class="bi bi-door-closed me-2"></i>Sign
+                    <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                        type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
+                    <a class="btn btn-danger shadow-sm border border-3 border-light-subtle" href="{{ route('signout') }}"><i
+                            class="bi bi-door-closed me-2"></i>Sign
                         Out</a>
                 </div>
             </div>
@@ -44,7 +46,7 @@
                             <span class="py-0 fw-bold text-uppercase" style="font-size: 20px">Dashboard<br>Admin</span>
                         </a>
                         <hr>
-                        <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2 pb-4">
+                        <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2">
 
                             <li class="nav-item py-1">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'beranda' ? 'active' : '' }}"
@@ -113,7 +115,7 @@
                             </li>
 
                         </ul>
-                        <hr class="mt-0 align-items-start">
+                        <hr class="mt-3 align-items-start">
                         <ul class="nav nav-pills align-items-start flex-column mt-0 pb-3 mx-2">
                             <li class="nav-item py-1 w-100">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'akun' ? 'active' : '' }}"

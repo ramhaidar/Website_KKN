@@ -11,18 +11,19 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                        <button class="btn-close shadow-sm border border-3 border-light-subtle" data-bs-dismiss="modal"
+                            type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Apakah Anda yakin ingin menghapus Data Laporan Harian Ini?
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                            data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
                         <input id="id_hapus" name="id_hapus" type="hidden" value="">
 
-                        <button class="btn btn-danger" type="button" onclick="submitForm()"><i
-                                class="bi bi-trash3-fill me-2"></i>Hapus</button>
+                        <button class="btn btn-danger shadow-sm border border-3 border-light-subtle" type="button"
+                            onclick="submitForm()"><i class="bi bi-trash3-fill me-2"></i>Hapus</button>
                     </div>
                 </div>
             </div>
@@ -39,16 +40,17 @@
                             <div class="container-fluid m-0 p-0 w-100 h-100">
                                 <div
                                     class="d-flex justify-content-between align-items-center align-content-center p-0 m-0 w-100 h-100">
-                                    <button class="btn btn-secondary" id="prev"><i
-                                            class="bi bi-caret-left-fill pe-2"></i>Sebelumnya</button>
+                                    <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                                        id="prev"><i class="bi bi-caret-left-fill pe-2"></i>Sebelumnya</button>
                                     <h4 class="text-center" id="Nama_Bulan"></h4>
-                                    <button class="btn btn-secondary" id="next">Selanjutnya<i
-                                            class="bi bi-caret-right-fill ps-2"></i></button>
+                                    <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                                        id="next">Selanjutnya<i class="bi bi-caret-right-fill ps-2"></i></button>
                                 </div>
                                 <div class="container-fluid m-0 p-0 pt-3 w-100 h-100" id="calendar"></div>
 
                                 <div class="d-flex justify-content-center pt-3">
-                                    <button class="btn btn-primary" id="KeHariSekarang">
+                                    <button class="btn btn-primary shadow-sm border border-3 border-light-subtle"
+                                        id="KeHariSekarang">
                                         <i class="bi bi-calendar-date pe-2"></i>Ke Hari Sekarang
                                     </button>
                                 </div>

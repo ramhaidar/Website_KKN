@@ -90,7 +90,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center p-0 m-0">
-                                    <a class="btn btn-success text-center w-50"
+                                    <a class="btn btn-success text-center w-50 shadow-sm border border-3 border-light-subtle"
                                         href="{{ route('DownloadSertifikatDPL') }}"><i
                                             class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download
                                         Sertifikat</a>

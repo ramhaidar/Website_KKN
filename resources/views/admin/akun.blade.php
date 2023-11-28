@@ -54,7 +54,9 @@
                             </div>
 
                             <div class="d-flex justify-content-center pt-2">
-                                <button class="btn btn-primary text-center w-25" type="submit">
+                                <button
+                                    class="btn btn-primary text-center w-25 shadow-sm border border-3 border-light-subtle"
+                                    type="submit">
                                     <i class="bi bi-pencil-square me-2"></i>Ubah Data</button>
                             </div>
                         </div>
