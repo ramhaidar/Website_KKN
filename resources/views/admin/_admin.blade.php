@@ -81,28 +81,13 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-item dropdown py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'laporan_harian' || $navActiveItem == 'laporan_akhir' ? 'active' : '' }}"
-                                    data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                            <li class="nav-item py-1">
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'laporan' ? 'active' : '' }}"
+                                    href="{{ route('admin_laporan') }}">
                                     <i class="bi bi-file-earmark-text me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Laporan</span>
-                                    <i class="bi bi-caret-down-fill ms-3"></i>
                                 </a>
-                                <ul class="dropdown-menu w-100">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin_laporan_harian') }}">
-                                            <i class="bi bi-people-fill me-2"></i>
-                                            Harian
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin_laporan_akhir') }}">
-                                            <i class="bi bi-person-lines-fill me-2"></i>
-                                            Akhir
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
 
                             <li class="nav-item py-1">

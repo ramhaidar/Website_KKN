@@ -105,7 +105,15 @@
                                     <div class="container-fluid p-0 m-0 mb-3 mt-4">
                                         <label class="form-label" for="revisi_pembimbing">Revisi Dosen
                                             Pembimbing</label>
-                                        <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" required>{{ ($laporan_akhir == null ? 'Belum ada Revisi.' : $laporan_akhir->revisi == null) ? 'Belum ada Revisi.' : $laporan_akhir->revisi }}</textarea>
+                                        @if ($laporan_akhir == null)
+                                            @php $content = 'Belum ada Revisi.' @endphp
+                                        @elseif ($laporan_akhir->revisi == null)
+                                            @php $content = 'Belum ada Revisi.' @endphp
+                                        @else
+                                            @php $content = $laporan_akhir->revisi @endphp
+                                        @endif
+
+                                        <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing">{{ $content }}</textarea>
                                     </div>
 
                                     @if (isset($laporan_akhir->file_path))

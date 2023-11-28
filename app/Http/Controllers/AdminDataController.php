@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\DPL;
+use App\Models\User;
 use App\Models\Mahasiswa;
+use App\Models\LaporanAkhir;
 use Illuminate\Http\Request;
+use App\Models\LaporanHarian;
+use Illuminate\Support\Facades\Auth;
 
 class AdminDataController extends Controller
 {
@@ -143,4 +147,65 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'lastPage' => $lastPage ] );
     }
 
+    public function AmbilDataLaporanHarianAdmin ( Request $request )
+    {
+        $user    = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $request->id );
+        $laporan = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->where ( 'tanggal', $request->tanggal )->get ();
+
+        return response ()->json ( $laporan );
+    }
+
+    public function DapatkanBulanLaporanHarianAdmin ( Request $request )
+    {
+        $date        = new \DateTime ( $request->date );
+        $month       = $date->format ( 'm' );
+        $year        = $date->format ( 'Y' );
+        $daysInMonth = cal_days_in_month ( CAL_GREGORIAN, $month, $year );
+        $firstDay    = date ( 'N', strtotime ( "{$year}-{$month}-01" ) );
+
+        return response ()->json ( [ 
+            'month'       => $month,
+            'year'        => $year,
+            'daysInMonth' => $daysInMonth,
+            'firstDay'    => $firstDay,
+        ] );
+    }
+
+    public function DownloadSertifikatAdmin ( Request $request )
+    {
+        $mahasiswa = Mahasiswa::find ( $request->ID_Mahasiswa );
+        $mahasiswa->load ( 'user', 'dpl', 'laporan_harians', 'laporan_akhir' );
+        $user = User::find ( $mahasiswa->user->id );
+        $user->load ( 'mahasiswa', 'dpl' );
+        $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
+
+        $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
+
+        $imagePath = public_path ( 'favicon.ico' );
+        $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
+        // dd ( $test );
+        // return view ( "mahasiswa.sertifikat", [ 
+        //     'navActiveItem'         => 'sertifikat',
+
+        //     'user'                  => $user,
+        //     'laporan_akhir'         => $laporan_akhir,
+        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
+        // ] );
+
+        return view ( "admin.download_sertifikat", [ 
+            'user'                  => $user,
+            'laporan_akhir'         => $laporan_akhir,
+            'jumlah_laporan_harian' => $jumlah_laporan_harian,
+            'imagePath'             => $test,
+        ] );
+
+        // $mpdf = new \Mpdf\Mpdf ();
+        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [ 
+        //     'user'                  => $user,
+        //     'laporan_akhir'         => $laporan_akhir,
+        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
+        //     'imagePath'             => $test,
+        // ] ) );
+        // $mpdf->Output ();
+    }
 }

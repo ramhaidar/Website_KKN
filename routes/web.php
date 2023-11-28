@@ -183,28 +183,39 @@ Route::get (
     ->middleware ( 'BelumLogin' );
 
 Route::get (
-    '/admin_laporan_harian',
+    '/admin_laporan',
     [ 
         AdminNavigationController::class,
-        'admin_laporan_harian'
+        'admin_laporan'
     ]
 )
-    ->name ( 'admin_laporan_harian' )
+    ->name ( 'admin_laporan' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckAdmin' );
+
+Route::post (
+    '/admin_laporan',
+    [ 
+        AdminNavigationController::class,
+        'admin_laporan'
+    ]
+)
+    ->name ( 'admin_laporan' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckAdmin' );
 
 Route::get (
-    '/admin_laporan_akhir',
+    '/admin_sertifikat',
     [ 
         AdminNavigationController::class,
-        'admin_laporan_akhir'
+        'admin_sertifikat'
     ]
 )
-    ->name ( 'admin_laporan_akhir' )
+    ->name ( 'admin_sertifikat' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckAdmin' );
 
-Route::get (
+Route::post (
     '/admin_sertifikat',
     [ 
         AdminNavigationController::class,
@@ -237,6 +248,38 @@ Route::post (
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckAdmin' );
 
+Route::get (
+    '/DownloadSertifikatAdmin',
+    [ 
+        AdminDataController::class,
+        'DownloadSertifikatAdmin'
+    ]
+)
+    ->name ( 'DownloadSertifikatAdmin' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckAdmin' );
+
+Route::get (
+    '/DapatkanBulanLaporanHarianAdmin',
+    [ 
+        AdminDataController::class,
+        'DapatkanBulanLaporanHarianAdmin'
+    ]
+)
+    ->name ( 'DapatkanBulanLaporanHarianAdmin' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckAdmin' );
+
+Route::get (
+    '/AmbilDataLaporanHarianAdmin',
+    [ 
+        AdminDataController::class,
+        'AmbilDataLaporanHarianAdmin'
+    ]
+)
+    ->name ( 'AmbilDataLaporanHarianAdmin' )
+    ->middleware ( 'BelumLogin' )
+    ->middleware ( 'CheckAdmin' );
 /* ====== [END] Admin Route [END] ====== */
 
 /* ====== [START] Mahasiswa Route [START] ====== */
@@ -454,7 +497,6 @@ Route::get (
     ->name ( 'dpl_sertifikat' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDPL' );
-
 
 Route::get (
     '/DownloadSertifikatDPL',

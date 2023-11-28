@@ -130,13 +130,14 @@
 
                                 @if ($jumlah_laporan_harian < 30)
                                     <div class="container-fluid p-0 m-0 pb-3">
-                                        <h2 class="text-danger fw-bolder text-center">Anda belum mengisi Laporan Harian
+                                        <h2 class="text-danger fw-bolder text-center">Mahasiswa belum mengisi Laporan Harian
                                             selama minimal 30 Hari.</h2>
                                     </div>
                                 @endif
-                                @if ($laporan_akhir == null)
+                                @if ($laporan_akhir->revisi == null)
                                     <div class="container-fluid p-0 m-0">
-                                        <h2 class="text-danger fw-bolder text-center">Anda belum melakukan unggah Laporan
+                                        <h2 class="text-danger fw-bolder text-center">Mahasiswa belum melakukan unggah
+                                            Laporan
                                             Akhir.
                                         </h2>
                                     </div>

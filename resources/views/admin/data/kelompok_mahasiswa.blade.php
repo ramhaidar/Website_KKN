@@ -47,7 +47,7 @@
             <div class="container-fluid p-0 m-0 w-100" style="background-color: transparent">
                 <div class="container-fluid py-3 pb-4 w-100" style="background-color: transparent">
                     <div class="card border-secondary mb-3 flex-grow-1 d-flex flex-column p-0">
-                        <div class="card-header fw-bolder fs-3 text-center">Mahasiswa</div>
+                        <div class="card-header fw-bolder fs-3 text-center">Kelompok Mahasiswa</div>
                         <div class="card-body text-white flex-grow-1">
 
                             <div class="container-fluid p-0 m-0 w-100 h-100">

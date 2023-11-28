@@ -94,7 +94,7 @@
                                             data-bs-target="{{ ($laporan_akhir == null ? '' : $laporan_akhir->file_path == null) ? '' : '#ModalKonfirmasiUbah' }}"
                                             type="{{ ($laporan_akhir == null ? 'submit' : $laporan_akhir->file_path == null) ? 'submit' : 'button' }}"
                                             {{-- data-bs-toggle="{{ ($laporan_akhir == null ? '' : $laporan_akhir->file_path == null) ? '' : 'modal' }}" --}}
-                                            {{ ($laporan_akhir == null ? 'disabled' : ($laporan_akhir->file_path == null ? '' : $laporan_akhir->approved)) ? 'disabled' : '' }}>
+                                            {{ ($laporan_akhir == null ? '' : ($laporan_akhir->file_path == null ? 'disabled' : $laporan_akhir->approved)) ? 'disabled' : 'disabled' }}>
                                             <i
                                                 class="bi bi-save-fill me-2"></i>{{ ($laporan_akhir == null ? 'Upload Laporan' : $laporan_akhir->file_path == null) ? 'Tambah Laporan' : 'Ubah Laporan' }}
                                         </button>
@@ -115,7 +115,15 @@
                                 <!-- Textarea for supervisor's revision -->
                                 <div class="container-fluid p-0 m-0 mb-3 mt-4">
                                     <label class="form-label" for="revisi_pembimbing">Revisi Dosen Pembimbing</label>
-                                    <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ ($laporan_akhir == null ? 'Belum ada Revisi.' : $laporan_akhir->revisi == null) ? 'Silakan tunggu Dosen Pembimbing Lapangan melakukan Approve atau memberikan Revisi...' : $laporan_akhir->revisi }}</textarea>
+                                    @if ($laporan_akhir == null)
+                                        @php $content = 'Belum ada Revisi.' @endphp
+                                    @elseif ($laporan_akhir->revisi == null)
+                                        @php $content = 'Silakan tunggu Dosen Pembimbing Lapangan melakukan Approve atau memberikan Revisi...' @endphp
+                                    @else
+                                        @php $content = $laporan_akhir->revisi @endphp
+                                    @endif
+
+                                    <textarea class="form-control" id="revisi_pembimbing" name="revisi_pembimbing" disabled readonly>{{ $content }}</textarea>
                                 </div>
 
                                 @if (isset($laporan_akhir->file_path))

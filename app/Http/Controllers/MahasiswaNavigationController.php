@@ -202,7 +202,7 @@ class MahasiswaNavigationController extends Controller
             $laporan_akhir->dpl_id       = $request->dpl_id;
 
             // update laporan_akhir_id in mahasiswa table
-            $mahasiswa                   = Mahasiswa::find ( $request->mahasiswa_id )->first ();
+            $mahasiswa                   = Mahasiswa::find ( $request->mahasiswa_id );
             $mahasiswa->laporan_akhir_id = $laporan_akhir->id;
             $mahasiswa->save ();
 
