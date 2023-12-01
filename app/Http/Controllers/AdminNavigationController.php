@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DPL;
+use App\Models\Dpl;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Mahasiswa;
@@ -18,9 +18,9 @@ class AdminNavigationController extends Controller
     public function beranda_admin ( Request $request )
     {
         $jumlah_mahasiswa = Mahasiswa::count ();
-        $jumlah_dpl       = DPL::count ();
+        $jumlah_dpl       = Dpl::count ();
         $last5_mahasiswa  = Mahasiswa::orderBy ( 'id', 'desc' )->with ( 'user' )->take ( 5 )->get ();
-        $last5_dpl        = DPL::orderBy ( 'id', 'desc' )->with ( 'user' )->take ( 5 )->get ();
+        $last5_dpl        = Dpl::orderBy ( 'id', 'desc' )->with ( 'user' )->take ( 5 )->get ();
 
         return view ( "admin.beranda", [ 
             'navActiveItem'    => 'beranda',
@@ -83,13 +83,13 @@ class AdminNavigationController extends Controller
                 $mahasiswa->save ();
                 $user->save ();
 
-                $dpl = DPL::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
+                $dpl = Dpl::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
 
                 return redirect ()->back ()->with ( 'success', 'Data Kelompok Baru Berhasil Ditambahkan!' );
             }
             else
             {
-                $dpl_kosong = DPL::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
+                $dpl_kosong = Dpl::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
 
                 return view ( "admin.data.kelompok_mahasiswa", [ 
                     'navActiveItem' => 'data_kelompok_mahasiswa',
@@ -131,14 +131,14 @@ class AdminNavigationController extends Controller
                     $mahasiswa->update ( [ 
                         'dpl_id' => $request->DPL___,
                     ] );
-                    $dpl = DPL::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
+                    $dpl = Dpl::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
                 }
                 else
                 {
                     $mahasiswa->update ( [ 
                         'dpl_id' => null,
                     ] );
-                    $dpl = DPL::where ( 'id', $request->DPL_Sebelumnya___ )->update ( [ 'mahasiswa_id' => null ] );
+                    $dpl = Dpl::where ( 'id', $request->DPL_Sebelumnya___ )->update ( [ 'mahasiswa_id' => null ] );
                 }
 
                 if ( $request->Password___ != null )
@@ -160,8 +160,8 @@ class AdminNavigationController extends Controller
             }
             else
             {
-                $dpl_kosong   = DPL::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
-                $dpl_sekarang = DPL::with ( 'user' )->where ( 'mahasiswa_id', $request->ID_Ubah )->get ()->first ();
+                $dpl_kosong   = Dpl::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
+                $dpl_sekarang = Dpl::with ( 'user' )->where ( 'mahasiswa_id', $request->ID_Ubah )->get ()->first ();
 
                 $selected_mahasiswa = Mahasiswa::with ( 'user' )->find ( $request->ID_Ubah );
 
@@ -196,7 +196,7 @@ class AdminNavigationController extends Controller
     {
         if ( ! isset( $request->mode_halaman ) )
         {
-            $jumlah_dpl = DPL::count ();
+            $jumlah_dpl = Dpl::count ();
 
             return view ( "admin.data.dpl", [ 
                 'navActiveItem' => 'data_kelompok_mahasiswa',
@@ -222,7 +222,7 @@ class AdminNavigationController extends Controller
                 $user->email    = $request->Email___;
                 $user->password = Hash::make ( $request->Password___ );
 
-                $dpl             = new DPL ();
+                $dpl             = new Dpl ();
                 $dpl->nama_dosen = $request->NamaDPL___;
                 $dpl->nip        = $request->NIP___;
                 $dpl->prodi      = $request->Prodi___;
@@ -274,7 +274,7 @@ class AdminNavigationController extends Controller
                     'KetuaKelompok_Sebelumnya___' => [ 'nullable' ],
                 ] );
 
-                $dpl  = DPL::find ( $request->id );
+                $dpl  = Dpl::find ( $request->id );
                 $user = User::find ( $dpl->user_id );
 
                 $dpl->update ( [ 
@@ -321,7 +321,7 @@ class AdminNavigationController extends Controller
                 $mahasiswa_kosong   = Mahasiswa::with ( 'user' )->where ( 'dpl_id', null )->get ();
                 $mahasiswa_sekarang = Mahasiswa::with ( 'user' )->where ( 'dpl_id', $request->ID_Ubah )->get ()->first ();
 
-                $selected_dpl = DPL::with ( 'user' )->find ( $request->ID_Ubah );
+                $selected_dpl = Dpl::with ( 'user' )->find ( $request->ID_Ubah );
 
                 return view ( "admin.data.dpl", [ 
                     'navActiveItem'      => 'data_kelompok_mahasiswa',
@@ -339,7 +339,7 @@ class AdminNavigationController extends Controller
                 'id' => [ 'required' ],
             ] );
 
-            $dpl  = DPL::find ( $request->id );
+            $dpl  = Dpl::find ( $request->id );
             $user = User::find ( $dpl->user_id );
 
             //delete data mahasiswa dan data user
@@ -355,7 +355,7 @@ class AdminNavigationController extends Controller
         if ( ! isset( $request->mode_halaman ) )
         {
             $jumlah_mahasiswa      = Mahasiswa::count ();
-            $jumlah_dpl            = DPL::count ();
+            $jumlah_dpl            = Dpl::count ();
             $jumlah_laporan_harian = LaporanHarian::count ();
             $jumlah_laporan_akhir  = LaporanAkhir::count ();
 
@@ -556,7 +556,7 @@ class AdminNavigationController extends Controller
         if ( ! isset( $request->mode_halaman ) )
         {
             $jumlah_mahasiswa  = Mahasiswa::count ();
-            $jumlah_dpl        = DPL::count ();
+            $jumlah_dpl        = Dpl::count ();
             $jumlah_sertifikat = LaporanAkhir::where ( 'approved', true )->count ();
 
             return view ( "admin.sertifikat", [ 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DPL;
+use App\Models\Dpl;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\LaporanAkhir;
@@ -15,7 +15,7 @@ class AdminDataController extends Controller
     public function DataBerandaAdmin ( Request $request )
     {
         $last5_mahasiswa = Mahasiswa::with ( 'user' )->with ( 'dpl' )->orderBy ( 'id', 'desc' )->get ()->take ( 5 )->sortBy ( 'id' )->values ();
-        $last5_dpl       = DPL::with ( 'user' )->with ( 'mahasiswa' )->orderBy ( 'id', 'desc' )->get ()->take ( 5 )->sortBy ( 'id' )->values ();
+        $last5_dpl       = Dpl::with ( 'user' )->with ( 'mahasiswa' )->orderBy ( 'id', 'desc' )->get ()->take ( 5 )->sortBy ( 'id' )->values ();
 
         return response ()->json ( [ 'last5_mahasiswa' => $last5_mahasiswa, 'last5_dpl' => $last5_dpl ] );
     }
@@ -44,13 +44,13 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'DataMahasiswa' => $DataMahasiswa, 'nextExists' => $nextExists ] );
     }
 
-    public function AmbilDataDPL ( Request $request )
+    public function AmbilDataDpl ( Request $request )
     {
         $perPage = 25;
         $page    = $request->input ( 'page', 1 );
 
         // Get the records for the current page
-        $DataDPL = DPL::skip ( ( $page - 1 ) * $perPage )
+        $DataDPL = Dpl::skip ( ( $page - 1 ) * $perPage )
             ->with ( 'user' )
             ->with ( 'mahasiswa' )
             ->take ( $perPage + 1 )
@@ -94,12 +94,12 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'DataMahasiswa' => $mahasiswa ] );
     }
 
-    public function CariDataDPL ( Request $request )
+    public function CariDataDpl ( Request $request )
     {
         $query = $request->get ( 'query' );
 
         // Perform a case-insensitive search using Eloquent ORM
-        $dpl = DPL::with ( 'user' )
+        $dpl = Dpl::with ( 'user' )
             ->with ( 'mahasiswa' )
             ->where ( 'nama_dosen', 'LIKE', "%{$query}%" )
             ->orWhereHas ( 'user', function ($q) use ($query)
@@ -134,9 +134,9 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'lastPage' => $lastPage ] );
     }
 
-    public function DapatkanHalamanTerakhirDPL ()
+    public function DapatkanHalamanTerakhirDpl ()
     {
-        $data = DPL::query (); // Replace 'Model' with your actual model
+        $data = Dpl::query (); // Replace 'Model' with your actual model
 
         $perPage = 25; // Set this to the number of items you want per page
 

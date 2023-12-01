@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\DPL;
+use App\Models\Dpl;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class DPLSeeder extends Seeder
+class DplSeeder extends Seeder
 {
     public function run ()
     {
-        $dpl = DPL::create ( [ 
+        $dpl = Dpl::create ( [ 
             'nama_dosen' => 'dpl',
             'nip'        => '2023110304054',
             'prodi'      => 'Teknik Informatika',

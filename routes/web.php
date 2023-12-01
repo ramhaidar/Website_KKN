@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\DPLDataController;
+use App\Http\Controllers\DplDataController;
 use App\Http\Controllers\AdminDataController;
-use App\Http\Controllers\DPLNavigationController;
+use App\Http\Controllers\DplNavigationController;
 use App\Http\Controllers\MahasiswaDataController;
 use App\Http\Controllers\AdminNavigationController;
 use App\Http\Controllers\MahasiswaNavigationController;
@@ -153,33 +153,33 @@ Route::post (
     ->middleware ( 'CheckAdmin' );
 
 Route::get (
-    '/AmbilDataDPL',
+    '/AmbilDataDpl',
     [ 
         AdminDataController::class,
-        'AmbilDataDPL'
+        'AmbilDataDpl'
     ]
 )
-    ->name ( 'AmbilDataDPL' )
+    ->name ( 'AmbilDataDpl' )
     ->middleware ( 'BelumLogin' );
 
 Route::get (
-    '/DapatkanHalamanTerakhirDPL',
+    '/DapatkanHalamanTerakhirDpl',
     [ 
         AdminDataController::class,
-        'DapatkanHalamanTerakhirDPL'
+        'DapatkanHalamanTerakhirDpl'
     ]
 )
-    ->name ( 'DapatkanHalamanTerakhirDPL' )
+    ->name ( 'DapatkanHalamanTerakhirDpl' )
     ->middleware ( 'BelumLogin' );
 
 Route::get (
-    '/CariDataDPL',
+    '/CariDataDpl',
     [ 
         AdminDataController::class,
-        'CariDataDPL'
+        'CariDataDpl'
     ]
 )
-    ->name ( 'CariDataDPL' )
+    ->name ( 'CariDataDpl' )
     ->middleware ( 'BelumLogin' );
 
 Route::get (
@@ -407,12 +407,12 @@ Route::get (
 
 /* ====== [END] Mahasiswa Route [END] ====== */
 
-/* ====== [START] DPL Route [START] ====== */
+/* ====== [START] Dpl Route [START] ====== */
 
 Route::get (
     '/beranda_dpl',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'beranda_dpl'
     ]
 )
@@ -423,7 +423,7 @@ Route::get (
 Route::get (
     '/dpl_akun',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_akun'
     ]
 )
@@ -434,7 +434,7 @@ Route::get (
 Route::post (
     '/dpl_akun',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_akun'
     ]
 )
@@ -446,7 +446,7 @@ Route::post (
 Route::get (
     '/dpl_laporan_harian',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_laporan_harian'
     ]
 )
@@ -457,7 +457,7 @@ Route::get (
 Route::post (
     '/dpl_laporan_harian',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_laporan_harian'
     ]
 )
@@ -468,7 +468,7 @@ Route::post (
 Route::get (
     '/dpl_laporan_akhir',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_laporan_akhir'
     ]
 )
@@ -479,7 +479,7 @@ Route::get (
 Route::post (
     '/dpl_laporan_akhir',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_laporan_akhir'
     ]
 )
@@ -490,7 +490,7 @@ Route::post (
 Route::get (
     '/dpl_sertifikat',
     [ 
-        DPLNavigationController::class,
+        DplNavigationController::class,
         'dpl_sertifikat'
     ]
 )
@@ -499,35 +499,35 @@ Route::get (
     ->middleware ( 'CheckDpl' );
 
 Route::get (
-    '/DownloadSertifikatDPL',
+    '/DownloadSertifikatDpl',
     [ 
-        DPLDataController::class,
-        'DownloadSertifikatDPL'
+        DplDataController::class,
+        'DownloadSertifikatDpl'
     ]
 )
-    ->name ( 'DownloadSertifikatDPL' )
+    ->name ( 'DownloadSertifikatDpl' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDpl' );
 
 Route::get (
-    '/DapatkanBulanLaporanHarianDPL',
+    '/DapatkanBulanLaporanHarianDpl',
     [ 
-        DPLDataController::class,
-        'DapatkanBulanLaporanHarianDPL'
+        DplDataController::class,
+        'DapatkanBulanLaporanHarianDpl'
     ]
 )
-    ->name ( 'DapatkanBulanLaporanHarianDPL' )
+    ->name ( 'DapatkanBulanLaporanHarianDpl' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDpl' );
 
 Route::get (
-    '/AmbilDataLaporanHarianDPL',
+    '/AmbilDataLaporanHarianDpl',
     [ 
-        DPLDataController::class,
-        'AmbilDataLaporanHarianDPL'
+        DplDataController::class,
+        'AmbilDataLaporanHarianDpl'
     ]
 )
-    ->name ( 'AmbilDataLaporanHarianDPL' )
+    ->name ( 'AmbilDataLaporanHarianDpl' )
     ->middleware ( 'BelumLogin' )
     ->middleware ( 'CheckDpl' );
-/* ====== [END] DPL Route [END] ====== */
+/* ====== [END] Dpl Route [END] ====== */

@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\LaporanHarian;
 use Illuminate\Support\Facades\Auth;
 
-class DPLDataController extends Controller
+class DplDataController extends Controller
 {
-    public function AmbilDataLaporanHarianDPL ( Request $request )
+    public function AmbilDataLaporanHarianDpl ( Request $request )
     {
         $user    = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $request->id );
         $laporan = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->where ( 'tanggal', $request->tanggal )->get ();
@@ -18,7 +18,7 @@ class DPLDataController extends Controller
         return response ()->json ( $laporan );
     }
 
-    public function DapatkanBulanLaporanHarianDPL ( Request $request )
+    public function DapatkanBulanLaporanHarianDpl ( Request $request )
     {
         $date        = new \DateTime ( $request->date );
         $month       = $date->format ( 'm' );
@@ -34,7 +34,7 @@ class DPLDataController extends Controller
         ] );
     }
 
-    public function DownloadSertifikatDPL ()
+    public function DownloadSertifikatDpl ()
     {
         $id            = Auth::user ()->id;
         $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
