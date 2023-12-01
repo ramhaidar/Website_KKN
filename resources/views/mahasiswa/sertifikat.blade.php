@@ -3,8 +3,8 @@
 @extends('mahasiswa._mahasiswa')
 
 @if ($sudah_punya_dpl == true)
-    @if (isset($laporan_akhir) and $laporan_akhir->approved == true)
-        {{-- @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30 and $laporan_akhir->approved == true) --}}
+    {{-- @if (isset($laporan_akhir) and $laporan_akhir->approved == true) --}}
+    @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30 and $laporan_akhir->approved == true)
         @section('dashboard_content')
             <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
                 style="background-color: transparent">
@@ -134,7 +134,7 @@
                                             selama minimal 30 Hari.</h2>
                                     </div>
                                 @endif
-                                @if ($laporan_akhir->revisi == null)
+                                @if (!empty($laporan_akhir) && $laporan_akhir->revisi == null)
                                     <div class="container-fluid p-0 m-0">
                                         <h2 class="text-danger fw-bolder text-center">Anda belum melakukan unggah Laporan
                                             Akhir.

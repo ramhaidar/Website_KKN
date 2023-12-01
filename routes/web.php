@@ -418,7 +418,7 @@ Route::get (
 )
     ->name ( 'beranda_dpl' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/dpl_akun',
@@ -429,7 +429,7 @@ Route::get (
 )
     ->name ( 'dpl_akun' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::post (
     '/dpl_akun',
@@ -440,7 +440,7 @@ Route::post (
 )
     ->name ( 'dpl_akun' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 
 Route::get (
@@ -452,7 +452,7 @@ Route::get (
 )
     ->name ( 'dpl_laporan_harian' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::post (
     '/dpl_laporan_harian',
@@ -463,7 +463,7 @@ Route::post (
 )
     ->name ( 'dpl_laporan_harian' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/dpl_laporan_akhir',
@@ -474,7 +474,7 @@ Route::get (
 )
     ->name ( 'dpl_laporan_akhir' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::post (
     '/dpl_laporan_akhir',
@@ -485,7 +485,7 @@ Route::post (
 )
     ->name ( 'dpl_laporan_akhir' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/dpl_sertifikat',
@@ -496,7 +496,7 @@ Route::get (
 )
     ->name ( 'dpl_sertifikat' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/DownloadSertifikatDPL',
@@ -507,7 +507,7 @@ Route::get (
 )
     ->name ( 'DownloadSertifikatDPL' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/DapatkanBulanLaporanHarianDPL',
@@ -518,7 +518,7 @@ Route::get (
 )
     ->name ( 'DapatkanBulanLaporanHarianDPL' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 
 Route::get (
     '/AmbilDataLaporanHarianDPL',
@@ -529,5 +529,5 @@ Route::get (
 )
     ->name ( 'AmbilDataLaporanHarianDPL' )
     ->middleware ( 'BelumLogin' )
-    ->middleware ( 'CheckDPL' );
+    ->middleware ( 'CheckDpl' );
 /* ====== [END] DPL Route [END] ====== */

@@ -72,6 +72,6 @@ class Kernel extends HttpKernel
         'BelumLogin'       => \App\Http\Middleware\BelumLogin::class,
         'CheckAdmin'       => \App\Http\Middleware\CheckAdmin::class,
         'CheckMahasiswa'   => \App\Http\Middleware\CheckMahasiswa::class,
-        'CheckDPL'         => \App\Http\Middleware\CheckDPL::class,
+        'CheckDpl'         => \App\Http\Middleware\CheckDpl::class,
     ];
 }
