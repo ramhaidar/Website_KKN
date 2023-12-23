@@ -29,7 +29,7 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
                             data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
-                        <form method="POST" action="{{ route('admin_data_kelompok_mahasiswa') }}">
+                        <form method="POST" action="{{ route('admin.kelompok_mahasiswa.destroy', 'xx') }}">
                             @csrf
                             <input name="mode_halaman" type="hidden" value="hapus">
                             <input id="delete-id" name="id" type="hidden">
@@ -204,6 +204,7 @@
     @section('Body_JS')
         <script>
             var currentPage = 1; // Initialize current page to 1
+            var baseUrl = "{{ route('admin.kelompok_mahasiswa.index') }}";
 
             // Update the page indicators
             function updatePageIndicators(page) {
@@ -221,7 +222,7 @@
         <script>
             function loadData(page) {
                 $.ajax({
-                    url: '/AmbilDataMahasiswa?page=' + page,
+                    url: "{{ route('admin.kelompok_mahasiswa.getData') }}?page=" + page,
                     type: 'get',
                     dataType: 'json',
                     beforeSend: function() {
@@ -248,14 +249,17 @@
                         }
 
                         $.each(data.DataMahasiswa, function(index, item) {
-                            var anggota_kelompok = item.anggota_kelompok.replace(/\n/g, '<br>');
+                            var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok.replace(/\n/g, '<br>') : "[ Belum Ada ]";
                             var nama_dosen = item.dpl ? item.dpl.nama_dosen : "[ Belum Ada ]";
-                            var harianButton = item.laporan_harians.length > 0 ?
-                                '<button class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>' :
-                                '<button class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit" disabled><i class="bi bi-file-earmark-plus me-2"></i>Harian</button>';
+                            var harianButton = '\
+                            <a href="' + baseUrl + "/" + item.id + '/laporan_harian"\
+                                class="btn btn-primary action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle">\
+                                <i class="bi bi-file-earmark-plus me-2"></i>Harian\
+                            </a>';
+                            var urlAkhir = baseUrl + "/" + item.id + "/laporan_akhir";
                             var akhirButton = item.laporan_akhir ?
-                                '<button class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>' :
-                                '<button class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit" disabled><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</button>';
+                                '<a href="'+urlAkhir+'" class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit"><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</a>' :
+                                '<a class="btn btn-success action_button my-1 fw-bold shadow-sm border border-3 border-light-subtle" type="submit" disabled><i class="bi bi-file-earmark-check-fill me-2"></i>Akhir</a>';
                             $('#IsiLewatJQuery').append('<tr>' +
                                 '<th scope="row">' + item.id + '</th>' +
                                 '<td>' + item.nama_ketua + '</td>' +
@@ -265,20 +269,7 @@
                                 '<td>' + item.prodi + '</td>' +
                                 '<td>' + item.fakultas + '</td>' +
                                 '<td>' + nama_dosen + '</td>' +
-                                '<td>' +
-                                '<form method="POST" action="">' +
-                                '@csrf' +
-                                '<input name="ID_Mahasiswa" type="hidden" value="' + item.id + '">' +
-                                '<input name="mode_halaman" type="hidden" value="laporan_harian">' +
-                                harianButton +
-                                '</form>' +
-                                '<form method="POST" action="">' +
-                                '@csrf' +
-                                '<input name="ID_Mahasiswa" type="hidden" value="' + item.id + '">' +
-                                '<input name="mode_halaman" type="hidden" value="laporan_akhir">' +
-                                akhirButton +
-                                '</form>' +
-                                '</td>' +
+                                '<td>' + harianButton + akhirButton + '</td>' +
                                 '</tr>'
                             );
                         });
@@ -342,7 +333,7 @@
 
                 $('#LastButtonUpper, #LastButtonLower').click(function() {
                     $.ajax({
-                        url: '/DapatkanHalamanTerakhirMahasiswa', // The endpoint that returns the last page number
+                        url: "{{ route('admin.kelompok_mahasiswa.lastData') }}", // The endpoint that returns the last page number
                         type: 'get',
                         success: function(response) {
                             currentPage = response
@@ -389,7 +380,7 @@
                             $('#PageIndicatorLower').text('Page: -');
 
                             $.ajax({
-                                url: '/CariDataMahasiswa?query=' + searchQuery,
+                                url: "{{ route('admin.kelompok_mahasiswa.findData') }}" + '?query=' + searchQuery,
                                 type: 'get',
                                 dataType: 'json',
                                 beforeSend: function() {
@@ -402,8 +393,8 @@
                                     $('#IsiLewatJQuery').empty();
 
                                     $.each(data.DataMahasiswa, function(index, item) {
-                                        var anggota_kelompok = item.anggota_kelompok
-                                            .replace(/\n/g, '<br>');
+                                        var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok
+                                            .replace(/\n/g, '<br>') : "[ Belum Ada ]";
                                         var nama_dosen = item.dpl ? item.dpl.nama_dosen :
                                             "[ Belum Ada ]";
                                         $('#IsiLewatJQuery').append('<tr>' +
@@ -621,7 +612,7 @@
 
                 // AJAX request to fetch data
                 $.ajax({
-                    url: "/AmbilDataLaporanHarianAdmin/", // Change this URL to your API endpoint
+                    url: "{{ route('AmbilDataLaporanHarianAdmin') }}", // Change this URL to your API endpoint
                     method: "GET",
                     data: {
                         id: user_id,
@@ -685,7 +676,7 @@
             $('#hari').val(getDayName(selectedDate.getDay()));
 
             function renderCalendar() {
-                $.get('/DapatkanBulanLaporanHarianAdmin', {
+                $.get("{{ route('DapatkanBulanLaporanHarianAdmin') }}", {
                     date: date.toISOString()
                 }, function(data) {
                     $('#TombolHapus').prop('disabled', true);

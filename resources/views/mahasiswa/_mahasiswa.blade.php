@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layouts.app')
 
 @section('title')
     @hasSection('subtitle')
@@ -8,27 +8,6 @@
 @endsection
 
 @section('content')
-    <div class="modal fade" id="ModalKonfirmasiSignOut" aria-labelledby="ModalKonfirmasiSignOutLabel" aria-hidden="true"
-        tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalKonfirmasiSignOutLabel">Sign Out</h5>
-                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Anda yakin ingin Sign Out?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                            class="bi bi-x-lg me-2"></i>Batal</button>
-                    <a class="btn btn-danger" href="{{ route('signout') }}"><i class="bi bi-door-closed me-2"></i>Sign
-                        Out</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main class="h-100 w-100 p-0 m-0" style="min-height: 100vh; background-color: transparent">
 
         <div class="container" style="background-color: transparent; min-height: 100vh; min-width: 100vw">
@@ -39,15 +18,15 @@
                         style="background-color: transparent; min-height: 100vh">
                         <a class="d-flex w-100 align-items-center align-content-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
                             href="{{ url()->current() }}">
-                            <i class="bi bi-gear-wide-connected pe-3" style="font-size: 30px;"></i>
-                            <span class="py-0 fw-bold text-uppercase" style="font-size: 20px">Dashboard<br>Mahasiswa</span>
+                            <img class="mb-3 pt-3" src="{{ asset('favicon.png') }}" alt="" width="auto" height="80px">
+                            <span class="py-0 fw-bold text-uppercase" style="font-size: 18px">Dashboard<br>Mahasiswa</span>
                         </a>
                         <hr>
                         <ul class="nav nav-pills flex-column mb-0 mt-0 mx-2">
 
                             <li class="nav-item py-1">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'beranda' ? 'active' : '' }}"
-                                    href="{{ route('beranda_mahasiswa') }}">
+                                    href="{{ route('mahasiswa.beranda') }}">
                                     <i class="bi bi-house-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Beranda</span>
@@ -64,13 +43,13 @@
                                 </a>
                                 <ul class="dropdown-menu w-100">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('mahasiswa_laporan_harian') }}">
+                                        <a class="dropdown-item" href="{{ route('mahasiswa.laporan_harian.index') }}">
                                             <i class="bi bi-people-fill me-2"></i>
                                             Harian
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('mahasiswa_laporan_akhir') }}">
+                                        <a class="dropdown-item" href="{{ route('mahasiswa.laporan_akhir.index') }}">
                                             <i class="bi bi-person-lines-fill me-2"></i>
                                             Akhir
                                         </a>
@@ -80,7 +59,7 @@
 
                             <li class="nav-item py-1">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'sertifikat' ? 'active' : '' }}"
-                                    href="{{ route('mahasiswa_sertifikat') }}">
+                                    href="{{ route('mahasiswa.sertifikat.index') }}">
                                     <i class="bi bi-award-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Sertifikat</span>
@@ -92,7 +71,7 @@
                         <ul class="nav nav-pills align-items-start flex-column mt-0 pb-3 mx-2">
                             <li class="nav-item py-1 w-100">
                                 <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'akun' ? 'active' : '' }}"
-                                    href="{{ route('mahasiswa_akun') }}">
+                                    href="{{ route('mahasiswa.account.index') }}">
                                     <i class="bi bi-person-fill me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
                                     <span class="fw-semibold" style="color: white">Akun</span>
@@ -162,4 +141,34 @@
         </div>
 
     </main>
+@endsection
+
+@section('Modal')
+    <div class="modal fade" id="ModalKonfirmasiSignOut" aria-labelledby="ModalKonfirmasiSignOutLabel" aria-hidden="true"
+    tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalKonfirmasiSignOutLabel">Sign Out</h5>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Anda yakin ingin Sign Out?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
+                        data-bs-dismiss="modal" type="button">
+                        <i class="bi bi-x-lg me-2"></i>Batal
+                    </button>
+                    <a class="btn btn-danger shadow-sm border border-3 border-light-subtle"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="bi bi-door-closed me-2"></i>Sign Out
+                    </a>
+                </div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

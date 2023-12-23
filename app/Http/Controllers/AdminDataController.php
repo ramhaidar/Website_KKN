@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dpl;
+use App\Models\DPL;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use App\Models\LaporanAkhir;
@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminDataController extends Controller
 {
-    public function DataBerandaAdmin ( Request $request )
+    public function DataBerandaAdmin (Request $request)
     {
-        $last5_mahasiswa = Mahasiswa::with ( 'user' )->with ( 'dpl' )->orderBy ( 'id', 'desc' )->get ()->take ( 5 )->sortBy ( 'id' )->values ();
-        $last5_dpl       = Dpl::with ( 'user' )->with ( 'mahasiswa' )->orderBy ( 'id', 'desc' )->get ()->take ( 5 )->sortBy ( 'id' )->values ();
+        $last5_mahasiswa = Mahasiswa::with('user')->with('dpl')->latest()->get()->take(5)->values();
+        $last5_dpl = DPL::with('user')->with('mahasiswa')->latest()->get()->take(5)->values();
 
         return response ()->json ( [ 'last5_mahasiswa' => $last5_mahasiswa, 'last5_dpl' => $last5_dpl ] );
     }
@@ -27,12 +27,10 @@ class AdminDataController extends Controller
 
         // Get the records for the current page
         $DataMahasiswa = Mahasiswa::skip ( ( $page - 1 ) * $perPage )
-            ->with ( 'user' )
-            ->with ( 'dpl' )
-            ->with ( 'laporan_harians' )
-            ->with ( 'laporan_akhir' )
+            ->with (['user', 'dpl', 'laporan_harians', 'laporan_akhir'])
             ->take ( $perPage + 1 ) // Fetch one extra record to check if there are more records to fetch
-            ->get ();
+            ->latest()
+            ->get();
 
         $nextExists = false;
         if ( $DataMahasiswa->count () > $perPage )
@@ -44,13 +42,13 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'DataMahasiswa' => $DataMahasiswa, 'nextExists' => $nextExists ] );
     }
 
-    public function AmbilDataDpl ( Request $request )
+    public function AmbilDataDPL ( Request $request )
     {
         $perPage = 25;
         $page    = $request->input ( 'page', 1 );
 
         // Get the records for the current page
-        $DataDPL = Dpl::skip ( ( $page - 1 ) * $perPage )
+        $DataDPL = DPL::skip ( ( $page - 1 ) * $perPage )
             ->with ( 'user' )
             ->with ( 'mahasiswa' )
             ->take ( $perPage + 1 )
@@ -94,12 +92,12 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'DataMahasiswa' => $mahasiswa ] );
     }
 
-    public function CariDataDpl ( Request $request )
+    public function CariDataDPL ( Request $request )
     {
         $query = $request->get ( 'query' );
 
         // Perform a case-insensitive search using Eloquent ORM
-        $dpl = Dpl::with ( 'user' )
+        $dpl = DPL::with ( 'user' )
             ->with ( 'mahasiswa' )
             ->where ( 'nama_dosen', 'LIKE', "%{$query}%" )
             ->orWhereHas ( 'user', function ($q) use ($query)
@@ -134,9 +132,9 @@ class AdminDataController extends Controller
         return response ()->json ( [ 'lastPage' => $lastPage ] );
     }
 
-    public function DapatkanHalamanTerakhirDpl ()
+    public function DapatkanHalamanTerakhirDPL ()
     {
-        $data = Dpl::query (); // Replace 'Model' with your actual model
+        $data = DPL::query (); // Replace 'Model' with your actual model
 
         $perPage = 25; // Set this to the number of items you want per page
 
@@ -163,7 +161,7 @@ class AdminDataController extends Controller
         $daysInMonth = cal_days_in_month ( CAL_GREGORIAN, $month, $year );
         $firstDay    = date ( 'N', strtotime ( "{$year}-{$month}-01" ) );
 
-        return response ()->json ( [ 
+        return response ()->json ( [
             'month'       => $month,
             'year'        => $year,
             'daysInMonth' => $daysInMonth,
@@ -184,7 +182,7 @@ class AdminDataController extends Controller
         $imagePath = public_path ( 'favicon.ico' );
         $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
         // dd ( $test );
-        // return view ( "mahasiswa.sertifikat", [ 
+        // return view ( "mahasiswa.sertifikat", [
         //     'navActiveItem'         => 'sertifikat',
 
         //     'user'                  => $user,
@@ -192,7 +190,7 @@ class AdminDataController extends Controller
         //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
         // ] );
 
-        return view ( "admin.download_sertifikat", [ 
+        return view ( "admin.download_sertifikat", [
             'user'                  => $user,
             'laporan_akhir'         => $laporan_akhir,
             'jumlah_laporan_harian' => $jumlah_laporan_harian,
@@ -200,7 +198,7 @@ class AdminDataController extends Controller
         ] );
 
         // $mpdf = new \Mpdf\Mpdf ();
-        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [ 
+        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [
         //     'user'                  => $user,
         //     'laporan_akhir'         => $laporan_akhir,
         //     'jumlah_laporan_harian' => $jumlah_laporan_harian,

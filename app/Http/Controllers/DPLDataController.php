@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\LaporanHarian;
 use Illuminate\Support\Facades\Auth;
 
-class DplDataController extends Controller
+class DPLDataController extends Controller
 {
-    public function AmbilDataLaporanHarianDpl ( Request $request )
+    public function AmbilDataLaporanHarianDPL ( Request $request )
     {
         $user    = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $request->id );
         $laporan = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->where ( 'tanggal', $request->tanggal )->get ();
@@ -18,7 +18,7 @@ class DplDataController extends Controller
         return response ()->json ( $laporan );
     }
 
-    public function DapatkanBulanLaporanHarianDpl ( Request $request )
+    public function DapatkanBulanLaporanHarianDPL ( Request $request )
     {
         $date        = new \DateTime ( $request->date );
         $month       = $date->format ( 'm' );
@@ -26,7 +26,7 @@ class DplDataController extends Controller
         $daysInMonth = cal_days_in_month ( CAL_GREGORIAN, $month, $year );
         $firstDay    = date ( 'N', strtotime ( "{$year}-{$month}-01" ) );
 
-        return response ()->json ( [ 
+        return response ()->json ( [
             'month'       => $month,
             'year'        => $year,
             'daysInMonth' => $daysInMonth,
@@ -34,7 +34,7 @@ class DplDataController extends Controller
         ] );
     }
 
-    public function DownloadSertifikatDpl ()
+    public function DownloadSertifikatDPL ()
     {
         $id            = Auth::user ()->id;
         $user          = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
@@ -45,7 +45,7 @@ class DplDataController extends Controller
         $imagePath = public_path ( 'favicon.ico' );
         $test      = "data:image/png;base64," . base64_encode ( file_get_contents ( $imagePath ) );
         // dd ( $test );
-        // return view ( "mahasiswa.sertifikat", [ 
+        // return view ( "mahasiswa.sertifikat", [
         //     'navActiveItem'         => 'sertifikat',
 
         //     'user'                  => $user,
@@ -53,20 +53,26 @@ class DplDataController extends Controller
         //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
         // ] );
 
-        return view ( "dpl.download_sertifikat", [ 
+        return view ( "dpl.download_sertifikat", [
             'user'                  => $user,
             'laporan_akhir'         => $laporan_akhir,
             'jumlah_laporan_harian' => $jumlah_laporan_harian,
             'imagePath'             => $test,
         ] );
+    }
 
-        // $mpdf = new \Mpdf\Mpdf ();
-        // $mpdf->WriteHTML ( view ( "mahasiswa.download_sertifikat", [ 
-        //     'user'                  => $user,
-        //     'laporan_akhir'         => $laporan_akhir,
-        //     'jumlah_laporan_harian' => $jumlah_laporan_harian,
-        //     'imagePath'             => $test,
-        // ] ) );
-        // $mpdf->Output ();
+    public function AmbilDataBimbinganHarian(Request $request)
+    {
+        $perPage = 25;
+        $page    = $request->input ( 'page', 1 );
+
+        $bimbingan = LaporanHarian::with(['mahasiswa', 'dpl'])
+            ->where('dpl_id', Auth::user()->dpl_id)
+            ->skip(($page - 1) * $perPage)
+            ->take( $perPage + 1 )
+            ->latest()
+            ->get();
+
+        return response()->json(compact('bimbingan'));
     }
 }

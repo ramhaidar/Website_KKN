@@ -17,7 +17,7 @@ class MahasiswaNavigationController extends Controller
     {
         $id   = Auth::user ()->id;
         $user = User::with ( 'mahasiswa' )->with ( 'dpl' )->find ( $id );
-        return view ( "mahasiswa.beranda", [ 
+        return view ( "mahasiswa.beranda", [
             'navActiveItem' => 'beranda',
 
             'user'          => $user,
@@ -38,7 +38,7 @@ class MahasiswaNavigationController extends Controller
 
         if ( ! isset( $request->mode_halaman ) )
         {
-            return view ( "mahasiswa.laporan.harian", [ 
+            return view ( "mahasiswa.laporan.harian", [
                 'navActiveItem'   => 'laporan_harian',
 
                 'user'            => $user,
@@ -48,7 +48,7 @@ class MahasiswaNavigationController extends Controller
         elseif ( $request->mode_halaman == 'tambah' )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
                 'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
                 'tanggal'        => [ 'required', 'date_format:Y-m-d' ],
@@ -56,8 +56,8 @@ class MahasiswaNavigationController extends Controller
                 'tujuan'         => [ 'required', 'string' ],
                 'sasaran'        => [ 'required', 'string' ],
                 'hambatan'       => [ 'required', 'string' ],
-                'solusi'         => [ 'required', 'string' ],
-                'dokumentasi'    => [ 'required', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048' ],
+                'tempat'         => [ 'required', 'string' ],
+                'dokumentasi'    => [ 'sometimes', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048' ],
             ] );
 
             // Handle file upload
@@ -71,13 +71,14 @@ class MahasiswaNavigationController extends Controller
             // Create or update a Laporan instance
             $laporan                   = new LaporanHarian ();
             $laporan->mahasiswa_id     = $request->mahasiswa_id;
+            $laporan->dpl_id           = $user->mahasiswa->dpl_id;
             $laporan->hari             = $request->hari;
             $laporan->tanggal          = $request->tanggal;
             $laporan->jenis_kegiatan   = $request->jenis_kegiatan;
             $laporan->tujuan           = $request->tujuan;
             $laporan->sasaran          = $request->sasaran;
             $laporan->hambatan         = $request->hambatan;
-            $laporan->solusi           = $request->solusi;
+            $laporan->tempat           = $request->tempat;
             $laporan->dokumentasi_path = $dokumentasiPath;
             $laporan->save ();
 
@@ -90,7 +91,7 @@ class MahasiswaNavigationController extends Controller
         elseif ( $request->mode_halaman == 'ubah' )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'id'             => [ 'required', 'exists:laporan_harians,id' ],
                 'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
                 'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
@@ -100,6 +101,7 @@ class MahasiswaNavigationController extends Controller
                 'sasaran'        => [ 'required', 'string' ],
                 'hambatan'       => [ 'required', 'string' ],
                 'solusi'         => [ 'required', 'string' ],
+                'tempat'         => [ 'required', 'string' ],
                 'dokumentasi'    => [ 'nullable', 'file', 'image', 'mimes:jpeg,png,jpg', 'max:2048000' ],
             ] );
 
@@ -133,6 +135,7 @@ class MahasiswaNavigationController extends Controller
             $laporan->sasaran        = $request->sasaran;
             $laporan->hambatan       = $request->hambatan;
             $laporan->solusi         = $request->solusi;
+            $laporan->tempat         = $request->tempat;
             $laporan->save ();
 
             // Redirect or respond as needed
@@ -174,7 +177,7 @@ class MahasiswaNavigationController extends Controller
             // Check if a laporan_akhir exists for the currently logged in user
             $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
 
-            return view ( "mahasiswa.laporan.akhir", [ 
+            return view ( "mahasiswa.laporan.akhir", [
                 'navActiveItem'   => 'laporan_akhir',
 
                 'user'            => $user,
@@ -185,7 +188,7 @@ class MahasiswaNavigationController extends Controller
         elseif ( $request->mode_halaman == 'tambah' )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
                 'laporan_akhir' => [ 'required', 'file', 'mimes:pdf', 'max:10240' ],
             ] );
@@ -194,7 +197,7 @@ class MahasiswaNavigationController extends Controller
             // $laporan_akhir               = new LaporanAkhir ();
 
             // search or new
-            $laporan_akhir               = LaporanAkhir::firstOrCreate ( [ 
+            $laporan_akhir               = LaporanAkhir::firstOrCreate ( [
                 'mahasiswa_id' => $request->mahasiswa_id,
                 'dpl_id'       => $request->dpl_id,
             ] );
@@ -228,7 +231,7 @@ class MahasiswaNavigationController extends Controller
         elseif ( $request->mode_halaman == 'ubah' )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'mahasiswa_id'  => [ 'required', 'exists:mahasiswas,id' ],
                 'laporan_akhir' => [ 'file', 'mimes:pdf', 'max:10240' ],
             ] );
@@ -264,7 +267,7 @@ class MahasiswaNavigationController extends Controller
         elseif ( $request->mode_halaman == 'hapus' )
         {
             // Validate the form Data
-            $request->validate ( [ 
+            $request->validate ( [
                 'mahasiswa_id' => [ 'required', 'exists:mahasiswas,id' ],
             ] );
 
@@ -302,7 +305,7 @@ class MahasiswaNavigationController extends Controller
 
         $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
 
-        return view ( "mahasiswa.sertifikat", [ 
+        return view ( "mahasiswa.sertifikat", [
             'navActiveItem'         => 'sertifikat',
 
             'user'                  => $user,
@@ -319,7 +322,7 @@ class MahasiswaNavigationController extends Controller
             $user = User::find ( Auth::user ()->id );
             $user->load ( 'mahasiswa', 'dpl' );
 
-            return view ( "mahasiswa.akun", [ 
+            return view ( "mahasiswa.akun", [
                 'navActiveItem' => 'akun',
 
                 'user'          => $user,
@@ -327,7 +330,7 @@ class MahasiswaNavigationController extends Controller
         }
         else if ( $request->mode_halaman == 'ubah' )
         {
-            $request->validate ( [ 
+            $request->validate ( [
                 'id'                        => [ 'required' ],
                 'NamaKetuaKelompok___'      => [ 'required' ],
                 'Email___'                  => [ 'required', 'email' ],
@@ -343,11 +346,11 @@ class MahasiswaNavigationController extends Controller
             $user      = User::find ( $request->id );
             $mahasiswa = Mahasiswa::find ( $user->mahasiswa_id );
 
-            $user->update ( [ 
+            $user->update ( [
                 'email' => $request->Email___,
             ] );
 
-            $mahasiswa->update ( [ 
+            $mahasiswa->update ( [
                 'nama_ketua'       => $request->NamaKetuaKelompok___,
                 'nim'              => $request->NIM___,
                 'anggota_kelompok' => $request->AnggotaKelompok___,
@@ -363,7 +366,7 @@ class MahasiswaNavigationController extends Controller
                 }
                 else
                 {
-                    $user->update ( [ 
+                    $user->update ( [
                         'password' => Hash::make ( $request->PasswordBaru___ ),
                     ] );
                 }

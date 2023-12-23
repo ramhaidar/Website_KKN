@@ -1,6 +1,6 @@
-@section('subtitle', 'Beranda')
-
 @extends('admin._admin')
+
+@section('subtitle', 'Beranda')
 
 @section('dashboard_content')
     <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
@@ -67,7 +67,7 @@
     <script>
         function loadData() {
             $.ajax({
-                url: '/DataBerandaAdmin',
+                url: "{{ route('DataBerandaAdmin') }}",
                 type: 'get',
                 dataType: 'json',
                 beforeSend: function() {
@@ -79,7 +79,7 @@
                     // This is where you handle the data returned from the server
                     $('#IsiLewatJQuery_01').empty();
                     $.each(data.last5_mahasiswa, function(index, item) {
-                        var anggota_kelompok = item.anggota_kelompok.replace(/\n/g, '<br>');
+                        var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok.replace(/\n/g, '<br>') : "[ Belum Ada ]";
                         var nama_dosen = item.dpl ? item.dpl.nama_dosen : "[ Belum Ada ]";
                         $('#IsiLewatJQuery_01').append('<tr>' +
                             '<th scope="row">' + item.id + '</th>' +

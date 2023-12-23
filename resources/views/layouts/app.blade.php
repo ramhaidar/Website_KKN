@@ -5,7 +5,7 @@
     <meta name="viewport" charset="utf-8"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') | Website KKN</title>
+    <title>@yield('title') | {{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -53,6 +53,8 @@
 <body class="container-fluid w-100 h-100 p-0 m-0">
     @yield('content')
 
+    @yield('Modal')
+
     <!-- Bootstrap JS 5.3.2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
@@ -61,6 +63,12 @@
 
     <!-- Auto Height Textarea JS -->
     <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('#Loader').style.display = 'none';
+            }, 1000);
+        });
+
         $(document).ready(function() {
             $('textarea').on('input', function() {
                 this.style.height = 'auto';

@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use Faker\Factory;
-use App\Models\Dpl;
+use App\Models\DPL;
 use App\Models\User;
 use App\Models\Mahasiswa;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
-class MahasiswaAndDplSeeder extends Seeder
+class MahasiswaAndDPLSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -37,7 +37,7 @@ class MahasiswaAndDplSeeder extends Seeder
             'password' => Hash::make ( '123456' ),
         ] );
 
-        $dpl = Dpl::create ( [ 
+        $dpl = DPL::create ( [ 
             'nama_dosen' => 'dpl',
             'nip'        => '2023110304054',
             'prodi'      => 'Teknik Informatika',
@@ -76,7 +76,7 @@ class MahasiswaAndDplSeeder extends Seeder
             ] );
 
             // Create a new Dpl
-            $dpl = Dpl::create ( [ 
+            $dpl = DPL::create ( [ 
                 'nama_dosen' => $nama_dpl,
                 'nip'        => $tahun . $bulan . $kodeCabang[ array_rand ( $kodeCabang ) ] . $kodeJabatan[ array_rand ( $kodeJabatan ) ] . $noUrut,
                 'prodi'      => $faker->randomElement ( [ 'Teknik Informatika', 'Sistem Informasi', 'Teknik Komputer' ] ),
@@ -151,7 +151,7 @@ class MahasiswaAndDplSeeder extends Seeder
             ] );
 
             // Create a new Dpl
-            $dpl = Dpl::create ( [ 
+            $dpl = DPL::create ( [ 
                 'nama_dosen' => $nama_dpl,
                 'nip'        => $tahun . $bulan . $kodeCabang[ array_rand ( $kodeCabang ) ] . $kodeJabatan[ array_rand ( $kodeJabatan ) ] . $noUrut,
                 'prodi'      => $faker->randomElement ( [ 'Teknik Informatika', 'Sistem Informasi', 'Teknik Komputer' ] ),

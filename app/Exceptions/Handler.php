@@ -13,7 +13,7 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
-    protected $dontFlash = [ 
+    protected $dontFlash = [
         'current_password',
         'password',
         'password_confirmation',
@@ -22,16 +22,16 @@ class Handler extends ExceptionHandler
     /**
      * Register the exception handling callbacks for the application.
      */
-    public function register () : void
+    public function register() : void
     {
-        $this->reportable ( function (Throwable $e)
+        $this->reportable(function (Throwable $e)
         {
             //
-        } );
+        });
 
-        $this->renderable ( function (NotFoundHttpException $e, $request)
+        $this->renderable(function (NotFoundHttpException $e, $request)
         {
-            return redirect ()->route ( 'signin' );
-        } );
+            return redirect()->route( 'login' );
+        });
     }
 }

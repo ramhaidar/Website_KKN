@@ -1,55 +1,9 @@
-@section('subtitle', 'Laporan Akhir')
-
 @extends('mahasiswa._mahasiswa')
+
+@section('subtitle', 'Laporan Akhir')
 
 @if ($sudah_punya_dpl == true)
     @section('dashboard_content')
-        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus Data Laporan Akhir Ini?
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
-                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
-
-                        <button class="btn btn-danger" type="button" onclick="submitHapusForm()"><i
-                                class="bi bi-trash3-fill me-2"></i>Hapus</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="ModalKonfirmasiUbah" aria-labelledby="ModalKonfirmasiUbah" aria-hidden="true"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalKonfirmasiUbah">Ubah Data</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Apakah Anda yakin ingin mengubah Data Laporan Akhir Ini?
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
-                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
-
-                        <button class="btn btn-success" type="button" onclick="submitUbahForm()"><i
-                                class="bi bi-pencil-square me-2"></i>Ubah</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
             style="background-color: transparent">
 
@@ -59,10 +13,19 @@
                         <div class="card-header fw-bolder fs-3 text-center">Laporan Akhir</div>
                         <div class="card-body text-white flex-grow-1">
                             <div class="container-fluid m-0 p-0 w-100 h-100">
-
+                                @php
+                                    if ($laporan_akhir) {
+                                        $route = route('mahasiswa.laporan_akhir.update', $laporan_akhir);
+                                    } else {
+                                        $route = route('mahasiswa.laporan_akhir.store');
+                                    }
+                                @endphp
                                 <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan"
-                                    enctype="multipart/form-data" method="POST" action="">
+                                    enctype="multipart/form-data" method="POST" action="{{ $route }}">
                                     @csrf
+                                    @if ($laporan_akhir)
+                                        @method('PUT')
+                                    @endif
 
                                     <input id="mode_halaman" name="mode_halaman" type="hidden"
                                         value="{{ $laporan_akhir == null ? 'tambah' : 'ubah' }}">
@@ -139,6 +102,59 @@
                 </div>
             </div>
 
+        </div>
+    @endsection
+
+    @section('Modal')
+        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus Data Laporan Akhir Ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
+                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
+
+                        <button class="btn btn-danger" type="button"
+                            onclick="event.preventDefault(); document.getElementById('laporan-akhir-form').submit();">
+                            <i class="bi bi-trash3-fill me-2"></i>Hapus</button>
+                    </div>
+                    <form id="laporan-akhir-form" action="{{ $route }}" method="POST" class="d-none">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="ModalKonfirmasiUbah" aria-labelledby="ModalKonfirmasiUbah" aria-hidden="true"
+            tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalKonfirmasiUbah">Ubah Data</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin mengubah Data Laporan Akhir Ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
+                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
+
+                        <button class="btn btn-success" type="button" onclick="submitUbahForm()"><i
+                                class="bi bi-pencil-square me-2"></i>Ubah</button>
+                    </div>
+                </div>
+            </div>
         </div>
     @endsection
 

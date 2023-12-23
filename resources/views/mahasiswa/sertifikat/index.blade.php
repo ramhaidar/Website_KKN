@@ -91,7 +91,7 @@
 
                                 <div class="d-flex justify-content-center p-0 m-0">
                                     <a class="btn btn-success text-center w-50"
-                                        href="{{ route('DownloadSertifikatMahasiswa') }}"><i
+                                        href="{{ route('mahasiswa.sertifikat.download', $user->mahasiswa) }}"><i
                                             class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download
                                         Sertifikat</a>
                                 </div>

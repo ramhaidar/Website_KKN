@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class LaporanHarian
- * 
+ *
  * @property int $id
  * @property int|null $mahasiswa_id
  * @property string $hari
@@ -24,39 +24,47 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $dokumentasi_path
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Mahasiswa|null $mahasiswa
+ * @property Dpl|null $dpl
  *
  * @package App\Models
  */
 class LaporanHarian extends Model
 {
-	protected $table = 'laporan_harians';
+    protected $table = 'laporan_harians';
 
-	protected $casts = [ 
-		'mahasiswa_id' => 'int',
-		'tanggal'      => 'datetime'
-	];
+    protected $casts = [
+        'mahasiswa_id' => 'int',
+        'tanggal'      => 'datetime'
+    ];
 
-	protected $fillable = [ 
-		'mahasiswa_id',
-		'hari',
-		'tanggal',
-		'jenis_kegiatan',
-		'tujuan',
-		'sasaran',
-		'hambatan',
-		'solusi',
-		'dokumentasi_path'
-	];
+    protected $fillable = [
+        'mahasiswa_id',
+        'hari',
+        'tanggal',
+        'jenis_kegiatan',
+        'tujuan',
+        'sasaran',
+        'hambatan',
+        'solusi',
+        'tempat',
+        'dokumentasi_path',
+        'dpl_id',
+    ];
 
-	public function mahasiswa ()
-	{
-		return $this->belongsTo ( Mahasiswa::class);
-	}
+    public function mahasiswa ()
+    {
+        return $this->belongsTo ( Mahasiswa::class);
+    }
 
-	public function getTanggalAttribute ( $value )
-	{
-		return Carbon::parse ( $value )->format ( 'Y-m-d' );
-	}
+    public function dpl ()
+    {
+        return $this->belongsTo ( Dpl::class);
+    }
+
+    public function getTanggalAttribute ( $value )
+    {
+        return Carbon::parse ( $value )->format ( 'Y-m-d' );
+    }
 }

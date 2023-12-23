@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dpl;
+use App\Models\DPL;
 use App\Models\User;
 use App\Models\LaporanAkhir;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class DplNavigationController extends Controller
+class DPLNavigationController extends Controller
 {
     public function beranda_dpl ( Request $request )
     {
@@ -52,7 +52,7 @@ class DplNavigationController extends Controller
             ] );
 
             $user = User::find ( $request->id );
-            $dpl  = Dpl::find ( $user->dpl_id );
+            $dpl  = DPL::find ( $user->dpl_id );
 
             $user->update ( [ 
                 'email' => $request->Email___,

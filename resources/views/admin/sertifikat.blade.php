@@ -29,7 +29,7 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary shadow-sm border border-3 border-light-subtle"
                             data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
-                        <form method="POST" action="{{ route('admin_data_kelompok_mahasiswa') }}">
+                        <form method="POST" action="{{ route('admin.kelompok_mahasiswa.destroy', 'xx') }}">
                             @csrf
                             <input name="mode_halaman" type="hidden" value="hapus">
                             <input id="delete-id" name="id" type="hidden">
@@ -215,7 +215,7 @@
         <script>
             function loadData(page) {
                 $.ajax({
-                    url: '/AmbilDataMahasiswa?page=' + page,
+                    url: "{{ route('admin.kelompok_mahasiswa.getData') }}?page=" + page,
                     type: 'get',
                     dataType: 'json',
                     beforeSend: function() {
@@ -242,7 +242,7 @@
                         }
 
                         $.each(data.DataMahasiswa, function(index, item) {
-                            var anggota_kelompok = item.anggota_kelompok.replace(/\n/g, '<br>');
+                            var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok.replace(/\n/g, '<br>') : "[ Belum Ada ]";
                             var nama_dosen = item.dpl ? item.dpl.nama_dosen : "[ Belum Ada ]";
 
                             if (item.laporan_akhir) {
@@ -333,7 +333,7 @@
 
                 $('#LastButtonUpper, #LastButtonLower').click(function() {
                     $.ajax({
-                        url: '/DapatkanHalamanTerakhirMahasiswa', // The endpoint that returns the last page number
+                        url: "{{ route('admin.kelompok_mahasiswa.lastData') }}", // The endpoint that returns the last page number
                         type: 'get',
                         success: function(response) {
                             currentPage = response
@@ -380,7 +380,7 @@
                             $('#PageIndicatorLower').text('Page: -');
 
                             $.ajax({
-                                url: '/CariDataMahasiswa?query=' + searchQuery,
+                                url: "{{ route('admin.kelompok_mahasiswa.findData') }}?query=" + searchQuery,
                                 type: 'get',
                                 dataType: 'json',
                                 beforeSend: function() {
@@ -393,8 +393,8 @@
                                     $('#IsiLewatJQuery').empty();
 
                                     $.each(data.DataMahasiswa, function(index, item) {
-                                        var anggota_kelompok = item.anggota_kelompok
-                                            .replace(/\n/g, '<br>');
+                                        var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok
+                                            .replace(/\n/g, '<br>') : "[ Belum Ada ]";
                                         var nama_dosen = item.dpl ? item.dpl.nama_dosen :
                                             "[ Belum Ada ]";
                                         $('#IsiLewatJQuery').append('<tr>' +
@@ -529,7 +529,7 @@
                                 class="d-flex justify-content-center align-content-center align-items-center p-0 m-0 w-100">
                                 <form
                                     class="d-flex p-0 m-0 w-100 justify-content-center align-items-center align-content-center"
-                                    action="{{ route('DownloadSertifikatAdmin') }}" method="GET">
+                                    action="{{ route('admin.DownloadSertifikatAdmin') }}" method="GET">
                                     @csrf
 
                                     <input name="ID_Mahasiswa" type="hidden" value="{{ $user->mahasiswa->id }}">

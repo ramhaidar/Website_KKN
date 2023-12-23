@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dpl;
+use App\Models\DPL;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Mahasiswa;
@@ -15,21 +15,21 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminNavigationController extends Controller
 {
-    public function beranda_admin ( Request $request )
+    public function beranda_admin(Request $request)
     {
-        $jumlah_mahasiswa = Mahasiswa::count ();
-        $jumlah_dpl       = Dpl::count ();
-        $last5_mahasiswa  = Mahasiswa::orderBy ( 'id', 'desc' )->with ( 'user' )->take ( 5 )->get ();
-        $last5_dpl        = Dpl::orderBy ( 'id', 'desc' )->with ( 'user' )->take ( 5 )->get ();
+        $navActiveItem = 'beranda';
+        $jumlah_mahasiswa = Mahasiswa::count();
+        $jumlah_dpl       = DPL::count();
+        $last5_mahasiswa  = Mahasiswa::latest()->with ('user')->take(5)->get();
+        $last5_dpl        = DPL::latest()->with ('user')->take(5)->get();
 
-        return view ( "admin.beranda", [ 
-            'navActiveItem'    => 'beranda',
-
-            'jumlah_mahasiswa' => $jumlah_mahasiswa,
-            'jumlah_dpl'       => $jumlah_dpl,
-            'last5_mahasiswa'  => $last5_mahasiswa,
-            'last5_dpl'        => $last5_dpl,
-        ] );
+        return view ("admin.beranda", compact(
+            'navActiveItem',
+            'jumlah_mahasiswa',
+            'jumlah_dpl',
+            'last5_mahasiswa',
+            'last5_dpl',
+        ));
     }
 
     public function admin_data_kelompok_mahasiswa ( Request $request )
@@ -38,7 +38,7 @@ class AdminNavigationController extends Controller
         {
             $jumlah_mahasiswa = Mahasiswa::count ();
 
-            return view ( "admin.data.kelompok_mahasiswa", [ 
+            return view ( "admin.data.kelompok_mahasiswa", [
                 'navActiveItem'    => 'data_kelompok_mahasiswa',
 
                 'jumlah_mahasiswa' => $jumlah_mahasiswa,
@@ -48,7 +48,7 @@ class AdminNavigationController extends Controller
         {
             if ( isset( $request->NamaKetua___ ) && isset( $request->Email___ ) && isset( $request->Password___ ) && isset( $request->AnggotaKelompok___ ) && isset( $request->NIM___ ) && isset( $request->Prodi___ ) && isset( $request->Fakultas___ ) && isset( $request->DPL___ ) )
             {
-                $request->validate ( [ 
+                $request->validate ( [
                     'NamaKetua___'       => [ 'required' ],
                     'Email___'           => [ 'required', 'email' ],
                     'Password___'        => [ 'min:6', 'required' ],
@@ -83,15 +83,15 @@ class AdminNavigationController extends Controller
                 $mahasiswa->save ();
                 $user->save ();
 
-                $dpl = Dpl::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
+                $dpl = DPL::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
 
                 return redirect ()->back ()->with ( 'success', 'Data Kelompok Baru Berhasil Ditambahkan!' );
             }
             else
             {
-                $dpl_kosong = Dpl::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
+                $dpl_kosong = DPL::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
 
-                return view ( "admin.data.kelompok_mahasiswa", [ 
+                return view ( "admin.data.kelompok_mahasiswa", [
                     'navActiveItem' => 'data_kelompok_mahasiswa',
                     'mode_halaman'  => 'tambah',
 
@@ -103,7 +103,7 @@ class AdminNavigationController extends Controller
         {
             if ( isset( $request->NamaKetua___ ) && isset( $request->Email___ ) && isset( $request->AnggotaKelompok___ ) && isset( $request->NIM___ ) && isset( $request->Prodi___ ) && isset( $request->Fakultas___ ) && isset( $request->DPL___ ) )
             {
-                $request->validate ( [ 
+                $request->validate ( [
                     'NamaKetua___'       => [ 'required' ],
                     'Email___'           => [ 'required', 'email' ],
                     'Password___'        => [ 'min:6', 'nullable' ],
@@ -118,7 +118,7 @@ class AdminNavigationController extends Controller
                 $mahasiswa = Mahasiswa::find ( $request->id );
                 $user      = User::find ( $mahasiswa->user_id );
 
-                $mahasiswa->update ( [ 
+                $mahasiswa->update ( [
                     'nama_ketua'       => $request->NamaKetua___,
                     'anggota_kelompok' => $request->AnggotaKelompok___,
                     'nim'              => $request->NIM___,
@@ -128,27 +128,27 @@ class AdminNavigationController extends Controller
 
                 if ( $request->DPL___ != 'null' )
                 {
-                    $mahasiswa->update ( [ 
+                    $mahasiswa->update ( [
                         'dpl_id' => $request->DPL___,
                     ] );
-                    $dpl = Dpl::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
+                    $dpl = DPL::where ( 'id', $request->DPL___ )->update ( [ 'mahasiswa_id' => $mahasiswa->id ] );
                 }
                 else
                 {
-                    $mahasiswa->update ( [ 
+                    $mahasiswa->update ( [
                         'dpl_id' => null,
                     ] );
-                    $dpl = Dpl::where ( 'id', $request->DPL_Sebelumnya___ )->update ( [ 'mahasiswa_id' => null ] );
+                    $dpl = DPL::where ( 'id', $request->DPL_Sebelumnya___ )->update ( [ 'mahasiswa_id' => null ] );
                 }
 
                 if ( $request->Password___ != null )
                 {
-                    $user->update ( [ 
+                    $user->update ( [
                         'password' => Hash::make ( $request->Password___ ),
                     ] );
                 }
 
-                $user->update ( [ 
+                $user->update ( [
                     'email'    => $request->Email___,
                     'password' => Hash::make ( $request->Password___ ),
                 ] );
@@ -160,12 +160,12 @@ class AdminNavigationController extends Controller
             }
             else
             {
-                $dpl_kosong   = Dpl::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
-                $dpl_sekarang = Dpl::with ( 'user' )->where ( 'mahasiswa_id', $request->ID_Ubah )->get ()->first ();
+                $dpl_kosong   = DPL::with ( 'user' )->where ( 'mahasiswa_id', null )->get ();
+                $dpl_sekarang = DPL::with ( 'user' )->where ( 'mahasiswa_id', $request->ID_Ubah )->get ()->first ();
 
                 $selected_mahasiswa = Mahasiswa::with ( 'user' )->find ( $request->ID_Ubah );
 
-                return view ( "admin.data.kelompok_mahasiswa", [ 
+                return view ( "admin.data.kelompok_mahasiswa", [
                     'navActiveItem' => 'data_kelompok_mahasiswa',
                     'mode_halaman'  => 'ubah',
 
@@ -177,7 +177,7 @@ class AdminNavigationController extends Controller
         }
         elseif ( $request->mode_halaman == 'hapus' )
         {
-            $request->validate ( [ 
+            $request->validate ( [
                 'id' => [ 'required' ],
             ] );
 
@@ -196,9 +196,9 @@ class AdminNavigationController extends Controller
     {
         if ( ! isset( $request->mode_halaman ) )
         {
-            $jumlah_dpl = Dpl::count ();
+            $jumlah_dpl = DPL::count ();
 
-            return view ( "admin.data.dpl", [ 
+            return view ( "admin.data.dpl", [
                 'navActiveItem' => 'data_kelompok_mahasiswa',
 
                 'jumlah_dpl'    => $jumlah_dpl,
@@ -208,7 +208,7 @@ class AdminNavigationController extends Controller
         {
             if ( isset( $request->NamaDPL___ ) && isset( $request->Email___ ) && isset( $request->Password___ ) && isset( $request->NIP___ ) && isset( $request->Prodi___ ) && isset( $request->Fakultas___ ) && isset( $request->KetuaKelompok___ ) )
             {
-                $request->validate ( [ 
+                $request->validate ( [
                     'NamaDPL___'       => [ 'required' ],
                     'Email___'         => [ 'required' ],
                     'Password___'      => [ 'min:6', 'required' ],
@@ -222,7 +222,7 @@ class AdminNavigationController extends Controller
                 $user->email    = $request->Email___;
                 $user->password = Hash::make ( $request->Password___ );
 
-                $dpl             = new Dpl ();
+                $dpl             = new DPL ();
                 $dpl->nama_dosen = $request->NamaDPL___;
                 $dpl->nip        = $request->NIP___;
                 $dpl->prodi      = $request->Prodi___;
@@ -249,7 +249,7 @@ class AdminNavigationController extends Controller
             {
                 $mahasiswa_kosong = Mahasiswa::with ( 'user' )->where ( 'dpl_id', null )->get ();
 
-                return view ( "admin.data.dpl", [ 
+                return view ( "admin.data.dpl", [
                     'navActiveItem'    => 'data_kelompok_mahasiswa',
                     'mode_halaman'     => 'tambah',
 
@@ -263,7 +263,7 @@ class AdminNavigationController extends Controller
             {
                 // dd ( $request );
 
-                $request->validate ( [ 
+                $request->validate ( [
                     'NamaDPL___'                  => [ 'required' ],
                     'Email___'                    => [ 'required', 'email' ],
                     'Password___'                 => [ 'min:6', 'nullable' ],
@@ -274,10 +274,10 @@ class AdminNavigationController extends Controller
                     'KetuaKelompok_Sebelumnya___' => [ 'nullable' ],
                 ] );
 
-                $dpl  = Dpl::find ( $request->id );
+                $dpl  = DPL::find ( $request->id );
                 $user = User::find ( $dpl->user_id );
 
-                $dpl->update ( [ 
+                $dpl->update ( [
                     'nama_dosen' => $request->NamaDPL___,
                     'nip'        => $request->NIP___,
                     'prodi'      => $request->Prodi___,
@@ -286,14 +286,14 @@ class AdminNavigationController extends Controller
 
                 if ( $request->KetuaKelompok___ != 'null' )
                 {
-                    $dpl->update ( [ 
+                    $dpl->update ( [
                         'mahasiswa_id' => $request->KetuaKelompok___,
                     ] );
                     $mahasiswa = Mahasiswa::where ( 'id', $request->KetuaKelompok___ )->update ( [ 'dpl_id' => $dpl->id ] );
                 }
                 else
                 {
-                    $dpl->update ( [ 
+                    $dpl->update ( [
                         'mahasiswa_id' => null,
                     ] );
                     $mahasiswa = Mahasiswa::where ( 'id', $request->KetuaKelompok_Sebelumnya___ )->update ( [ 'dpl_id' => null ] );
@@ -301,12 +301,12 @@ class AdminNavigationController extends Controller
 
                 if ( $request->Password___ != null )
                 {
-                    $user->update ( [ 
+                    $user->update ( [
                         'password' => Hash::make ( $request->Password___ ),
                     ] );
                 }
 
-                $user->update ( [ 
+                $user->update ( [
                     'email'    => $request->Email___,
                     'password' => Hash::make ( $request->Password___ ),
                 ] );
@@ -321,9 +321,9 @@ class AdminNavigationController extends Controller
                 $mahasiswa_kosong   = Mahasiswa::with ( 'user' )->where ( 'dpl_id', null )->get ();
                 $mahasiswa_sekarang = Mahasiswa::with ( 'user' )->where ( 'dpl_id', $request->ID_Ubah )->get ()->first ();
 
-                $selected_dpl = Dpl::with ( 'user' )->find ( $request->ID_Ubah );
+                $selected_dpl = DPL::with ( 'user' )->find ( $request->ID_Ubah );
 
-                return view ( "admin.data.dpl", [ 
+                return view ( "admin.data.dpl", [
                     'navActiveItem'      => 'data_kelompok_mahasiswa',
                     'mode_halaman'       => 'ubah',
 
@@ -335,11 +335,11 @@ class AdminNavigationController extends Controller
         }
         elseif ( $request->mode_halaman == 'hapus' )
         {
-            $request->validate ( [ 
+            $request->validate ( [
                 'id' => [ 'required' ],
             ] );
 
-            $dpl  = Dpl::find ( $request->id );
+            $dpl  = DPL::find ( $request->id );
             $user = User::find ( $dpl->user_id );
 
             //delete data mahasiswa dan data user
@@ -355,11 +355,11 @@ class AdminNavigationController extends Controller
         if ( ! isset( $request->mode_halaman ) )
         {
             $jumlah_mahasiswa      = Mahasiswa::count ();
-            $jumlah_dpl            = Dpl::count ();
+            $jumlah_dpl            = DPL::count ();
             $jumlah_laporan_harian = LaporanHarian::count ();
             $jumlah_laporan_akhir  = LaporanAkhir::count ();
 
-            return view ( "admin.laporan", [ 
+            return view ( "admin.laporan", [
                 'navActiveItem'         => 'laporan',
 
                 'jumlah_mahasiswa'      => $jumlah_mahasiswa,
@@ -377,7 +377,7 @@ class AdminNavigationController extends Controller
             $user = User::find ( $mahasiswa->user->id );
             $user->load ( 'mahasiswa', 'dpl' );
 
-            return view ( "admin.laporan", [ 
+            return view ( "admin.laporan", [
                 'navActiveItem' => 'laporan',
                 'mode_halaman'  => $mode_halaman,
 
@@ -387,7 +387,7 @@ class AdminNavigationController extends Controller
         elseif ( $request->mode_halaman == "tambah_laporan_harian" )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
                 'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
                 'tanggal'        => [ 'required', 'date_format:Y-m-d' ],
@@ -429,7 +429,7 @@ class AdminNavigationController extends Controller
         elseif ( $request->mode_halaman == "ubah_laporan_harian" )
         {
             // Validate the form data
-            $request->validate ( [ 
+            $request->validate ( [
                 'id'             => [ 'required', 'exists:laporan_harians,id' ],
                 'mahasiswa_id'   => [ 'required', 'exists:mahasiswas,id' ],
                 'hari'           => [ 'required', 'string', 'regex:/^(senin|selasa|rabu|kamis|jumat|sabtu|minggu)$/i' ],
@@ -512,7 +512,7 @@ class AdminNavigationController extends Controller
 
             $laporan_akhir = LaporanAkhir::where ( 'mahasiswa_id', $user->mahasiswa->id )->first ();
 
-            return view ( "admin.laporan", [ 
+            return view ( "admin.laporan", [
                 'navActiveItem' => 'laporan',
                 'mode_halaman'  => $mode_halaman,
 
@@ -529,7 +529,7 @@ class AdminNavigationController extends Controller
                 Storage::delete ( $laporan_akhir->file_path );
             }
 
-            $laporan_akhir->update ( [ 
+            $laporan_akhir->update ( [
                 'revisi'    => null,
                 'approved'  => false,
                 'file_path' => null,
@@ -546,7 +546,7 @@ class AdminNavigationController extends Controller
 
     public function admin_laporan_akhir ( Request $request )
     {
-        return view ( "admin.laporan.akhir", [ 
+        return view ( "admin.laporan.akhir", [
             'navActiveItem' => 'laporan_akhir',
         ] );
     }
@@ -556,10 +556,10 @@ class AdminNavigationController extends Controller
         if ( ! isset( $request->mode_halaman ) )
         {
             $jumlah_mahasiswa  = Mahasiswa::count ();
-            $jumlah_dpl        = Dpl::count ();
+            $jumlah_dpl        = DPL::count ();
             $jumlah_sertifikat = LaporanAkhir::where ( 'approved', true )->count ();
 
-            return view ( "admin.sertifikat", [ 
+            return view ( "admin.sertifikat", [
                 'navActiveItem'     => 'sertifikat',
 
                 'jumlah_mahasiswa'  => $jumlah_mahasiswa,
@@ -579,7 +579,7 @@ class AdminNavigationController extends Controller
             $laporan_akhir         = LaporanAkhir::where ( 'mahasiswa_id', $request->ID_Mahasiswa )->firstOrFail ();
             $jumlah_laporan_harian = LaporanHarian::where ( 'mahasiswa_id', $user->mahasiswa->id )->count ();
 
-            return view ( "admin.sertifikat", [ 
+            return view ( "admin.sertifikat", [
                 'navActiveItem'         => 'sertifikat',
                 'mode_halaman'          => $mode_halaman,
 
@@ -603,7 +603,7 @@ class AdminNavigationController extends Controller
             $user = User::find ( Auth::user ()->id );
             $user->load ( 'mahasiswa', 'dpl' );
 
-            return view ( "admin.akun", [ 
+            return view ( "admin.akun", [
                 'navActiveItem' => 'akun',
 
                 'user'          => $user,
@@ -611,7 +611,7 @@ class AdminNavigationController extends Controller
         }
         else if ( $request->mode_halaman == 'ubah' )
         {
-            $request->validate ( [ 
+            $request->validate ( [
                 'id'                        => [ 'required' ],
                 'NamaAdmin___'              => [ 'required' ],
                 'Email___'                  => [ 'required', 'email' ],
@@ -623,11 +623,11 @@ class AdminNavigationController extends Controller
             $user  = User::find ( $request->id );
             $admin = Admin::find ( $user->admin_id );
 
-            $user->update ( [ 
+            $user->update ( [
                 'email' => $request->Email___,
             ] );
 
-            $admin->update ( [ 
+            $admin->update ( [
                 'nama' => $request->NamaAdmin___,
             ] );
 
@@ -639,7 +639,7 @@ class AdminNavigationController extends Controller
                 }
                 else
                 {
-                    $user->update ( [ 
+                    $user->update ( [
                         'password' => Hash::make ( $request->PasswordBaru___ ),
                     ] );
                 }
@@ -652,4 +652,9 @@ class AdminNavigationController extends Controller
         }
     }
 
+    public function mahasiswa_laporan_harian ()
+    {
+        $navActiveItem = 'laporan_harian';
+        return view('admin.bimbingan.harian', compact('navActiveItem'));
+    }
 }

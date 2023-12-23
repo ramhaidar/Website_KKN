@@ -205,7 +205,7 @@
         <script>
             function loadData(page) {
                 $.ajax({
-                    url: '/AmbilDataMahasiswa?page=' + page,
+                    url: "{{ route('AmbilDataMahasiswa') }}" + '?page=' + page,
                     type: 'get',
                     dataType: 'json',
                     beforeSend: function() {
@@ -232,7 +232,7 @@
                         }
 
                         $.each(data.DataMahasiswa, function(index, item) {
-                            var anggota_kelompok = item.anggota_kelompok.replace(/\n/g, '<br>');
+                            var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok.replace(/\n/g, '<br>') : "[ Belum Ada ]";
                             var nama_dosen = item.dpl ? item.dpl.nama_dosen : "[ Belum Ada ]";
                             $('#IsiLewatJQuery').append('<tr>' +
                                 '<th scope="row">' + item.id + '</th>' +
@@ -363,7 +363,7 @@
                             $('#PageIndicatorLower').text('Page: -');
 
                             $.ajax({
-                                url: '/CariDataMahasiswa?query=' + searchQuery,
+                                url: "{{ route('CariDataMahasiswa') }}" + '?query=' + searchQuery,
                                 type: 'get',
                                 dataType: 'json',
                                 beforeSend: function() {
@@ -376,8 +376,8 @@
                                     $('#IsiLewatJQuery').empty();
 
                                     $.each(data.DataMahasiswa, function(index, item) {
-                                        var anggota_kelompok = item.anggota_kelompok
-                                            .replace(/\n/g, '<br>');
+                                        var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok
+                                            .replace(/\n/g, '<br>') : "[ Belum Ada ]";
                                         var nama_dosen = item.dpl ? item.dpl.nama_dosen :
                                             "[ Belum Ada ]";
                                         $('#IsiLewatJQuery').append('<tr>' +

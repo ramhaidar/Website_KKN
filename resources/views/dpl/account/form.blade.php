@@ -11,7 +11,7 @@
                 <div class="card border-secondary mb-3 flex-grow-1 d-flex flex-column p-0">
                     <div class="card-header fw-bolder fs-3 text-center">Akun</div>
 
-                    <form method="POST" action="{{ route('dpl_akun') }}">
+                    <form method="POST" action="{{ route('dosen.account.update') }}">
                         @csrf
                         <div class="card-body text-white flex-grow-1">
                             <h5 class="pt-2 pb-3 ps-1">Detail Akun</h5>

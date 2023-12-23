@@ -369,8 +369,8 @@
                                     $('#IsiLewatJQuery').empty();
 
                                     $.each(data.DataMahasiswa, function(index, item) {
-                                        var anggota_kelompok = item.anggota_kelompok
-                                            .replace(/\n/g, '<br>');
+                                        var anggota_kelompok = item.anggota_kelompok ? item.anggota_kelompok
+                                            .replace(/\n/g, '<br>') : "[ Belum Ada ]";
                                         var nama_dosen = item.dpl ? item.dpl.nama_dosen :
                                             "[ Belum Ada ]";
                                         $('#IsiLewatJQuery').append('<tr>' +

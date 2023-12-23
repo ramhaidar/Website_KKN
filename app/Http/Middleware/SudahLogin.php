@@ -14,22 +14,16 @@ class SudahLogin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle ( Request $request, Closure $next ) : Response
+    public function handle( Request $request, Closure $next ) : Response
     {
         if ( Auth::check () )
         {
-            if ( Auth::user ()->admin_id != null )
-            {
-                return redirect ()->route ( 'beranda_admin' );
-            }
-            elseif ( Auth::user ()->mahasiswa_id != null )
-            {
-                return redirect ()->route ( 'beranda_mahasiswa' );
-            }
-            elseif ( Auth::user ()->dpl_id != null )
-            {
-                return redirect ()->route ( 'beranda_dpl' );
-            }
+            $user = Auth::user();
+            if ($user->admin_id != null ) { $role = 'admin'; }
+            elseif ($user->dpl_id != null ) { $role = 'dpl'; }
+            else { $role = 'mahasiswa'; }
+
+            return redirect()->route('beranda_' . $role);
         }
 
         return $next ( $request );

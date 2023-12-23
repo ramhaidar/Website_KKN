@@ -1,33 +1,10 @@
-@section('subtitle', 'Laporan Harian')
-
 @extends('mahasiswa._mahasiswa')
+
+@section('subtitle', 'Laporan Harian')
 
 @if ($sudah_punya_dpl == true)
 
     @section('dashboard_content')
-        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
-            tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
-                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus Data Laporan Harian Ini?
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
-                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
-
-                        <button class="btn btn-danger" type="button" onclick="submitForm()"><i
-                                class="bi bi-trash3-fill me-2"></i>Hapus</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
             style="background-color: transparent">
 
@@ -56,7 +33,7 @@
                                 <hr class="mt-5 align-items-start">
 
                                 <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan"
-                                    enctype="multipart/form-data" method="POST" action="">
+                                    enctype="multipart/form-data" method="POST" action="{{ route('mahasiswa.laporan_harian.store') }}">
                                     @csrf
                                     <!-- Mahasiswa ID (Hidden Input) -->
                                     <input name="mahasiswa_id" type="hidden" value="{{ $user->mahasiswa->id }}">
@@ -105,7 +82,17 @@
                                     <!-- Solusi -->
                                     <div class="mb-3">
                                         <label class="form-label" for="solusi">Solusi</label>
-                                        <textarea class="form-control" id="solusi" name="solusi" required></textarea>
+                                        <div class="card">
+                                            <div class="card-body" id="solusi" style="min-height: 80px; background-color: #787878;">
+                                                [ Diisi Oleh Dosen Pembimbing Lapangan ]
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tempat -->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="tempat">Tempat</label>
+                                        <textarea class="form-control" id="tempat" name="tempat" required></textarea>
                                     </div>
 
                                     <!-- Dokumentasi -->
@@ -145,8 +132,34 @@
         </div>
     @endsection
 
+    @section('Modal')
+        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
+        tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalKonfirmasiHapusLabel">Hapus Data</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah Anda yakin ingin menghapus Data Laporan Harian Ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
+                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <input id="id_hapus" name="id_hapus" type="hidden" value="">
+
+                        <button class="btn btn-danger" type="button" onclick="submitForm()"><i
+                                class="bi bi-trash3-fill me-2"></i>Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endsection
+
     @section('Body_JS')
         <script>
+            var baseUrl = "{{ route('mahasiswa.laporan_harian.index') }}";
             function updateDateAndDay(selectedDate) {
                 // Update the value of #tanggal input
                 var formattedDate = selectedDate.toISOString().split('T')[0];
@@ -174,7 +187,7 @@
 
                 // AJAX request to fetch data
                 $.ajax({
-                    url: "/AmbilDataLaporanHarianMahasiswa/", // Change this URL to your API endpoint
+                    url: "{{ route('mahasiswa.laporan_harian.getData') }}", // Change this URL to your API endpoint
                     method: "GET",
                     data: {
                         id: user_id,
@@ -193,7 +206,8 @@
                             $("#tujuan").val(laporan.tujuan);
                             $("#sasaran").val(laporan.sasaran);
                             $("#hambatan").val(laporan.hambatan);
-                            $("#solusi").val(laporan.solusi);
+                            $("#solusi").html(laporan.solusi);
+                            $("#tempat").val(laporan.tempat);
                             // You may also want to handle the file input separately, depending on your requirements
                             // For example, you can display a link to the existing file and allow the user to replace it
 
@@ -211,6 +225,9 @@
 
                             $('#TombolAksi').html('<i class="bi bi-pencil-square me-2"></i>Ubah Laporan');
                             $('#TombolAksi').removeClass('btn-primary').addClass('btn-success');
+
+                            let input = '<input type="hidden" name="_method" value="PUT">';
+                            $("#FormLaporan").attr("action", baseUrl + "/" + laporan.id).append(input);
 
                             AutoHeightTextArea();
                         } else {
@@ -238,7 +255,7 @@
             $('#hari').val(getDayName(selectedDate.getDay()));
 
             function renderCalendar() {
-                $.get('/DapatkanBulanLaporanHarianMahasiswa', {
+                $.get("{{ route('mahasiswa.laporan_harian.getMonth') }}", {
                     date: date.toISOString()
                 }, function(data) {
                     $('#TombolHapus').prop('disabled', true);

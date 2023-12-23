@@ -3,8 +3,7 @@
 @extends('dpl._dpl')
 
 @if ($sudah_punya_mahasiswa == true)
-    {{-- @if (isset($laporan_akhir) and $laporan_akhir->approved == true) --}}
-    @if (isset($laporan_akhir) and $jumlah_laporan_harian >= 30 and $laporan_akhir->approved == true)
+    @if (isset($laporan_akhir) && $jumlah_laporan_harian >= 30 && $laporan_akhir->approved == true)
         @section('dashboard_content')
             <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
                 style="background-color: transparent">
@@ -91,7 +90,7 @@
 
                                 <div class="d-flex justify-content-center p-0 m-0">
                                     <a class="btn btn-success text-center w-50 shadow-sm border border-3 border-light-subtle"
-                                        href="{{ route('DownloadSertifikatDPL') }}"><i
+                                        href="{{ route('dosen.sertifikat.download', $user->dpl->mahasiswa) }}"><i
                                             class="bi bi-file-earmark-arrow-down-fill me-2"></i>Download
                                         Sertifikat</a>
                                 </div>
@@ -127,22 +126,15 @@
                         <div class="card border-secondary mb-3 flex-grow-1 d-flex flex-column p-0">
                             <div class="card-header fw-bolder fs-3 text-center">Sertifikat</div>
                             <div class="card-body text-white flex-grow-1">
-
-                                @if ($jumlah_laporan_harian < 30)
-                                    <div class="container-fluid p-0 m-0 pb-3">
-                                        <h2 class="text-danger fw-bolder text-center">Mahasiswa belum mengisi Laporan Harian
-                                            selama minimal 30 Hari.</h2>
-                                    </div>
-                                @endif
-                                @if (!empty($laporan_akhir) && $laporan_akhir->revisi == null)
-                                    <div class="container-fluid p-0 m-0">
-                                        <h2 class="text-danger fw-bolder text-center">Mahasiswa belum melakukan unggah
-                                            Laporan
-                                            Akhir.
-                                        </h2>
-                                    </div>
-                                @endif
-
+                                <h2 class="text-danger fw-bolder text-center">
+                                    @if ($jumlah_laporan_harian < 30)
+                                        Mahasiswa belum mengisi Laporan Harian selama minimal 30 Hari.
+                                    @elseif ($laporan_akhir && $laporan_akhir->approve != true)
+                                        Laporan Akhir belum diapprove.
+                                    @elseif ($laporan_akhir && $laporan_akhir->revisi == null)
+                                        Mahasiswa belum melakukan unggah Laporan Akhir.
+                                    @endif
+                                </h2>
                             </div>
                         </div>
                     </div>
