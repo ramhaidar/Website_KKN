@@ -16,9 +16,9 @@ trait RegistersUsers
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm ()
     {
-        return view('auth.register');
+        return view ( 'auth.register' );
     }
 
     /**
@@ -27,21 +27,24 @@ trait RegistersUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function register ( Request $request )
     {
-        $this->validator($request->all())->validate();
+        $this->validator ( $request->all () )->validate ();
 
-        event(new Registered($user = $this->create($request->all())));
+        event ( new Registered ( $user = $this->create ( $request->all () ) ) );
 
-        $this->guard()->login($user);
+        // $this->guard ()->login ( $user );
 
-        if ($response = $this->registered($request, $user)) {
-            return $response;
-        }
+        // if ( $response = $this->registered ( $request, $user ) )
+        // {
+        //     return $response;
+        // }
 
-        return $request->wantsJson()
-                    ? new JsonResponse([], 201)
-                    : redirect($this->redirectPath());
+        // return $request->wantsJson ()
+        //     ? new JsonResponse ( [], 201 )
+        //     : redirect ( $this->redirectPath () );
+
+        return redirect ( '/register' )->with ( 'success', 'Registrasi Berhasil' );
     }
 
     /**
@@ -49,9 +52,9 @@ trait RegistersUsers
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
-    protected function guard()
+    protected function guard ()
     {
-        return Auth::guard();
+        return Auth::guard ();
     }
 
     /**
@@ -61,7 +64,7 @@ trait RegistersUsers
      * @param  mixed  $user
      * @return mixed
      */
-    protected function registered(Request $request, $user)
+    protected function registered ( Request $request, $user )
     {
         //
     }

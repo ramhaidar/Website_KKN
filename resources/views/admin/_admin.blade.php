@@ -17,7 +17,8 @@
                         style="background-color: transparent; min-height: 100vh">
                         <a class="d-flex w-100 align-items-center align-content-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
                             href="{{ url()->current() }}">
-                            <img class="mb-3 pt-3" src="{{ asset('favicon.png') }}" alt="" width="auto" height="80px">
+                            <img class="mb-3 pt-3" src="{{ asset('favicon.png') }}" alt="" width="auto"
+                                height="80px">
                             <span class="py-0 fw-bold text-uppercase" style="font-size: 20px">Dashboard<br>Admin</span>
                         </a>
                         <hr>
@@ -33,7 +34,7 @@
                             </li>
 
                             <li class="nav-item dropdown py-1">
-                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'data_kelompok_mahasiswa' || $navActiveItem == 'data_dpl' ? 'active' : '' }}"
+                                <a class="nav-link d-flex align-items-center rounded-3 py-3 {{ $navActiveItem == 'data_kelompok_mahasiswa' || $navActiveItem == 'data_dpl' || $navActiveItem == 'data_pendaftaran_mahasiswa' ? 'active' : '' }}"
                                     data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
                                     <i class="bi bi-table me-3"
                                         style="font-size: 20px; border-radius: 35%; padding: 4.75px; min-width: 35px; text-align: center;"></i>
@@ -48,9 +49,16 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('admin.dosen_pembimbing_lapangan.index') }}">
+                                        <a class="dropdown-item"
+                                            href="{{ route('admin.dosen_pembimbing_lapangan.index') }}">
                                             <i class="bi bi-person-lines-fill me-2"></i>
                                             Dosen Pembimbing Lapangan
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.pendaftaran_mahasiswa.index') }}">
+                                            <i class="bi bi-person-fill-add me-2"></i>
+                                            Pendaftaran Mahasiswa
                                         </a>
                                     </li>
                                 </ul>
@@ -174,7 +182,7 @@
                         <i class="bi bi-door-closed me-2"></i>Sign Out
                     </a>
                 </div>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
                 </form>
             </div>

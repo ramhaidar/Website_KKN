@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\DaftarMahasiswa;
 use App\Providers\RouteServiceProvider;
 use App\Traits\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -36,9 +36,9 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct ()
     {
-        $this->middleware('guest');
+        $this->middleware ( 'guest' );
     }
 
     /**
@@ -47,27 +47,33 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator ( array $data )
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        return Validator::make ( $data, [ 
+            'Nama___'     => [ 'required', 'string', 'max:255' ],
+            'NIM___'      => [ 'required', 'string', 'max:255', 'unique:daftar_mahasiswa,nim' ],
+            // 'Email___'    => [ 'required', 'string', 'email', 'max:255', 'unique:users,email' ],
+            'Fakultas___' => [ 'required', 'string', 'max:255' ],
+            'Prodi___'    => [ 'required', 'string', 'max:255' ],
+            'Periode___'  => [ 'required', 'string', 'max:255' ],
+            // 'Password___'            => [ 'required', 'string', 'min:6', 'confirmed' ],
+            // 'Password_Konfirmasi___' => [ 'required', 'same:PasswordBaru___', 'min:6',],
+        ] );
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
+    protected function create ( array $data )
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return DaftarMahasiswa::create ( [ 
+            'nama'     => $data[ 'Nama___' ],
+            'nim'      => $data[ 'NIM___' ],
+            'fakultas' => $data[ 'Fakultas___' ],
+            'prodi'    => $data[ 'Prodi___' ],
+            'periode'  => $data[ 'Periode___' ],
+            // 'password' => Hash::make ( $data[ 'Password___' ] ),
+
+            // 'name'     => $data[ 'name' ],
+            // 'email'    => $data[ 'email' ],
+            // 'password' => Hash::make ( $data[ 'password' ] ),
+        ] );
     }
 }
