@@ -5,8 +5,7 @@
 @if ($sudah_punya_dpl == true)
 
     @section('dashboard_content')
-        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
-            style="background-color: transparent">
+        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100" style="background-color: transparent">
 
             <div class="container-fluid p-0 m-0 w-100" style="background-color: transparent">
                 <div class="container-fluid py-3 pb-4 w-100" style="background-color: transparent">
@@ -14,13 +13,10 @@
                         <div class="card-header fw-bolder fs-3 text-center">Laporan Harian</div>
                         <div class="card-body text-white flex-grow-1">
                             <div class="container-fluid m-0 p-0 w-100 h-100">
-                                <div
-                                    class="d-flex justify-content-between align-items-center align-content-center p-0 m-0 w-100 h-100">
-                                    <button class="btn btn-secondary" id="prev"><i
-                                            class="bi bi-caret-left-fill pe-2"></i>Sebelumnya</button>
+                                <div class="d-flex justify-content-between align-items-center align-content-center p-0 m-0 w-100 h-100">
+                                    <button class="btn btn-secondary" id="prev"><i class="bi bi-caret-left-fill pe-2"></i>Sebelumnya</button>
                                     <h4 class="text-center" id="Nama_Bulan"></h4>
-                                    <button class="btn btn-secondary" id="next">Selanjutnya<i
-                                            class="bi bi-caret-right-fill ps-2"></i></button>
+                                    <button class="btn btn-secondary" id="next">Selanjutnya<i class="bi bi-caret-right-fill ps-2"></i></button>
                                 </div>
                                 <div class="container-fluid m-0 p-0 pt-3 w-100 h-100" id="calendar"></div>
 
@@ -32,8 +28,7 @@
 
                                 <hr class="mt-5 align-items-start">
 
-                                <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan"
-                                    enctype="multipart/form-data" method="POST" action="{{ route('mahasiswa.laporan_harian.store') }}">
+                                <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan" enctype="multipart/form-data" method="POST" action="{{ route('mahasiswa.laporan_harian.store') }}">
                                     @csrf
                                     <!-- Mahasiswa ID (Hidden Input) -->
                                     <input name="mahasiswa_id" type="hidden" value="{{ $user->mahasiswa->id }}">
@@ -43,22 +38,19 @@
                                     <!-- Hari -->
                                     <div class="mb-3">
                                         <label class="form-label" for="hari">Hari</label>
-                                        <input class="form-control" id="hari" name="hari" type="text" readonly
-                                            required>
+                                        <input class="form-control" id="hari" name="hari" type="text" readonly required>
                                     </div>
 
                                     <!-- Tanggal -->
                                     <div class="mb-3">
                                         <label class="form-label" for="tanggal">Tanggal</label>
-                                        <input class="form-control" id="tanggal" name="tanggal" value="" readonly
-                                            required>
+                                        <input class="form-control" id="tanggal" name="tanggal" value="" readonly required>
                                     </div>
 
                                     <!-- Jenis Kegiatan -->
                                     <div class="mb-3">
                                         <label class="form-label" for="jenis_kegiatan">Jenis Kegiatan</label>
-                                        <input class="form-control" id="jenis_kegiatan" name="jenis_kegiatan" type="text"
-                                            required>
+                                        <input class="form-control" id="jenis_kegiatan" name="jenis_kegiatan" type="text" required>
                                     </div>
 
                                     <!-- Tujuan -->
@@ -97,27 +89,22 @@
 
                                     <!-- Dokumentasi -->
                                     <div class="d-flex w-100 align-content-center justify-content-center">
-                                        <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi"
-                                            src="" alt="Responsive image" style="width: 80%; height: 75%;"
-                                            hidden>
+                                        <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi" src="" alt="Responsive image" style="width: 80%; height: 75%;" hidden>
+                                        {{-- <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi" src="{{ asset('yntkts.png') }}" alt="Responsive image" style="width: 80%; height: 75%;"> --}}
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="dokumentasi">Dokumentasi (JPG/PNG) <sup>*Maksimal
                                                 2MB</sup></label>
-                                        <input class="form-control" id="dokumentasi" name="dokumentasi" type="file"
-                                            required accept="image/jpeg, image/png, image/jpg">
+                                        <input class="form-control" id="dokumentasi" name="dokumentasi" type="file" required accept="image/jpeg, image/png, image/jpg">
                                     </div>
 
                                     <!-- Tombol Hapus dan Simpan -->
                                     <div class="d-flex justify-content-center pt-2">
-                                        <button class="btn btn-danger text-center w-25 mx-2 shadow-sm" id="TombolHapus"
-                                            data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" type="button"
-                                            disabled>
+                                        <button class="btn btn-danger text-center w-25 mx-2 shadow-sm" id="TombolHapus" data-bs-toggle="modal" data-bs-target="#ModalKonfirmasiHapus" type="button" disabled>
                                             <i class="bi bi-trash-fill me-2"></i>Hapus Laporan
                                         </button>
 
-                                        <button class="btn btn-primary text-center w-25 mx-2 shadow-sm" id="TombolAksi"
-                                            type="submit">
+                                        <button class="btn btn-primary text-center w-25 mx-2 shadow-sm" id="TombolAksi" type="submit">
                                             <i class="bi bi-save-fill me-2"></i>Tambah Laporan
                                         </button>
                                     </div>
@@ -133,8 +120,7 @@
     @endsection
 
     @section('Modal')
-        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true"
-        tabindex="-1">
+        <div class="modal fade" id="ModalKonfirmasiHapus" aria-labelledby="ModalKonfirmasiHapusLabel" aria-hidden="true" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -145,12 +131,10 @@
                         Apakah Anda yakin ingin menghapus Data Laporan Harian Ini?
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i
-                                class="bi bi-x-lg me-2"></i>Batal</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button"><i class="bi bi-x-lg me-2"></i>Batal</button>
                         <input id="id_hapus" name="id_hapus" type="hidden" value="">
 
-                        <button class="btn btn-danger" type="button" onclick="submitForm()"><i
-                                class="bi bi-trash3-fill me-2"></i>Hapus</button>
+                        <button class="btn btn-danger" type="button" onclick="submitForm()"><i class="bi bi-trash3-fill me-2"></i>Hapus</button>
                     </div>
                 </div>
             </div>
@@ -160,6 +144,7 @@
     @section('Body_JS')
         <script>
             var baseUrl = "{{ route('mahasiswa.laporan_harian.index') }}";
+
             function updateDateAndDay(selectedDate) {
                 // Update the value of #tanggal input
                 var formattedDate = selectedDate.toISOString().split('T')[0];
@@ -460,8 +445,7 @@
     @endsection
 @else
     @section('dashboard_content')
-        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
-            style="background-color: transparent">
+        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100" style="background-color: transparent">
 
             <div class="container-fluid p-0 m-0 w-100" style="background-color: transparent">
                 <div class="container-fluid py-3 pb-4 w-100" style="background-color: transparent">

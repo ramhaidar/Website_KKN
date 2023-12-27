@@ -1,0 +1,5 @@
+::: Command Prompt
+composer install && composer update && composer upgrade && php artisan storage:link && copy .env.example .env && php artisan key:generate && php artisan migrate && php artisan db:seed && php artisan --version
+
+::: PowerShell
+composer install; composer update; composer upgrade; php artisan storage:link; Copy-Item .env.example -Destination .env; php artisan key:generate; php artisan migrate; php artisan db:seed; php artisan --version
