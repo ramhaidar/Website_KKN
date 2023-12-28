@@ -2,11 +2,9 @@
 
 @extends('dpl._dpl')
 
-
 @if ($sudah_punya_mahasiswa == true)
     @section('dashboard_content')
-        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
-            style="background-color: transparent">
+        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100" style="background-color: transparent">
 
             <div class="container-fluid p-0 m-0 w-100" style="background-color: transparent">
                 <div class="container-fluid py-3 pb-4 w-100" style="background-color: transparent">
@@ -46,27 +44,22 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan"
-                                    enctype="multipart/form-data" method="POST" action="{{ route('dosen.laporan_harian.update', $laporan_harian) }}">
+                                <form class="container-fluid p-0 m-0 pt-1 w-100 h-100" id="FormLaporan" enctype="multipart/form-data" method="POST" action="{{ route('dosen.laporan_harian.update', $laporan_harian) }}">
                                     @csrf
                                     @method('PATCH')
 
                                     <!-- Solusi -->
                                     <div class="mb-3">
                                         <label class="form-label" for="solusi">Solusi</label>
-                                        <textarea name="solusi" cols="30" rows="10" class="form-control"
-                                            placeholder="[ Belum memberikan solusi ]" required>{{ $laporan_harian->solusi }}</textarea>
+                                        <textarea class="form-control" name="solusi" cols="30" rows="10" placeholder="[ Belum memberikan solusi ]" required>{{ $laporan_harian->solusi }}</textarea>
                                     </div>
 
                                     @php
-                                        $dokumentasi = $laporan_harian->dokumentasi_path
-                                            ? asset($laporan_harian->dokumentasi_path) : '';
+                                        $dokumentasi = $laporan_harian->dokumentasi_path ? asset($laporan_harian->dokumentasi_path) : '';
                                     @endphp
                                     <!-- Dokumentasi -->
                                     <div class="d-flex w-100 align-content-center justify-content-center">
-                                        <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi"
-                                            src="{{ $dokumentasi }}" alt="Responsive image" style="width: 80%; height: 75%;"
-                                            hidden>
+                                        <img class="img-fluid rounded-5 py-2 mb-2 shadow" id="PlaceholderDokumentasi" src="{{ $dokumentasi }}" alt="Responsive image" style="width: 80%; height: 75%;" hidden>
                                     </div>
 
                                     <!-- Tombol Hapus dan Simpan -->
@@ -74,6 +67,10 @@
                                         <button class="btn btn-primary text-center w-25 mx-2 shadow-sm" type="submit">
                                             <i class="bi bi-save-fill me-2"></i>Submit Solusi
                                         </button>
+                                        <a class="btn btn-warning w-25 mx-2 shadow-sm" id="downloadCSV" onclick="setHref()">
+                                            <i class="bi bi-filetype-csv me-2"></i>
+                                            Unduh Data sebagai CSV
+                                        </a>
                                     </div>
 
                                 </form>
@@ -85,10 +82,32 @@
             </div>
         </div>
     @endsection
+
+    @section('Body_JS')
+        <script>
+            function setHref() {
+                console.log({{ $laporan_harian->id }})
+                if ({{ $laporan_harian->id }}) {
+                    console.log({{ $laporan_harian->id }});
+                    var url = "{{ route('dosen.laporan_harian.export-csv', ['id' => '']) }}";
+                    $('#downloadCSV').attr('href', url + {{ $laporan_harian->id }});
+                    $('#downloadCSV').prop('disabled', false);
+                } else {
+                    $('#downloadCSV').prop('disabled', true);
+                    $('#downloadCSV').removeAttr('href');
+                }
+            }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                document.querySelector('#Loader').style.display = 'none';
+            });
+        </script>
+    @endsection
 @else
     @section('dashboard_content')
-        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100"
-            style="background-color: transparent">
+        <div class="d-flex p-0 m-0 align-items-center align-content-center justify-content-center w-100" style="background-color: transparent">
 
             <div class="container-fluid p-0 m-0 w-100" style="background-color: transparent">
                 <div class="container-fluid py-3 pb-4 w-100" style="background-color: transparent">

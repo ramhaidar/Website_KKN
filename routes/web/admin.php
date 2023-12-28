@@ -33,6 +33,7 @@ Route::group ( [ 'prefix' => 'kelompok_mahasiswa/{mahasiswa}' ], function ()
     Route::get ( 'laporan_harian/last_data', [ LaporanHarianController::class, 'lastData' ] )->name ( 'laporan_harian.lastData' );
     Route::resource ( 'laporan_harian', LaporanHarianController::class, [ 'only' => [ 'index' ] ] );
 } );
+Route::get ( 'laporan_harian/export-csv', [ LaporanHarianController::class, 'export' ] )->name ( 'laporan_harian.export-csv' );
 
 // Laporan Akhir
 Route::group ( [ 'prefix' => 'kelompok_mahasiswa/{mahasiswa}' ], function ()
